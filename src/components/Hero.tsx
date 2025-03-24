@@ -7,6 +7,11 @@ const Hero = () => {
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-4">
+            <span className="px-4 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium">
+              We build tech from ❤️
+            </span>
+          </div>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
