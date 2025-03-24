@@ -1,7 +1,7 @@
-
 import React from 'react';
-import { Layout, ShoppingCart, Code, BarChart3 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Layout, ShoppingCart, Code, BarChart3, MessageCircle } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const servicesData = [
   {
@@ -37,18 +37,26 @@ const Services = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {servicesData.map((service, index) => (
-            <Card key={index} className="hover-scale border border-border/40 bg-white">
+            <Card key={index} className="hover-scale border border-border/40 bg-white flex flex-col">
               <CardHeader className="text-center pt-8">
                 <div className="flex justify-center">
                   {service.icon}
                 </div>
                 <CardTitle className="mt-2">{service.title}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-grow">
                 <CardDescription className="text-center">
                   {service.description}
                 </CardDescription>
               </CardContent>
+              <CardFooter className="pt-2 pb-6">
+                <Button 
+                  className="w-full bg-orange-500 hover:bg-black text-white transition-all duration-300 transform hover:scale-105 group"
+                >
+                  <MessageCircle size={18} className="mr-2 group-hover:animate-pulse" />
+                  <span>Ask a Query</span>
+                </Button>
+              </CardFooter>
             </Card>
           ))}
         </div>
