@@ -20,7 +20,7 @@ const servicesData = [
     description: "Developing fast, responsive, and SEO-friendly websites tailored to your business needs and goals."
   },
   {
-    icon: <BarChart3 className="h-12 w-12 mb-4 text-secondary" />,
+    icon: <BarChart3 className="h-12 w-12 mb-4 text-primary" />,
     title: "Marketing Consultation",
     description: "Strategic guidance to boost your online presence and drive sales growth through effective digital marketing."
   }
