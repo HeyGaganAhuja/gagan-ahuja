@@ -36,7 +36,7 @@ const FreeAssets = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {assetsData.map((asset, index) => (
-            <Card key={index} className="hover-scale">
+            <Card key={index} className="hover-scale border border-border/40 bg-white">
               <CardHeader>
                 <div className="text-primary">
                   {asset.icon}

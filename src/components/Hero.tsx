@@ -14,7 +14,7 @@ const Hero = () => {
           <p className="text-xl md:text-2xl text-muted-foreground mb-10">
             We create incredible websites for Businesses
           </p>
-          <Button size="lg" className="px-8 py-6 text-base" asChild>
+          <Button size="lg" className="px-8 py-6 text-base bg-primary hover:bg-primary/90" asChild>
             <a 
               href="https://cal.com/gagan-ahuja/consulting" 
               target="_blank" 

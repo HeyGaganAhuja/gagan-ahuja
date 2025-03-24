@@ -56,11 +56,11 @@ const Reviews = () => {
           <CarouselContent>
             {reviewsData.map((review, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="h-full">
+                <Card className="h-full border border-border/40 bg-white">
                   <CardContent className="p-6 flex flex-col h-full">
                     <div className="flex mb-3">
                       {[...Array(review.rating)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-5 w-5 fill-primary text-primary" />
                       ))}
                     </div>
                     <p className="mb-4 flex-grow italic">{review.review}</p>
@@ -74,8 +74,8 @@ const Reviews = () => {
             ))}
           </CarouselContent>
           <div className="flex justify-center mt-8">
-            <CarouselPrevious className="relative inset-0 translate-y-0 mr-2" />
-            <CarouselNext className="relative inset-0 translate-y-0 ml-2" />
+            <CarouselPrevious className="relative inset-0 translate-y-0 mr-2 bg-white border-border/40 hover:bg-secondary" />
+            <CarouselNext className="relative inset-0 translate-y-0 ml-2 bg-white border-border/40 hover:bg-secondary" />
           </div>
         </Carousel>
       </div>

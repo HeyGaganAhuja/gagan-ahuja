@@ -13,7 +13,7 @@ const Support = () => {
           <p className="text-muted-foreground mb-6">
             If you've found our resources helpful, consider buying us a coffee to support our continued creation of valuable content.
           </p>
-          <Button className="px-6" asChild>
+          <Button className="px-6 bg-primary hover:bg-primary/90" asChild>
             <a 
               href="https://www.buymeacoffee.com/" 
               target="_blank" 

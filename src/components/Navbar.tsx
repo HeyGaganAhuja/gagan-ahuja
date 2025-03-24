@@ -27,7 +27,7 @@ const Navbar = () => {
           <a href="#faq" className="text-foreground/80 hover:text-foreground transition-colors">
             FAQ
           </a>
-          <Button asChild>
+          <Button asChild className="bg-accent hover:bg-accent/90">
             <a href="https://cal.com/gagan-ahuja/consulting" target="_blank" rel="noopener noreferrer">
               Book a Call
             </a>
@@ -75,7 +75,7 @@ const Navbar = () => {
           >
             FAQ
           </a>
-          <Button className="w-full" asChild>
+          <Button className="w-full bg-accent hover:bg-accent/90" asChild>
             <a 
               href="https://cal.com/gagan-ahuja/consulting" 
               target="_blank" 

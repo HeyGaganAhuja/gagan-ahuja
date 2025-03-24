@@ -58,7 +58,7 @@ const FAQ = () => {
           
           <Accordion type="single" collapsible className="mb-8">
             {displayItems.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionItem key={index} value={`item-${index}`} className="border-border/40">
                 <AccordionTrigger className="text-left font-medium">
                   {item.question}
                 </AccordionTrigger>
@@ -74,6 +74,7 @@ const FAQ = () => {
               <Button 
                 variant="outline" 
                 onClick={() => setShowAll(true)}
+                className="border-primary/30 text-primary hover:bg-primary/5"
               >
                 Show More
               </Button>

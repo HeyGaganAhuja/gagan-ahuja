@@ -5,22 +5,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 const servicesData = [
   {
-    icon: <Layout className="h-12 w-12 mb-4" />,
+    icon: <Layout className="h-12 w-12 mb-4 text-primary" />,
     title: "UI/UX Design",
     description: "Creating beautiful, user-centered interfaces that enhance customer satisfaction and boost conversion rates."
   },
   {
-    icon: <ShoppingCart className="h-12 w-12 mb-4" />,
+    icon: <ShoppingCart className="h-12 w-12 mb-4 text-primary" />,
     title: "E-commerce Platform",
     description: "Building high-converting online stores with seamless checkout experiences and robust product management."
   },
   {
-    icon: <Code className="h-12 w-12 mb-4" />,
+    icon: <Code className="h-12 w-12 mb-4 text-primary" />,
     title: "Website Development",
     description: "Developing fast, responsive, and SEO-friendly websites tailored to your business needs and goals."
   },
   {
-    icon: <BarChart3 className="h-12 w-12 mb-4" />,
+    icon: <BarChart3 className="h-12 w-12 mb-4 text-primary" />,
     title: "Marketing Consultation",
     description: "Strategic guidance to boost your online presence and drive sales growth through effective digital marketing."
   }
@@ -37,7 +37,7 @@ const Services = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {servicesData.map((service, index) => (
-            <Card key={index} className="hover-scale">
+            <Card key={index} className="hover-scale border border-border/40 bg-white">
               <CardHeader className="text-center pt-8">
                 <div className="flex justify-center">
                   {service.icon}
