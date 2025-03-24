@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MenuIcon, X } from 'lucide-react';
@@ -46,31 +45,31 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="fixed inset-0 top-[61px] bg-background z-40 flex flex-col p-5 space-y-5 md:hidden">
+        <div className="fixed inset-0 top-[61px] bg-[#f5f0e6]/80 backdrop-blur-md z-[100] flex flex-col p-5 space-y-5 md:hidden">
           <a 
             href="#services" 
-            className="text-lg p-2" 
+            className="text-lg p-2 font-medium" 
             onClick={() => setIsOpen(false)}
           >
             Services
           </a>
           <a 
             href="#reviews"
-            className="text-lg p-2"
+            className="text-lg p-2 font-medium"
             onClick={() => setIsOpen(false)}
           >
             Reviews
           </a>
           <a 
             href="#assets"
-            className="text-lg p-2"
+            className="text-lg p-2 font-medium"
             onClick={() => setIsOpen(false)}
           >
             Free Assets
           </a>
           <a 
             href="#faq"
-            className="text-lg p-2"
+            className="text-lg p-2 font-medium"
             onClick={() => setIsOpen(false)}
           >
             FAQ
