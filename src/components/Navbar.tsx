@@ -45,45 +45,47 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="fixed inset-0 top-[61px] bg-[#f5f0e6]/80 backdrop-blur-md z-[100] flex flex-col p-5 space-y-5 md:hidden">
-          <a 
-            href="#services" 
-            className="text-lg p-2 font-medium" 
-            onClick={() => setIsOpen(false)}
-          >
-            Services
-          </a>
-          <a 
-            href="#reviews"
-            className="text-lg p-2 font-medium"
-            onClick={() => setIsOpen(false)}
-          >
-            Reviews
-          </a>
-          <a 
-            href="#assets"
-            className="text-lg p-2 font-medium"
-            onClick={() => setIsOpen(false)}
-          >
-            Free Assets
-          </a>
-          <a 
-            href="#faq"
-            className="text-lg p-2 font-medium"
-            onClick={() => setIsOpen(false)}
-          >
-            FAQ
-          </a>
-          <Button className="w-full bg-accent hover:bg-accent/90" asChild>
+        <div className="fixed inset-0 top-[61px] bg-[#f5f0e6] z-[100] flex flex-col p-5 space-y-5 md:hidden">
+          <div className="w-full flex flex-col space-y-5">
             <a 
-              href="https://cal.com/gagan-ahuja/consulting" 
-              target="_blank" 
-              rel="noopener noreferrer"
+              href="#services" 
+              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center" 
               onClick={() => setIsOpen(false)}
             >
-              Book a Call
+              Services
             </a>
-          </Button>
+            <a 
+              href="#reviews"
+              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center"
+              onClick={() => setIsOpen(false)}
+            >
+              Reviews
+            </a>
+            <a 
+              href="#assets"
+              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center"
+              onClick={() => setIsOpen(false)}
+            >
+              Free Assets
+            </a>
+            <a 
+              href="#faq"
+              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center"
+              onClick={() => setIsOpen(false)}
+            >
+              FAQ
+            </a>
+            <Button className="w-full bg-accent hover:bg-accent/90" asChild>
+              <a 
+                href="https://cal.com/gagan-ahuja/consulting" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+              >
+                Book a Call
+              </a>
+            </Button>
+          </div>
         </div>
       )}
     </nav>
