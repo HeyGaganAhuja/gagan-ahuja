@@ -51,7 +51,7 @@ const Services = () => {
               </CardContent>
               <CardFooter className="pt-2 pb-6">
                 <Button 
-                  className="w-full bg-orange-500 hover:bg-black text-white transition-all duration-300 transform hover:scale-105 group"
+                  className="w-full bg-accent hover:bg-black text-white transition-all duration-300 transform hover:scale-105 group"
                 >
                   <MessageCircle size={18} className="mr-2 group-hover:animate-pulse" />
                   <span>Ask a Query</span>
