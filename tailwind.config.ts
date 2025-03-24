@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				serif: ['Inter', 'sans-serif'],
-				sans: ['Inter', 'sans-serif'],
+				serif: ['ui-sans-serif', 'sans-serif'],
+				sans: ['ui-sans-serif', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
