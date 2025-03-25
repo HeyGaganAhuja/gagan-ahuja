@@ -10,7 +10,7 @@ interface FeatureIconProps {
 const FeatureIcon: React.FC<FeatureIconProps> = ({ icon, title, description }) => {
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="mb-6 p-4 bg-zinc-800 rounded-xl shadow-lg w-20 h-20 flex items-center justify-center">
+      <div className="mb-6 p-4 bg-zinc-800/80 rounded-xl shadow-lg w-20 h-20 flex items-center justify-center step-gradient">
         {icon}
       </div>
       <h3 className="text-xl font-semibold mb-3">{title}</h3>
