@@ -43,11 +43,10 @@ const Services = () => {
           {servicesData.map((service, index) => (
             <div 
               key={index} 
-              className="relative group hover:scale-105 transition-all duration-300 ease-in-out"
+              className="relative"
             >
-              <div className="absolute -inset-0.5 bg-orange-500/10 rounded-xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-300"></div>
               <Card 
-                className={`border-0 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 ${service.gradientClass}`}
+                className={`border border-white/10 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 ${service.gradientClass}`}
               >
                 <div className="rounded-t-lg h-16 w-full relative">
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center bg-black/80 border-4 border-zinc-900">
