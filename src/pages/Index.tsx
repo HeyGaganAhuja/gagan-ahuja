@@ -9,6 +9,7 @@ import FreeAssets from '@/components/FreeAssets';
 import FAQ from '@/components/FAQ';
 import Support from '@/components/Support';
 import Footer from '@/components/Footer';
+import Features from '@/components/Features';
 
 const Index = () => {
   // Function to handle scroll-based animations
@@ -40,6 +41,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Services />
+      <Features />
       <Reviews />
       <CallToAction />
       <FreeAssets />
