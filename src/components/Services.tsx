@@ -46,7 +46,7 @@ const Services = () => {
               className="relative"
             >
               <Card 
-                className={`border border-white/10 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 rounded-[32px] ${service.gradientClass}`}
+                className={`border border-white/10 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 rounded-[24px] ${service.gradientClass}`}
               >
                 <div className="rounded-t-[32px] h-16 w-full relative">
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center bg-black/80 border-4 border-zinc-900">
