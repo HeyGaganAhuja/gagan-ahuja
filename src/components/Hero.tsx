@@ -109,7 +109,7 @@ const Hero = () => {
                       <span className="text-lg font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 0.5rem)' }}></div>
+                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 6rem)' }}></div>
                     )}
                   </div>
                   <p className="text-zinc-300 text-center text-xs px-1">{step.title}</p>
