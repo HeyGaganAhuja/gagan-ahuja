@@ -64,7 +64,7 @@ const Hero = () => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
-          <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-sm sm:text-md md:text-md text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We create incredible websites for Businesses
           </p>
           <Button 
