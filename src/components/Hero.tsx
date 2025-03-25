@@ -61,15 +61,15 @@ const Hero = () => {
               We build tech from ❤️
             </span>
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We create incredible websites for Businesses
           </p>
           <Button 
             size="lg" 
-            className="px-8 py-6 text-base bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow" 
+            className="px-8 py-6 text-base sm:text-lg md:text-xl bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow" 
             style={{ animationDelay: '0.4s' }}
             asChild
           >
@@ -88,14 +88,14 @@ const Hero = () => {
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
               <Timer size={20} className="text-[#FF5733] animate-pulse" />
-              <span className="text-white font-bold">{formatTime()}</span>
+              <span className="text-white font-bold text-base sm:text-lg md:text-xl">{formatTime()}</span>
             </div>
-            <p className="text-zinc-400 text-sm mt-2">Limited time offer - Expires soon!</p>
+            <p className="text-zinc-400 text-sm sm:text-base mt-2">Limited time offer - Expires soon!</p>
           </div>
 
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
-            <h3 className="text-center text-lg text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
+            <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { number: 1, title: "Describe what you want to build." },
@@ -106,13 +106,13 @@ const Hero = () => {
                 <div key={index} className="flex flex-col items-center relative">
                   <div className="step-gradient relative mb-2">
                     <div className="w-12 h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
-                      <span className="text-lg font-bold text-white">{step.number}</span>
+                      <span className="text-lg sm:text-xl font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
                       <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 6rem)' }}></div>
                     )}
                   </div>
-                  <p className="text-zinc-300 text-center text-xs px-1">{step.title}</p>
+                  <p className="text-zinc-300 text-center text-xs sm:text-sm px-1">{step.title}</p>
                 </div>
               ))}
             </div>
