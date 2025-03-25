@@ -64,12 +64,12 @@ const Hero = () => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
-          <p className="text-sm sm:text-md md:text-md text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-md sm:text-md md:text-md text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We create incredible websites for Businesses
           </p>
           <Button 
             size="lg" 
-            className="px-8 py-6 text-base sm:text-lg md:text-xl bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow" 
+            className="px-8 py-6 text-base sm:text-lg md:text-lg bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow" 
             style={{ animationDelay: '0.4s' }}
             asChild
           >
