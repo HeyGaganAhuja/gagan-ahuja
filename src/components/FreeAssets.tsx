@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, FileText, BarChart, Palette } from 'lucide-react';
@@ -29,22 +30,22 @@ const FreeAssets = () => {
     <section id="assets" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-medium mb-4">Free Resources</h2>
+          <h2 className="text-2xl md:text-3xl font-serif font-medium mb-4">Free Resources</h2>
           <p className="text-muted-foreground">Download these valuable assets to help grow your business</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {assetsData.map((asset, index) => (
-            <Card key={index} className="hover-scale border border-border/40 bg-white">
+            <Card key={index} className="zapier-card border border-border/40 bg-card">
               <CardHeader>
-                <div className="text-primary">
+                <div className="text-primary flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
                   {asset.icon}
                 </div>
                 <CardTitle className="text-xl">{asset.title}</CardTitle>
-                <CardDescription>{asset.description}</CardDescription>
+                <CardDescription className="text-muted-foreground">{asset.description}</CardDescription>
               </CardHeader>
               <CardFooter>
-                <Button className="w-full" variant="outline" asChild>
+                <Button className="w-full bg-secondary hover:bg-primary text-foreground hover:text-white transition-all duration-300 modern-button" asChild>
                   <a 
                     href={asset.link} 
                     className="flex items-center justify-center space-x-2"

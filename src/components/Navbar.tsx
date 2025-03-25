@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MenuIcon, X } from 'lucide-react';
@@ -6,27 +7,27 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <nav className="w-full py-4 bg-background/80 backdrop-blur-sm fixed top-0 z-50 border-b">
+    <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex justify-between items-center">
-        <a href="#" className="text-xl md:text-2xl font-serif font-semibold">
+        <a href="#" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
           Gagan Consults
         </a>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#services" className="text-foreground/80 hover:text-foreground transition-colors">
+          <a href="#services" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Services
           </a>
-          <a href="#reviews" className="text-foreground/80 hover:text-foreground transition-colors">
+          <a href="#reviews" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Reviews
           </a>
-          <a href="#assets" className="text-foreground/80 hover:text-foreground transition-colors">
+          <a href="#assets" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Free Assets
           </a>
-          <a href="#faq" className="text-foreground/80 hover:text-foreground transition-colors">
+          <a href="#faq" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             FAQ
           </a>
-          <Button asChild className="bg-accent hover:bg-accent/90">
+          <Button asChild className="bg-primary hover:bg-primary/90 modern-button">
             <a href="https://cal.com/gagan-ahuja/consulting" target="_blank" rel="noopener noreferrer">
               Book a Call
             </a>
@@ -39,43 +40,43 @@ const Navbar = () => {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
-          {isOpen ? <X size={24} /> : <MenuIcon size={24} />}
+          {isOpen ? <X size={24} className="text-foreground" /> : <MenuIcon size={24} className="text-foreground" />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="fixed inset-0 top-[61px] bg-[#f5f0e6] z-[100] flex flex-col p-5 space-y-5 md:hidden">
+        <div className="fixed inset-0 top-[61px] bg-background/95 backdrop-blur-sm z-[100] flex flex-col p-5 space-y-5 md:hidden">
           <div className="w-full flex flex-col space-y-5">
             <a 
               href="#services" 
-              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center" 
+              className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center" 
               onClick={() => setIsOpen(false)}
             >
               Services
             </a>
             <a 
               href="#reviews"
-              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center"
+              className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
               onClick={() => setIsOpen(false)}
             >
               Reviews
             </a>
             <a 
               href="#assets"
-              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center"
+              className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
               onClick={() => setIsOpen(false)}
             >
               Free Assets
             </a>
             <a 
               href="#faq"
-              className="text-lg p-2 font-medium bg-white/50 rounded-md text-center"
+              className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
               onClick={() => setIsOpen(false)}
             >
               FAQ
             </a>
-            <Button className="w-full bg-accent hover:bg-accent/90" asChild>
+            <Button className="w-full bg-primary hover:bg-primary/90" asChild>
               <a 
                 href="https://cal.com/gagan-ahuja/consulting" 
                 target="_blank" 

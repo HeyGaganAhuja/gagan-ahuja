@@ -36,14 +36,14 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <Hero />
-      <Services id="services" />
-      <Reviews id="reviews" />
+      <Services />
+      <Reviews />
       <CallToAction />
-      <FreeAssets id="assets" />
-      <FAQ id="faq" />
+      <FreeAssets />
+      <FAQ />
       <Support />
       <Footer />
     </div>
