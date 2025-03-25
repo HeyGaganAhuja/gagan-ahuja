@@ -39,7 +39,7 @@ const Services = () => {
           <p className="text-zinc-400">Comprehensive solutions to accelerate your business growth</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {servicesData.map((service, index) => (
             <div 
               key={index} 
@@ -47,7 +47,7 @@ const Services = () => {
             >
               <div className="absolute -inset-0.5 bg-orange-500/10 rounded-xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-300"></div>
               <Card 
-                className={`border-0 shadow-xl flex flex-col h-full overflow-hidden w-full max-w-xs mx-auto relative z-10 ${service.gradientClass}`}
+                className={`border-0 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 ${service.gradientClass}`}
               >
                 <div className="rounded-t-lg h-16 w-full relative">
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center bg-black/80 border-4 border-zinc-900">
@@ -57,7 +57,7 @@ const Services = () => {
                 <CardHeader className="text-center pt-10 pb-2 bg-black/10">
                   <CardTitle className="mt-2 text-xl font-bold text-white">{service.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex-grow bg-black/10 px-4 py-4">
+                <CardContent className="flex-grow bg-black/10 px-6 py-4">
                   <CardDescription className="text-center text-zinc-300">
                     {service.description}
                   </CardDescription>
