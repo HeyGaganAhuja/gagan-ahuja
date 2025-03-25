@@ -41,7 +41,7 @@ const Hero = () => {
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
-      <div className="top-gradient-glow"></div>
+      <div className="top-gradient-glow opacity-40"></div>
       <div className="moving-gradient"></div>
       <div className="grainy-texture absolute inset-0 opacity-14"></div>
       
@@ -96,7 +96,7 @@ const Hero = () => {
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
             <h3 className="text-center text-lg text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { number: 1, title: "Describe what you want to build." },
                 { number: 2, title: "We build your first version." },
@@ -109,17 +109,12 @@ const Hero = () => {
                       <span className="text-lg font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 2rem)' }}></div>
+                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 0.5rem)' }}></div>
                     )}
                   </div>
                   <p className="text-zinc-300 text-center text-xs px-1">{step.title}</p>
                 </div>
               ))}
-              
-              {/* Continuous line for desktop */}
-              <div className="hidden md:block absolute top-9 left-0 right-0 z-0">
-                <div className="h-0.5 bg-zinc-700/50 w-full"></div>
-              </div>
             </div>
           </div>
         </div>
