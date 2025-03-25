@@ -96,7 +96,7 @@ const Hero = () => {
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
             <h3 className="text-center text-lg text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative">
               {[
                 { number: 1, title: "Describe what you want to build." },
                 { number: 2, title: "We build your first version." },
@@ -105,16 +105,21 @@ const Hero = () => {
               ].map((step, index) => (
                 <div key={index} className="flex flex-col items-center relative">
                   <div className="step-gradient relative mb-2">
-                    <div className="w-34 h-34 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
                       <span className="text-lg font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-zinc-700/50 transform -translate-y-1/2 origin-left" style={{ width: 'calc(100% + 0.5rem)' }}></div>
+                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 2rem)' }}></div>
                     )}
                   </div>
                   <p className="text-zinc-300 text-center text-xs px-1">{step.title}</p>
                 </div>
               ))}
+              
+              {/* Continuous line for desktop */}
+              <div className="hidden md:block absolute top-9 left-0 right-0 z-0">
+                <div className="h-0.5 bg-zinc-700/50 w-full"></div>
+              </div>
             </div>
           </div>
         </div>
