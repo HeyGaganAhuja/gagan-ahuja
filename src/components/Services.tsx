@@ -46,14 +46,14 @@ const Services = () => {
               className="relative"
             >
               <Card 
-                className={`border border-white/10 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 ${service.gradientClass}`}
+                className={`border border-white/10 shadow-xl flex flex-col h-full overflow-hidden w-full relative z-10 rounded-[32px] ${service.gradientClass}`}
               >
-                <div className="rounded-t-lg h-16 w-full relative">
+                <div className="rounded-t-[32px] h-16 w-full relative">
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full flex items-center justify-center bg-black/80 border-4 border-zinc-900">
                     {React.cloneElement(service.icon, { className: 'h-8 w-8' })}
                   </div>
                 </div>
-                <CardHeader className="text-center pt-10 pb-2 bg-black/10">
+                <CardHeader className="text-center pt-10 pb-2 bg-black/10 rounded-t-[32px]">
                   <CardTitle className="mt-2 text-xl font-bold text-white">{service.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow bg-black/10 px-6 py-4">
@@ -61,9 +61,9 @@ const Services = () => {
                     {service.description}
                   </CardDescription>
                 </CardContent>
-                <CardFooter className="bg-black/10 pt-2 pb-6 flex justify-center">
+                <CardFooter className="bg-black/10 pt-2 pb-6 flex justify-center rounded-b-[32px]">
                   <Button 
-                    className="w-4/5 bg-[#FF5733] hover:bg-[#FF5733]/90 text-white transition-all duration-300 modern-button button-glow"
+                    className="w-4/5 bg-[#FF5733] hover:bg-[#FF5733]/90 text-white transition-all duration-300 modern-button button-glow rounded-2xl"
                   >
                     <MessageCircle size={18} className="mr-2" />
                     <span>Ask a Query</span>
