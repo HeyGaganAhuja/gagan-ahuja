@@ -58,7 +58,7 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-bold;
+    @apply font-serif font-extrabold;
     letter-spacing: -0.03em; /* Even tighter kerning for headings */
   }
 }
@@ -99,7 +99,7 @@
   }
 
   .moving-gradient {
-    background: linear-gradient(90deg, rgba(255, 126, 20, 0.15), rgba(155, 135, 245, 0.15));
+    background: linear-gradient(90deg, rgba(255, 87, 51, 0.15), rgba(155, 135, 245, 0.15));
     background-size: 200% 200%;
     animation: gradient 8s ease infinite;
     position: absolute;
@@ -124,7 +124,7 @@
   .cursor-glow {
     height: 250px;
     width: 250px;
-    background: radial-gradient(circle, rgba(255, 126, 20, 0.15), transparent 70%);
+    background: radial-gradient(circle, rgba(255, 87, 51, 0.15), transparent 70%);
     border-radius: 50%;
     position: fixed;
     opacity: 0;
@@ -142,7 +142,7 @@
     content: '';
     position: absolute;
     inset: -3px;
-    background: linear-gradient(90deg, rgba(255, 126, 20, 0.6), rgba(255, 126, 20, 0.2));
+    background: linear-gradient(90deg, rgba(255, 87, 51, 0.6), rgba(255, 87, 51, 0.2));
     filter: blur(15px);
     border-radius: inherit;
     opacity: 0;
@@ -152,6 +152,41 @@
 
   .button-glow:hover::after {
     opacity: 1;
+  }
+  
+  .top-gradient-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 87, 51, 0.1) 0%, transparent 100%);
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .service-card-gradient-1 {
+    background: linear-gradient(135deg, #4284DB, #29EAC4);
+  }
+  
+  .service-card-gradient-2 {
+    background: linear-gradient(135deg, #FF9C41, #FF5733);
+  }
+  
+  .service-card-gradient-3 {
+    background: linear-gradient(135deg, #B36FFB, #5E79FF);
+  }
+  
+  .service-card-gradient-4 {
+    background: linear-gradient(135deg, #FF5E8F, #FF9777);
+  }
+  
+  .grid-pattern {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: center center;
   }
 }
 
@@ -189,13 +224,13 @@
 
 /* Zapier-inspired card styling */
 .zapier-card {
-  @apply bg-card rounded-lg border border-border/50 overflow-hidden transition-all duration-300;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  @apply bg-zinc-800/60 rounded-lg border border-zinc-700/40 overflow-hidden transition-all duration-300;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .zapier-card:hover {
-  @apply border-primary/60;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(var(--primary), 0.3);
+  @apply border-[#FF5733]/60;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 87, 51, 0.3);
   transform: translateY(-4px);
 }
 
@@ -211,14 +246,6 @@
 
 .modern-button:hover::before {
   @apply opacity-100;
-}
-
-/* Grid background pattern */
-.grid-pattern {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
-  background-size: 30px 30px;
-  background-position: center center;
 }
 
 /* Step gradient boxes */

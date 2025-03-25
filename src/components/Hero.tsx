@@ -42,6 +42,7 @@ const Hero = () => {
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
+      <div className="top-gradient-glow"></div>
       <div className="moving-gradient"></div>
       <div className="grainy-texture absolute inset-0"></div>
       
@@ -57,7 +58,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <span className="px-4 py-1 rounded-full bg-[#FF5733]/20 border border-[#FF5733]/20 text-[#FF5733] text-sm font-medium">
+            <span className="px-4 py-1 rounded-full bg-[#FF5733]/20 border border-[#FF5733]/20 text-white text-sm font-medium">
               We build tech from ❤️
             </span>
           </div>
@@ -95,7 +96,7 @@ const Hero = () => {
 
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
               {[
                 { number: 1, title: "Describe what you want to build." },
                 { number: 2, title: "We build your first version." },
@@ -103,15 +104,15 @@ const Hero = () => {
                 { number: 4, title: "Share or sync to GitHub." }
               ].map((step, index) => (
                 <div key={index} className="flex flex-col items-center relative">
-                  <div className="step-gradient relative mb-3">
-                    <div className="w-14 h-14 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
-                      <span className="text-xl font-bold text-white">{step.number}</span>
+                  <div className="step-gradient relative mb-2">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
+                      <span className="text-lg font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-7 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 6rem)' }}></div>
+                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% - 0.5rem)' }}></div>
                     )}
                   </div>
-                  <p className="text-zinc-300 text-center text-xs">{step.title}</p>
+                  <p className="text-zinc-300 text-center text-xs px-1">{step.title}</p>
                 </div>
               ))}
             </div>
