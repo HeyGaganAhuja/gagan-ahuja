@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
@@ -44,7 +43,7 @@ const Hero = () => {
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
       <div className="top-gradient-glow"></div>
       <div className="moving-gradient"></div>
-      <div className="grainy-texture absolute inset-0"></div>
+      <div className="grainy-texture absolute inset-0 opacity-14"></div>
       
       <div 
         className="cursor-glow" 
@@ -62,7 +61,7 @@ const Hero = () => {
               We build tech from ❤️
             </span>
           </div>
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -96,7 +95,8 @@ const Hero = () => {
 
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+            <h3 className="text-center text-lg text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { number: 1, title: "Describe what you want to build." },
                 { number: 2, title: "We build your first version." },
@@ -105,11 +105,11 @@ const Hero = () => {
               ].map((step, index) => (
                 <div key={index} className="flex flex-col items-center relative">
                   <div className="step-gradient relative mb-2">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
+                    <div className="w-34 h-34 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
                       <span className="text-lg font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% - 0.5rem)' }}></div>
+                      <div className="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-zinc-700/50 transform -translate-y-1/2 origin-left" style={{ width: 'calc(100% + 0.5rem)' }}></div>
                     )}
                   </div>
                   <p className="text-zinc-300 text-center text-xs px-1">{step.title}</p>
