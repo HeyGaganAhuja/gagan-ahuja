@@ -61,7 +61,7 @@ const Services = () => {
                     {service.description}
                   </CardDescription>
                 </CardContent>
-                <CardFooter className="bg-black/10 pt-2 pb-6 flex justify-center rounded-b-[32px]">
+                <CardFooter className="bg-black/10 pt-2 pb-6 flex justify-center rounded-b-[24px]">
                   <Button 
                     className="w-4/5 bg-[#FF5733] hover:bg-[#FF5733]/90 text-white transition-all duration-300 modern-button button-glow rounded-2xl"
                   >
