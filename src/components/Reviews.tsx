@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, Quote } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const reviewsData = [
@@ -54,7 +54,7 @@ const Reviews = () => {
     <section id="reviews" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center mb-16">
-          <h2 className="text-2xl md:text-3xl font-serif font-medium mb-4">Client Reviews</h2>
+          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4">Client Reviews</h2>
           <p className="text-muted-foreground">What our clients are saying about our services</p>
         </div>
         
@@ -65,7 +65,6 @@ const Reviews = () => {
                 <Card className="h-full border border-border/40 bg-card">
                   <CardContent className="p-6 flex flex-col h-full">
                     <div className="flex mb-4">
-                      <Quote className="text-primary opacity-40 h-8 w-8 absolute -top-1 -left-1" />
                       <div className="flex space-x-0.5">
                         {[...Array(review.rating)].map((_, i) => (
                           <Star key={i} className="h-4 w-4 fill-primary text-primary" />

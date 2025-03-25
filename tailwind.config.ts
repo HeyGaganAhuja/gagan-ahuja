@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -88,11 +89,15 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'cursor-follow': {
+					'0%, 100%': { transform: 'translate(0px, 0px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'cursor-follow': 'cursor-follow 0.3s ease-out infinite'
 			}
 		}
 	},

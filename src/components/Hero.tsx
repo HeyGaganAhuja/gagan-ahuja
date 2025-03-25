@@ -1,19 +1,53 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
+  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!isVisible) setIsVisible(true);
+    };
+
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    document.body.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.body.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isVisible]);
+
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern">
+      <div className="moving-gradient"></div>
+      <div className="grainy-texture absolute inset-0"></div>
+      
+      <div 
+        className="cursor-glow" 
+        style={{ 
+          left: `${mousePosition.x - 125}px`, 
+          top: `${mousePosition.y - 125}px`,
+          opacity: isVisible ? 0.6 : 0 
+        }}
+      ></div>
+      
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <span className="px-4 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
+            <span className="px-4 py-1 rounded-full bg-primary/20 border border-primary/20 text-primary text-sm font-medium">
               We build tech from ❤️
             </span>
           </div>
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-medium tracking-tight mb-6 animate-fade-in hover-scale">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -21,7 +55,7 @@ const Hero = () => {
           </p>
           <Button 
             size="lg" 
-            className="px-8 py-6 text-base bg-primary hover:bg-primary/90 hover-scale animate-fade-in modern-button" 
+            className="px-8 py-6 text-base bg-primary hover:bg-primary/90 hover-scale animate-fade-in modern-button button-glow" 
             style={{ animationDelay: '0.4s' }}
             asChild
           >
