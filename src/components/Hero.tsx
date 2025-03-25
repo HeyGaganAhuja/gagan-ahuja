@@ -41,9 +41,9 @@ const Hero = () => {
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
-      <div className="top-gradient-glow opacity-80"></div>
+      <div className="top-gradient-glow opacity-40"></div>
       <div className="moving-gradient"></div>
-      <div className="grainy-texture absolute inset-0 opacity-14"></div>
+      <div className="grainy-texture absolute inset-0 opacity-25"></div>
       
       <div 
         className="cursor-glow" 
