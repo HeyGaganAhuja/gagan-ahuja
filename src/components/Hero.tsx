@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
@@ -41,7 +42,7 @@ const Hero = () => {
 
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
-      <div className="top-gradient-glow opacity-40"></div>
+      <div className="top-gradient-glow"></div>
       <div className="moving-gradient"></div>
       <div className="grainy-texture absolute inset-0 opacity-25"></div>
       
@@ -96,7 +97,7 @@ const Hero = () => {
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
             <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
               {[
                 { number: 1, title: "Describe what you want to build." },
                 { number: 2, title: "We build your first version." },
@@ -105,11 +106,11 @@ const Hero = () => {
               ].map((step, index) => (
                 <div key={index} className="flex flex-col items-center relative">
                   <div className="step-gradient relative mb-2">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
                       <span className="text-lg sm:text-xl font-bold text-white">{step.number}</span>
                     </div>
                     {index < 3 && (
-                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 6rem)' }}></div>
+                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 4rem)' }}></div>
                     )}
                   </div>
                   <p className="text-zinc-300 text-center text-xs sm:text-sm px-1">{step.title}</p>

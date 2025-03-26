@@ -94,7 +94,7 @@
   }
 
   .dotted-pattern {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
     background-size: 20px 20px;
   }
 
@@ -160,7 +160,7 @@
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(180deg, rgba(255, 87, 51, 0.1) 0%, transparent 100%);
+    background: linear-gradient(180deg, rgba(255, 87, 51, 0.2) 0%, transparent 100%);
     filter: blur(100px);
     pointer-events: none;
     z-index: 1;
@@ -183,8 +183,8 @@
   }
   
   .grid-pattern {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 30px 30px;
     background-position: center center;
   }

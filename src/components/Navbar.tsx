@@ -15,8 +15,8 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#services" className="text-foreground/80 hover:text-primary transition-colors text-sm">
-            Services
+          <a href="#whatyoureceive" className="text-foreground/80 hover:text-primary transition-colors text-sm">
+            Solutions
           </a>
           <a href="#reviews" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Reviews
@@ -46,14 +46,14 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="fixed inset-0 top-[61px] bg-background/95 backdrop-blur-sm z-[100] flex flex-col p-5 space-y-5 md:hidden">
+        <div className="fixed inset-0 top-[61px] bg-black/95 backdrop-blur-sm z-[100] flex flex-col p-5 space-y-5 md:hidden">
           <div className="w-full flex flex-col space-y-5">
             <a 
-              href="#services" 
+              href="#whatyoureceive" 
               className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center" 
               onClick={() => setIsOpen(false)}
             >
-              Services
+              Solutions
             </a>
             <a 
               href="#reviews"
