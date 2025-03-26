@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Layout, ShoppingCart, Code, BarChart3, MessageCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -8,25 +9,25 @@ const servicesData = [
     icon: <Layout className="h-12 w-12 mb-4 text-white" />,
     title: "UI/UX Design",
     description: "Creating beautiful, user-centered interfaces that enhance customer satisfaction and boost conversion rates.",
-    gradientClass: "bg-gradient-to-r from-black/10 to-black/10 via-black/30"
+    gradientClass: "bg-gradient-to-r from-[#4284DB]/30 to-[#29EAC4]/30 service-card-gradient-1"
   },
   {
     icon: <ShoppingCart className="h-12 w-12 mb-4 text-white" />,
     title: "E-commerce Platform",
     description: "Building high-converting online stores with seamless checkout experiences and robust product management.",
-    gradientClass: "bg-gradient-to-r from-black/10 to-black/10 via-black/30"
+    gradientClass: "bg-gradient-to-r from-[#FF9C41]/30 to-[#FF5733]/30 service-card-gradient-2"
   },
   {
     icon: <Code className="h-12 w-12 mb-4 text-white" />,
     title: "Website Development",
     description: "Developing fast, responsive, and SEO-friendly websites tailored to your business needs and goals.",
-    gradientClass: "bg-gradient-to-r from-black/10 to-black/10 via-black/30"
+    gradientClass: "bg-gradient-to-r from-[#B36FFB]/30 to-[#5E79FF]/30 service-card-gradient-3"
   },
   {
     icon: <BarChart3 className="h-12 w-12 mb-4 text-white" />,
     title: "Marketing Consultation",
     description: "Strategic guidance to boost your online presence and drive sales growth through effective digital marketing.",
-    gradientClass: "bg-gradient-to-r from-black/10 to-black/10 via-black/30"
+    gradientClass: "bg-gradient-to-r from-[#FF5E8F]/30 to-[#FF9777]/30 service-card-gradient-4"
   }
 ];
 
@@ -39,7 +40,7 @@ const Services = () => {
           <p className="text-zinc-400">Comprehensive solutions to accelerate your business growth</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {servicesData.map((service, index) => (
             <div 
               key={index} 
