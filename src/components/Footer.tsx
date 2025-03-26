@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -20,7 +19,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-zinc-900 text-zinc-100 pt-16 pb-8">
+    <footer className="bg-black text-zinc-100 pt-16 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="md:col-span-2">
@@ -91,11 +90,11 @@ const Footer = () => {
                 <Input
                   type="email"
                   placeholder="Subscribe to newsletter"
-                  className="bg-zinc-800 border-zinc-700 text-zinc-300 placeholder:text-zinc-500 mr-2 w-full md:w-auto"
+                  className="bg-zinc-900 border-black text-zinc-300 placeholder:text-zinc-500 mr-2 w-full md:w-auto"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <Button type="submit" variant="outline" size="sm" className="bg-transparent border-zinc-700 text-zinc-300 hover:bg-zinc-800">
+                <Button type="submit" variant="outline" size="sm" className="bg-transparent border-black text-zinc-300 hover:bg-zinc-900">
                   <Send size={16} />
                 </Button>
               </form>
