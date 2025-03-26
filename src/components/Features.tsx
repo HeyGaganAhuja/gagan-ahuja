@@ -1,4 +1,4 @@
-features  import React from 'react';
+import React from 'react';
 import { MessageSquare, Eye, Globe, Github, Sparkles } from 'lucide-react';
 import FeatureIcon from './FeatureIcon';
 
@@ -55,4 +55,3 @@ const Features = () => {
 };
 
 export default Features;
- 
