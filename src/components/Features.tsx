@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MessageSquare, Eye, Globe, Github, Sparkles, Puzzle } from 'lucide-react';
 import FeatureIcon from './FeatureIcon';
@@ -35,11 +36,14 @@ const Features = () => {
     <section className="py-16 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-           <h2 className="text-3xl md:text-4xl font-serif font-extrabold mb-4">Powerful Features</h2>
-          <p className="text-zinc-300 max-w-2xl mx-auto">Everything you need to build exceptional web experiences</p>
-
+          <div className="w-12 h-12 bg-[#FF5733]/10 flex items-center justify-center rounded-full mx-auto">
+            <Puzzle className="w-8 h-8 text-[#FF5733]" />
+          </div>
+          
+          <p className="text-[#FF5733] uppercase text-sm font-medium tracking-wider mb-3">POWERFUL FEATURES</p>
+          <h2 className="text-2xl md:text-3xl font-serif font-extrabold mb-6 text-white max-w-3xl mx-auto">
+            Everything you need to build exceptional web experiences
+          </h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 max-w-6xl mx-auto">
