@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, FileText, BarChart, Palette, Gift } from 'lucide-react';
@@ -6,19 +5,19 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 const assetsData = [
   {
-    icon: <FileText className="h-8 w-8 mb-2 text-[#FF5733]" />,
+    icon: <FileText className="h-6 w-6 text-[#FF5733]" />,
     title: "Website Audit Checklist",
     description: "A comprehensive checklist to evaluate your website's performance, SEO, and user experience.",
     link: "#"
   },
   {
-    icon: <BarChart className="h-8 w-8 mb-2 text-[#FF5733]" />,
+    icon: <BarChart className="h-6 w-6 text-[#FF5733]" />,
     title: "Digital Marketing Guide",
     description: "Learn effective strategies to boost your online presence and drive quality traffic to your website.",
     link: "#"
   },
   {
-    icon: <Palette className="h-8 w-8 mb-2 text-[#FF5733]" />,
+    icon: <Palette className="h-6 w-6 text-[#FF5733]" />,
     title: "UI/UX Best Practices",
     description: "Design principles and tips to create user-friendly interfaces that convert visitors into customers.",
     link: "#"
@@ -45,8 +44,10 @@ const FreeAssets = () => {
           {assetsData.map((asset, index) => (
             <Card key={index} className="zapier-card border border-zinc-800 bg-zinc-900/90 shadow-lg hover-lift rounded-[20px]">
               <CardHeader>
-                <div className="text-[#FF5733] flex h-12 w-12 items-center justify-center rounded-full bg-[#FF5733]/10 mb-4">
-                  {asset.icon}
+                <div className="flex justify-center items-center mb-4">
+                  <div className="h-12 w-12 bg-[#FF5733]/10 flex items-center justify-center rounded-full">
+                    {asset.icon}
+                  </div>
                 </div>
                 <CardTitle className="text-xl text-white">{asset.title}</CardTitle>
                 <CardDescription className="text-zinc-400">{asset.description}</CardDescription>
