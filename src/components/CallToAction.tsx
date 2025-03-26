@@ -23,7 +23,7 @@ const CallToAction = () => {
   };
 
   return (
-    <section className="py-24 bg-[#18181b] text-zinc-100">
+    <section className="py-24 bg-[#050505] text-zinc-100">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-white animate-fade-in">Book a Meeting With Us</h2>
