@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { HelpCircle } from 'lucide-react';
 
 const faqData = [
   {
@@ -52,17 +53,24 @@ const FAQ = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-medium mb-4">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground">Find answers to common questions about our services</p>
+            <div className="flex justify-center mb-3">
+              <div className="w-12 h-12 bg-[#FF5733]/10 flex items-center justify-center rounded-full">
+                <HelpCircle className="w-8 h-8 text-[#FF5733]" />
+              </div>
+            </div>
+            <p className="text-[#FF5733] uppercase text-sm font-medium tracking-wider mb-3">FREQUENTLY ASKED QUESTIONS</p>
+            <h2 className="text-2xl md:text-3xl font-serif font-extrabold mb-6 text-white max-w-3xl mx-auto">
+              Find answers to common questions about our services
+            </h2>
           </div>
           
           <Accordion type="single" collapsible className="mb-8">
             {displayItems.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="border-border/40">
-                <AccordionTrigger className="text-left font-medium">
+              <AccordionItem key={index} value={`item-${index}`} className="border-zinc-800 bg-zinc-900/20 mb-3 rounded-lg">
+                <AccordionTrigger className="text-left font-medium px-4 text-white">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">
+                <AccordionContent className="text-zinc-400 px-4">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -74,7 +82,7 @@ const FAQ = () => {
               <Button 
                 variant="outline" 
                 onClick={() => setShowAll(true)}
-                className="border-primary/30 text-primary hover:bg-primary/5"
+                className="border-[#FF5733]/30 text-[#FF5733] hover:bg-[#FF5733]/5"
               >
                 Show More
               </Button>

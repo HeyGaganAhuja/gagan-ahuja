@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star } from 'lucide-react';
+import { Star, MessageSquare } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const reviewsData = [
@@ -53,33 +53,40 @@ const Reviews = () => {
   return (
     <section id="reviews" className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto text-center mb-16">
-          <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4">Client Reviews</h2>
-          <p className="text-muted-foreground">What our clients are saying about our services</p>
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-3">
+            <div className="w-12 h-12 bg-[#FF5733]/10 flex items-center justify-center rounded-full">
+              <MessageSquare className="w-8 h-8 text-[#FF5733]" />
+            </div>
+          </div>
+          <p className="text-[#FF5733] uppercase text-sm font-medium tracking-wider mb-3">CLIENT REVIEWS</p>
+          <h2 className="text-2xl md:text-3xl font-serif font-extrabold mb-6 text-white max-w-3xl mx-auto">
+            What our clients are saying about our services
+          </h2>
         </div>
         
         <Carousel className="w-full max-w-6xl mx-auto">
           <CarouselContent>
             {reviewsData.map((review, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="h-full border border-border/40 bg-card">
+                <Card className="h-full border border-zinc-800 bg-zinc-900/90">
                   <CardContent className="p-6 flex flex-col h-full">
                     <div className="flex mb-4">
                       <div className="flex space-x-0.5">
                         {[...Array(review.rating)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                          <Star key={i} className="h-4 w-4 fill-[#FF5733] text-[#FF5733]" />
                         ))}
                       </div>
                     </div>
-                    <p className="mb-5 flex-grow text-sm text-foreground/90 italic">{review.review}</p>
+                    <p className="mb-5 flex-grow text-sm text-zinc-300 italic">{review.review}</p>
                     <div className="flex items-center">
-                      <Avatar className="h-10 w-10 mr-3 border border-primary/20">
+                      <Avatar className="h-10 w-10 mr-3 border border-[#FF5733]/20">
                         <AvatarImage src={review.image} alt={review.name} />
                         <AvatarFallback>{review.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium text-sm">{review.name}</p>
-                        <p className="text-xs text-muted-foreground">{review.company}</p>
+                        <p className="font-medium text-sm text-white">{review.name}</p>
+                        <p className="text-xs text-zinc-400">{review.company}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -88,8 +95,8 @@ const Reviews = () => {
             ))}
           </CarouselContent>
           <div className="flex justify-center mt-8">
-            <CarouselPrevious className="relative inset-0 translate-y-0 mr-2 bg-card border-border/40 hover:bg-secondary" />
-            <CarouselNext className="relative inset-0 translate-y-0 ml-2 bg-card border-border/40 hover:bg-secondary" />
+            <CarouselPrevious className="relative inset-0 translate-y-0 mr-2 bg-zinc-900/90 border-zinc-800 hover:bg-secondary" />
+            <CarouselNext className="relative inset-0 translate-y-0 ml-2 bg-zinc-900/90 border-zinc-800 hover:bg-secondary" />
           </div>
         </Carousel>
       </div>
