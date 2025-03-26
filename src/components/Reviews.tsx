@@ -69,7 +69,7 @@ const Reviews = () => {
           <CarouselContent>
             {reviewsData.map((review, index) => (
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="h-full border border-zinc-800 bg-zinc-900/90">
+                <Card className="h-[320px] border border-zinc-800 bg-zinc-900/90 rounded-[20px]">
                   <CardContent className="p-6 flex flex-col h-full">
                     <div className="flex mb-4">
                       <div className="flex space-x-0.5">
