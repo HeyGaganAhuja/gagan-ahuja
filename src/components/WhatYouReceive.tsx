@@ -1,23 +1,22 @@
-
 import React from 'react';
 import { Puzzle, Layout, BarChart3, Layers, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const solutionsData = [
   {
-    icon: <Puzzle className="h-8 w-8 text-[#9AE66E]" />,
+    icon: <Puzzle className="h-8 w-8 text-[#FF5733]" />,
     title: "Affordable Solution",
     description: "Receive top-quality design services without the high price tag.",
     className: "col-span-1"
   },
   {
-    icon: <Layout className="h-8 w-8 text-[#9AE66E]" />,
+    icon: <Layout className="h-8 w-8 text-[#FF5733]" />,
     title: "Custom Design Solutions",
     description: "Our expertise ensures your vision becomes a reality.",
     className: "col-span-1"
   },
   {
-    icon: <BarChart3 className="h-8 w-8 text-[#9AE66E]" />,
+    icon: <BarChart3 className="h-8 w-8 text-[#FF5733]" />,
     title: "Scalable as You Grow",
     description: "We're prepared to adapt to your changing needs.",
     className: "col-span-1"
@@ -53,9 +52,16 @@ const WhatYouReceive = () => {
               key={index} 
               className={`${solution.className}`}
             >
-              <Card className="bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift">
+              <Card className={`
+                ${index < 3 ? 'aspect-square' : ''} 
+                bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift rounded-2xl
+              `}>
                 <CardHeader className="pb-2">
-                  <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-4">
+                  <div className={`
+                    w-12 h-12 
+                    ${index < 3 ? 'bg-[#FF5733]' : 'bg-zinc-800'} 
+                    flex items-center justify-center mb-4 rounded-full
+                  `}>
                     {solution.icon}
                   </div>
                   <CardTitle className="text-xl font-bold text-white">{solution.title}</CardTitle>
