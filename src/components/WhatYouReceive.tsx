@@ -50,10 +50,10 @@ const WhatYouReceive = () => {
           {solutionsData.map((solution, index) => (
             <div 
               key={index} 
-              className="col-span-1"
+              className={`${solution.className}`}
             >
               <Card className={`
-                aspect-square
+                ${index < 3 ? 'md:col-span-1' : 'md:col-span-1'}
                 bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift rounded-[20px]
               `}>
                 <CardHeader className="pb-2">
