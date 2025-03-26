@@ -22,16 +22,16 @@ const solutionsData = [
     className: "col-span-1"
   },
   {
-    icon: <Layers className="h-8 w-8 text-[#9AE66E]" />,
+    icon: <Layers className="h-8 w-8 text-[#FF5733]" />,
     title: "Integrated Workflow",
     description: "Effortlessly connect all your existing applications.",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-1"
   },
   {
-    icon: <Users className="h-8 w-8 text-[#9AE66E]" />,
+    icon: <Users className="h-8 w-8 text-[#FF5733]" />,
     title: "Real-Time Collaboration",
     description: "Work together efficiently while staying connected to all your working apps.",
-    className: "col-span-2 md:col-span-1"
+    className: "col-span-1"
   }
 ];
 
@@ -40,7 +40,7 @@ const WhatYouReceive = () => {
     <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <p className="text-[#9AE66E] uppercase text-sm font-medium tracking-wider mb-3">WHAT YOU'LL RECEIVE</p>
+          <p className="text-[#FF5733] uppercase text-sm font-medium tracking-wider mb-3">WHAT YOU'LL RECEIVE</p>
           <h2 className="text-2xl md:text-3xl font-serif font-extrabold mb-6 text-white max-w-3xl mx-auto">
             We solve the challenges that come with creative processes.
           </h2>
@@ -50,16 +50,16 @@ const WhatYouReceive = () => {
           {solutionsData.map((solution, index) => (
             <div 
               key={index} 
-              className={`${solution.className}`}
+              className="col-span-1"
             >
               <Card className={`
-                ${index < 3 ? 'aspect-square' : ''} 
-                bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift rounded-2xl
+                aspect-square
+                bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift rounded-[20px]
               `}>
                 <CardHeader className="pb-2">
                   <div className={`
                     w-12 h-12 
-                    ${index < 3 ? 'bg-[#FF5733]' : 'bg-zinc-800'} 
+                    bg-[#FF5733]/10
                     flex items-center justify-center mb-4 rounded-full
                   `}>
                     {solution.icon}
@@ -74,10 +74,6 @@ const WhatYouReceive = () => {
               </Card>
             </div>
           ))}
-        </div>
-        
-        <div className="text-center mt-10">
-          <p className="text-[#9AE66E] uppercase text-sm font-medium tracking-wider">OUR WORK PROCESS</p>
         </div>
       </div>
     </section>
