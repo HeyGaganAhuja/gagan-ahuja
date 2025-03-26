@@ -21,15 +21,18 @@ const Footer = () => {
   return (
     <>
       {/* New Call-to-Action Section */}
-      <section className="bg-zinc-800 py-12 px-4">
+      <section className="bg-black py-12 px-4">
         <div className="container mx-auto">
-          <div className="bg-zinc-700 rounded-3xl px-8 py-12 flex flex-col md:flex-row items-center justify-between">
-            <div className="flex-grow">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to bring your Business to the next Level?
-              </h2>
-            </div>
+          <div className="bg-[#141414] rounded-3xl px-8 py-12 grid md:grid-cols-2 gap-8 items-center">
             <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Grow Your Business
+              </h2>
+              <p className="text-zinc-400 text-lg">
+                Strategic consulting to elevate your business performance and drive sustainable growth.
+              </p>
+            </div>
+            <div className="flex justify-end items-center">
               <a 
                 href="#contact" 
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors"
