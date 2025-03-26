@@ -1,11 +1,14 @@
+
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Facebook, Twitter, Instagram, Linkedin, Send, ArrowRight } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
+import ContactDialog from './ContactDialog';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +23,9 @@ const Footer = () => {
 
   return (
     <>
+      {/* Contact Dialog */}
+      <ContactDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
+      
       {/* New Call-to-Action Section */}
       <section className="bg-black py-12 px-4">
         <div className="container mx-auto">
@@ -33,13 +39,13 @@ const Footer = () => {
               </p>
             </div>
             <div className="flex justify-end items-center">
-              <a 
-                href="#contact" 
+              <button 
+                onClick={() => setContactDialogOpen(true)}
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors"
               >
                 Connect Now 
                 <ArrowRight className="ml-2" size={20} />
-              </a>
+              </button>
             </div>
           </div>
         </div>
