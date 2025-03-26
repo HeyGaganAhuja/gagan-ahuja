@@ -64,7 +64,7 @@ const Hero = () => {
           <h1 className="text-5xl xs:text-6xl sm:text-6xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
-          <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We create incredible websites for Businesses
           </p>
           <Button 
@@ -77,13 +77,15 @@ const Hero = () => {
               href="https://cal.com/gagan-ahuja/consulting" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center space-x-2"
+              className="flex flex-col items-center"
             >
-              <span>Book a $500 Worth Free Consultation</span>
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1 ml-2" />
+              <span className="mb-1">Book a Free Consultation</span>
+              <span className="text-xs text-white/70">Worth $1000</span>
+              <ArrowRight size={18} className="absolute right-4 top-1/2 -translate-y-1/2 transition-transform group-hover:translate-x-1" />
             </a>
           </Button>
 
+          {/* Rest of the component remains the same */}
           {/* Timer section */}
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
