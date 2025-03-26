@@ -67,26 +67,29 @@ const Hero = () => {
           <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We create incredible websites for Businesses
           </p>
-          <Button 
-            size="lg" 
-            className="px-8 py-6 text-base sm:text-lg md:text-lg bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow" 
-            style={{ animationDelay: '0.4s' }}
-            asChild
-          >
-            <a 
-              href="https://cal.com/gagan-ahuja/consulting" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex flex-col items-center"
+          <div className="flex flex-col items-center">
+            <Button 
+              size="lg" 
+              className="px-8 py-6 text-base sm:text-lg md:text-lg bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow mb-2" 
+              style={{ animationDelay: '0.4s' }}
+              asChild
             >
-              <span className="mb-1">Book a Free Consultation</span>
-              <span className="text-xs text-white/70">Worth $1000</span>
-              <ArrowRight size={18} className="absolute right-4 top-1/2 -translate-y-1/2 transition-transform group-hover:translate-x-1" />
-            </a>
-          </Button>
+              <a 
+                href="https://cal.com/gagan-ahuja/consulting" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2"
+              >
+                <span>Book a Free Consultation</span>
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1 ml-2" />
+              </a>
+            </Button>
+            <p className="text-zinc-400 text-sm animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              Worth $1000 Consultation
+            </p>
+          </div>
 
           {/* Rest of the component remains the same */}
-          {/* Timer section */}
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
               <Timer size={20} className="text-[#FF5733] animate-pulse" />
