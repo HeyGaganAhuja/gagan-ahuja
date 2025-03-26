@@ -85,7 +85,7 @@ const Hero = () => {
               </a>
             </Button>
             <p className="text-zinc-200 text-sm font-medium animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              Worth <span className="text-[#FF5733] font-bold">$1000</span> Consultation
+              Worth <span className="text-[#FF5733] font-bold">$1000</span>
             </p>
           </div>
 
