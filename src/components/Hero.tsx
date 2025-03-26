@@ -84,8 +84,8 @@ const Hero = () => {
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1 ml-2" />
               </a>
             </Button>
-            <p className="text-zinc-400 text-sm animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              Worth $1000 Consultation
+            <p className="text-zinc-200 text-sm font-medium animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              Worth <span className="text-[#FF5733] font-bold">$1000</span> Consultation
             </p>
           </div>
 
