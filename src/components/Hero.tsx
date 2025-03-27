@@ -97,6 +97,9 @@ const Hero = () => {
             </div>
             <p className="text-zinc-400 text-sm sm:text-base mt-2">Limited time offer - Expires soon!</p>
           </div>
+{/* Spline section */}
+    <iframe src='https://my.spline.design/rocket-a1e953d5affdd5cdfa3d55f685588701/' frameborder='0' width='100%' 
+    height='100%'></iframe>
 
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
