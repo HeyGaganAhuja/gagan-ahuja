@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
@@ -49,7 +50,17 @@
   
   html {
     scroll-behavior: smooth;
-    cursor: none; /* Hide default cursor */
+  }
+  
+  /* Only hide cursor on large screens */
+  @media (min-width: 768px) {
+    html {
+      cursor: none; /* Hide default cursor */
+    }
+    
+    a, button {
+      cursor: none; /* Hide default cursor on interactive elements */
+    }
   }
   
   body {
@@ -62,8 +73,10 @@
     letter-spacing: -0.03em; /* Even tighter kerning for headings */
   }
   
-  a, button {
-    cursor: none; /* Hide default cursor on interactive elements */
+  /* Add RTL support */
+  [dir="rtl"] .md\:space-x-8 > * + * {
+    margin-right: 2rem;
+    margin-left: 0;
   }
 }
 
@@ -129,39 +142,40 @@
     pointer-events: none;
   }
 
-  .custom-cursor {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background-color: white;
-    transform: translate(-50%, -50%);
-    transition: width 0.15s ease-out, height 0.15s ease-out, opacity 0.3s ease-out;
-  }
+  /* Only apply custom cursor on desktop */
+  @media (min-width: 768px) {
+    .custom-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      transform: translate(-50%, -50%);
+    }
 
-  .cursor-highlight {
-    position: relative;
-    transition: transform 0.3s ease;
-  }
+    .cursor-highlight {
+      position: relative;
+      transition: transform 0.3s ease;
+    }
 
-  .cursor-highlight:hover {
-    transform: scale(1.05);
-  }
+    .cursor-highlight:hover {
+      transform: scale(1.05);
+    }
 
-  .cursor-glow {
-    height: 250px;
-    width: 250px;
-    background: radial-gradient(circle, rgba(255, 87, 51, 0.15), transparent 70%);
-    border-radius: 50%;
-    position: fixed;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9998;
-    mix-blend-mode: screen;
-    transition: opacity 0.3s ease-out;
-    transform: translate(-50%, -50%);
+    .cursor-glow {
+      height: 250px;
+      width: 250px;
+      background: radial-gradient(circle, rgba(255, 87, 51, 0.15), transparent 70%);
+      border-radius: 50%;
+      position: fixed;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: screen;
+      transform: translate(-50%, -50%);
+    }
   }
 
   .button-glow {
