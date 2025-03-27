@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
@@ -50,6 +49,7 @@
   
   html {
     scroll-behavior: smooth;
+    cursor: none; /* Hide default cursor */
   }
   
   body {
@@ -60,6 +60,10 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif font-extrabold;
     letter-spacing: -0.03em; /* Even tighter kerning for headings */
+  }
+  
+  a, button {
+    cursor: none; /* Hide default cursor on interactive elements */
   }
 }
 
@@ -121,6 +125,28 @@
     pointer-events: none;
   }
 
+  .custom-cursor {
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, opacity 0.3s ease-out;
+  }
+
+  .cursor-highlight {
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .cursor-highlight:hover {
+    color: black;
+    transform: scale(1.05);
+  }
+
   .cursor-glow {
     height: 250px;
     width: 250px;
@@ -129,9 +155,10 @@
     position: fixed;
     opacity: 0;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 9998;
     mix-blend-mode: screen;
     transition: opacity 0.3s ease-out;
+    transform: translate(-50%, -50%);
   }
 
   .button-glow {
