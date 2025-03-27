@@ -89,7 +89,6 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Rest of the component remains the same */}
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
               <Timer size={20} className="text-[#FF5733] animate-pulse" />
@@ -97,7 +96,6 @@ const Hero = () => {
             </div>
             <p className="text-zinc-400 text-sm sm:text-base mt-2">Limited time offer - Expires soon!</p>
           </div>
-
 
           {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
@@ -109,10 +107,14 @@ const Hero = () => {
                 { number: 3, title: "Talk to extend your project." },
                 { number: 4, title: "Share or sync to GitHub." }
               ].map((step, index) => (
-                <div key={index} className="flex flex-col items-center relative">
+                <div key={index} className="flex flex-col items-center relative group">
                   <div className="step-gradient relative mb-2">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
-                      <span className="text-lg sm:text-xl font-bold text-white">{step.number}</span>
+                    <div className="relative">
+                      {/* Rotating white glow stroke */}
+                      <div className="absolute -inset-1 rounded-lg bg-white/20 opacity-0 group-hover:opacity-100 animate-rotate-glow blur-sm"></div>
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg relative z-10 bg-background">
+                        <span className="text-lg sm:text-xl font-bold text-white">{step.number}</span>
+                      </div>
                     </div>
                     {index < 3 && (
                       <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 4rem)' }}></div>
@@ -127,7 +129,6 @@ const Hero = () => {
       </div>
       
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background pointer-events-none"></div>
-
     </section>
   );
 };
