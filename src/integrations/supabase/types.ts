@@ -33,6 +33,48 @@ export type Database = {
         }
         Relationships: []
       }
+      website_scores: {
+        Row: {
+          consultation_requested: boolean | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          phone: string | null
+          seo_score: number
+          speed_score: number
+          total_score: number
+          ui_ux_score: number
+          url: string
+        }
+        Insert: {
+          consultation_requested?: boolean | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          phone?: string | null
+          seo_score: number
+          speed_score: number
+          total_score: number
+          ui_ux_score: number
+          url: string
+        }
+        Update: {
+          consultation_requested?: boolean | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          phone?: string | null
+          seo_score?: number
+          speed_score?: number
+          total_score?: number
+          ui_ux_score?: number
+          url?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

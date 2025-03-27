@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MenuIcon, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -9,9 +10,9 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex justify-between items-center">
-        <a href="#" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
+        <Link to="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
           Gagan Consults
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
@@ -27,6 +28,9 @@ const Navbar = () => {
           <a href="#faq" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             FAQ
           </a>
+          <Link to="/score-website" className="text-foreground/80 hover:text-primary transition-colors text-sm">
+            Score Your Website
+          </Link>
           <Button asChild className="bg-primary hover:bg-primary/90 modern-button">
             <a href="https://cal.com/gagan-ahuja/consulting" target="_blank" rel="noopener noreferrer">
               Book a Call
@@ -76,6 +80,13 @@ const Navbar = () => {
             >
               FAQ
             </a>
+            <Link 
+              to="/score-website"
+              className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
+              onClick={() => setIsOpen(false)}
+            >
+              Score Your Website
+            </Link>
             <Button className="w-full bg-primary hover:bg-primary/90" asChild>
               <a 
                 href="https://cal.com/gagan-ahuja/consulting" 
