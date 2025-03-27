@@ -126,24 +126,23 @@
   }
 
   .custom-cursor {
-    height: 25px;
-    width: 25px;
-    background-color: white;
-    border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 9999;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: white;
     transform: translate(-50%, -50%);
-    transition: transform 0.15s ease-out, opacity 0.3s ease-out;
+    transition: width 0.15s ease-out, height 0.15s ease-out, opacity 0.3s ease-out;
   }
 
   .cursor-highlight {
     position: relative;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: transform 0.3s ease;
   }
 
   .cursor-highlight:hover {
-    color: black;
     transform: scale(1.05);
   }
 

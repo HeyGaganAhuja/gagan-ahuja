@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
@@ -22,7 +21,7 @@ const Hero = () => {
     // Handle text hover effect
     const handleTextHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.tagName === 'H1' || target.tagName === 'P' || target.tagName === 'SPAN') {
+      if (target.tagName === 'H1' || target.tagName === 'P' || target.tagName === 'SPAN' || target.classList.contains('cursor-highlight')) {
         setHoveredElement(target);
       } else {
         setHoveredElement(null);
@@ -66,16 +65,20 @@ const Hero = () => {
           left: `${mousePosition.x}px`, 
           top: `${mousePosition.y}px`,
           opacity: isVisible ? 1 : 0,
-          transform: hoveredElement ? 'scale(2.5)' : 'scale(1)',
+          transform: 'translate(-50%, -50%)',
+          width: '40px',
+          height: '40px',
+          backgroundColor: 'white',
           mixBlendMode: hoveredElement ? 'difference' : 'normal'
         }}
       ></div>
       
       <div className="cursor-glow" 
         style={{ 
-          left: `${mousePosition.x - 125}px`, 
-          top: `${mousePosition.y - 125}px`,
-          opacity: isVisible ? 0.6 : 0 
+          left: `${mousePosition.x}px`, 
+          top: `${mousePosition.y}px`,
+          opacity: isVisible ? 0.6 : 0,
+          transform: 'translate(-50%, -50%)' 
         }}
       ></div>
       
@@ -114,7 +117,6 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Rest of the component remains the same */}
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
               <Timer size={20} className="text-[#FF5733] animate-pulse" />
@@ -123,7 +125,6 @@ const Hero = () => {
             <p className="text-zinc-400 text-sm sm:text-base mt-2 cursor-highlight">Limited time offer - Expires soon!</p>
           </div>
 
-          {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
             <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-6 hidden md:block cursor-highlight">Steps to Work With Us</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
@@ -156,4 +157,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
