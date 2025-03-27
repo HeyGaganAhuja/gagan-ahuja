@@ -125,9 +125,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-{/* Spline section */}
-    <iframe src='https://my.spline.design/rocket-a1e953d5affdd5cdfa3d55f685588701/' frameborder='0' width='100%' 
-    height='100%'></iframe>
       
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background pointer-events-none"></div>
 
