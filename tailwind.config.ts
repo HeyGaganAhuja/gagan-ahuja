@@ -102,4 +102,25 @@ export default {
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
+
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  // ... your existing configuration
+  theme: {
+    extend: {
+      // ... your existing theme extensions
+      keyframes: {
+        'rotate-glow': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        'rotate-glow': 'rotate-glow 3s linear infinite',
+      },
+    },
+  },
+  // ... rest of your configuration
+};
 } satisfies Config;
