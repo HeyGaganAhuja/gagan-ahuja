@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
@@ -21,7 +22,18 @@ const Hero = () => {
     // Handle text hover effect
     const handleTextHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.tagName === 'H1' || target.tagName === 'P' || target.tagName === 'SPAN' || target.classList.contains('cursor-highlight')) {
+      // Add all heading tags to the list of elements that should have hover effect
+      if (
+        target.tagName === 'H1' || 
+        target.tagName === 'H2' || 
+        target.tagName === 'H3' || 
+        target.tagName === 'H4' || 
+        target.tagName === 'H5' || 
+        target.tagName === 'H6' || 
+        target.tagName === 'P' || 
+        target.tagName === 'SPAN' || 
+        target.classList.contains('cursor-highlight')
+      ) {
         setHoveredElement(target);
       } else {
         setHoveredElement(null);

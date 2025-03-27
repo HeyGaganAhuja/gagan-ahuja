@@ -25,7 +25,7 @@ const ContactDialog = ({ open, onOpenChange }: ContactDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center text-white">Get in Touch</DialogTitle>
           <DialogDescription className="text-center">
