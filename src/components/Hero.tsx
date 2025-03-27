@@ -40,7 +40,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
+    <section className="absolute inset-0 z-0 pointer-events-none pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden dotted-pattern grid-pattern">
       <div className="top-gradient-glow"></div>
       <div className="moving-gradient"></div>
       <div className="grainy-texture absolute inset-0 opacity-25"></div>
@@ -89,7 +89,6 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Rest of the component remains the same */}
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
               <Timer size={20} className="text-[#FF5733] animate-pulse" />
@@ -98,7 +97,6 @@ const Hero = () => {
             <p className="text-zinc-400 text-sm sm:text-base mt-2">Limited time offer - Expires soon!</p>
           </div>
 
-          {/* Steps section */}
           <div className="mt-12 max-w-3xl mx-auto">
             <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-6 hidden md:block">Steps to Work With Us</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
