@@ -19,11 +19,15 @@ export const generateScores = (url: string) => {
   const hasDotEdu = url.includes('.edu');
   const hasHttps = url.includes('https://');
   const domainLength = url.length;
+  const isPopularSite = url.includes('google.') || 
+                        url.includes('amazon.') || 
+                        url.includes('facebook.') || 
+                        url.includes('apple.');
   
   // Base scores with some intelligence based on domain
-  let baseUiUx = 70 + (hasDotCom ? 5 : 0) + (hasDotOrg ? 3 : 0) + (hasDotEdu ? 7 : 0);
-  let baseSpeed = 65 + (hasHttps ? 8 : 0) + (domainLength < 15 ? 5 : 0);
-  let baseSeo = 60 + (hasDotCom ? 7 : 0) + (hasDotOrg ? 5 : 0) + (hasDotEdu ? 10 : 0) + (hasHttps ? 5 : 0);
+  let baseUiUx = 70 + (hasDotCom ? 5 : 0) + (hasDotOrg ? 3 : 0) + (hasDotEdu ? 7 : 0) + (isPopularSite ? 12 : 0);
+  let baseSpeed = 65 + (hasHttps ? 8 : 0) + (domainLength < 15 ? 5 : 0) + (isPopularSite ? 10 : 0);
+  let baseSeo = 60 + (hasDotCom ? 7 : 0) + (hasDotOrg ? 5 : 0) + (hasDotEdu ? 10 : 0) + (hasHttps ? 5 : 0) + (isPopularSite ? 15 : 0);
   
   // Add random variation while keeping scores in range
   const ui_ux = Math.min(95, Math.max(55, baseUiUx + randomScore(-10, 10)));
