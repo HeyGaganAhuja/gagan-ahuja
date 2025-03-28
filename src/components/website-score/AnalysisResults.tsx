@@ -12,6 +12,7 @@ interface ScoreData {
   speed: number;
   seo: number;
   total: number;
+  metrics?: any;
 }
 
 interface AnalysisResultsProps {
@@ -74,7 +75,7 @@ const AnalysisResults = ({
         
         <div className="space-y-4">
           <ScoreSection 
-            title={getTranslatedText('UI/UX Design', 'تصميم واجهة المستخدم')} 
+            title={getTranslatedText('UI/UX Design (30%)', 'تصميم واجهة المستخدم (30٪)')} 
             score={scores.ui_ux} 
             color={scores.ui_ux >= 80 ? 'bg-green-500' : 
                    scores.ui_ux >= 70 ? 'bg-yellow-500' : 'bg-red-500'} 
@@ -82,7 +83,7 @@ const AnalysisResults = ({
           />
           
           <ScoreSection 
-            title={getTranslatedText('Website Speed', 'سرعة الموقع')} 
+            title={getTranslatedText('Website Speed (40%)', 'سرعة الموقع (40٪)')} 
             score={scores.speed} 
             color={scores.speed >= 80 ? 'bg-green-500' : 
                    scores.speed >= 70 ? 'bg-yellow-500' : 'bg-red-500'} 
@@ -90,7 +91,7 @@ const AnalysisResults = ({
           />
           
           <ScoreSection 
-            title={getTranslatedText('SEO Performance', 'أداء تحسين محركات البحث')} 
+            title={getTranslatedText('SEO Performance (30%)', 'أداء تحسين محركات البحث (30٪)')} 
             score={scores.seo} 
             color={scores.seo >= 80 ? 'bg-green-500' : 
                    scores.seo >= 70 ? 'bg-yellow-500' : 'bg-red-500'} 

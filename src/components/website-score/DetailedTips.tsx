@@ -1,140 +1,201 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { generateRecommendations } from '@/utils/websiteScoreUtils';
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { 
+  LineChart, 
+  BarChart, 
+  Bar, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Legend,
+  Cell
+} from 'recharts';
 
 interface DetailedTipsProps {
-  scores: {
-    ui_ux: number;
-    speed: number;
-    seo: number;
-    total: number;
-  };
+  scores: any;
   language: 'en' | 'ar';
 }
 
 const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
+  const [activeTab, setActiveTab] = useState("ui-ux");
+  const recommendations = generateRecommendations(scores);
+  
   const getTranslatedText = (en: string, ar: string) => {
     return language === 'ar' ? ar : en;
   };
 
-  // Get category status based on score
-  const getCategoryStatus = (score: number) => {
-    if (score >= 80) return 'excellent';
-    if (score >= 70) return 'good';
-    return 'needs-improvement';
+  const formatMetricsData = (metricsObj: Record<string, number>, category: string) => {
+    return Object.entries(metricsObj || {}).map(([key, value]) => ({
+      name: formatMetricName(key),
+      value: value,
+      category: category
+    }));
   };
 
-  // Tips for each category
-  const tipsByCategory = {
-    ui_ux: {
-      excellent: [
-        getTranslatedText('Professional design with strong visual hierarchy', 'تصميم احترافي مع تسلسل بصري قوي'),
-        getTranslatedText('Intuitive navigation structure', 'بنية تنقل بديهية'),
-        getTranslatedText('Consistent branding throughout the site', 'علامة تجارية متسقة في جميع أنحاء الموقع')
-      ],
-      good: [
-        getTranslatedText('Consider enhancing visual consistency', 'النظر في تعزيز الاتساق البصري'),
-        getTranslatedText('Improve mobile responsiveness', 'تحسين استجابة الجوال'),
-        getTranslatedText('Add more clear call-to-action buttons', 'إضافة المزيد من أزرار الدعوة إلى العمل الواضحة')
-      ],
-      'needs-improvement': [
-        getTranslatedText('Redesign for better user experience', 'إعادة تصميم لتجربة مستخدم أفضل'),
-        getTranslatedText('Fix navigation issues and confusing menus', 'إصلاح مشاكل التنقل والقوائم المربكة'),
-        getTranslatedText('Improve accessibility for all users', 'تحسين إمكانية الوصول لجميع المستخدمين')
-      ]
-    },
-    speed: {
-      excellent: [
-        getTranslatedText('Fast loading times across all pages', 'أوقات تحميل سريعة عبر جميع الصفحات'),
-        getTranslatedText('Optimized images and resources', 'الصور والموارد المحسنة'),
-        getTranslatedText('Efficient code with minimal bloat', 'كود فعال مع الحد الأدنى من التضخم')
-      ],
-      good: [
-        getTranslatedText('Compress and optimize images further', 'ضغط وتحسين الصور بشكل أكبر'),
-        getTranslatedText('Implement lazy loading for media', 'تنفيذ التحميل الكسول للوسائط'),
-        getTranslatedText('Consider a Content Delivery Network', 'التفكير في شبكة توصيل المحتوى')
-      ],
-      'needs-improvement': [
-        getTranslatedText('Significantly reduce page size and requests', 'تقليل حجم الصفحة والطلبات بشكل كبير'),
-        getTranslatedText('Optimize or remove render-blocking resources', 'تحسين أو إزالة الموارد التي تمنع العرض'),
-        getTranslatedText('Update hosting to faster servers', 'تحديث الاستضافة إلى خوادم أسرع')
-      ]
-    },
-    seo: {
-      excellent: [
-        getTranslatedText('Well-structured content with proper heading tags', 'محتوى منظم جيدًا مع علامات عناوين مناسبة'),
-        getTranslatedText('Optimized meta tags and descriptions', 'علامات التعريف والأوصاف المحسنة'),
-        getTranslatedText('Mobile-friendly design', 'تصميم متوافق مع الأجهزة المحمولة')
-      ],
-      good: [
-        getTranslatedText('Add more relevant keywords to content', 'إضافة المزيد من الكلمات الرئيسية ذات الصلة إلى المحتوى'),
-        getTranslatedText('Improve meta descriptions for better CTR', 'تحسين أوصاف التعريف لمعدل نقر أفضل'),
-        getTranslatedText('Create more internal links', 'إنشاء المزيد من الروابط الداخلية')
-      ],
-      'needs-improvement': [
-        getTranslatedText('Implement proper page titles and meta descriptions', 'تنفيذ عناوين الصفحات المناسبة وأوصاف التعريف'),
-        getTranslatedText('Fix broken links and improve site structure', 'إصلاح الروابط المعطلة وتحسين هيكل الموقع'),
-        getTranslatedText('Develop a comprehensive content strategy', 'تطوير استراتيجية محتوى شاملة')
-      ]
+  const formatMetricName = (key: string) => {
+    // Convert camelCase to sentence case
+    return key
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase());
+  };
+
+  const getDetailedMetricsData = () => {
+    if (!scores.metrics) return [];
+    
+    const uiUxData = formatMetricsData(scores.metrics.uiUx, 'UI/UX');
+    const seoData = formatMetricsData(scores.metrics.seo, 'SEO');
+    const speedData = formatMetricsData(scores.metrics.speed, 'Speed');
+    
+    return [...uiUxData, ...seoData, ...speedData];
+  };
+
+  const getCategoryMetrics = (category: string) => {
+    if (!scores.metrics) return [];
+    
+    switch(category) {
+      case 'ui-ux':
+        return formatMetricsData(scores.metrics.uiUx, 'UI/UX');
+      case 'seo':
+        return formatMetricsData(scores.metrics.seo, 'SEO');
+      case 'speed':
+        return formatMetricsData(scores.metrics.speed, 'Speed');
+      default:
+        return [];
     }
   };
 
-  const renderTips = (category: 'ui_ux' | 'speed' | 'seo') => {
-    const status = getCategoryStatus(scores[category]);
-    const tips = tipsByCategory[category][status as keyof typeof tipsByCategory[typeof category]];
-    const Icon = status === 'excellent' ? CheckCircle : status === 'good' ? AlertCircle : XCircle;
-    const color = status === 'excellent' ? 'text-green-500' : status === 'good' ? 'text-yellow-500' : 'text-red-500';
-
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Icon className={color} size={20} />
-            <span>
-              {getTranslatedText(
-                `${status === 'excellent' ? 'Excellent' : status === 'good' ? 'Good' : 'Needs Improvement'}`,
-                `${status === 'excellent' ? 'ممتاز' : status === 'good' ? 'جيد' : 'يحتاج إلى تحسين'}`
-              )}
-            </span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            {tips.map((tip, index) => (
-              <li key={index} className="flex gap-2 items-start">
-                <span className="text-primary">•</span>
-                <span>{tip}</span>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-    );
+  const getColorForScore = (score: number) => {
+    if (score >= 80) return "#22c55e";
+    if (score >= 70) return "#eab308";
+    return "#ef4444";
   };
 
   return (
-    <div className="mt-6 mb-8 text-black">
-      <h3 className="text-xl font-bold mb-4">
-        {getTranslatedText('Improvement Recommendations', 'توصيات التحسين')}
+    <div className="mt-8">
+      <h3 className="text-xl font-bold mb-4 text-black">
+        {getTranslatedText('Detailed Analysis & Recommendations', 'تحليل مفصل وتوصيات')}
       </h3>
-      <Tabs defaultValue="ui_ux">
-        <TabsList className="w-full grid grid-cols-3">
-          <TabsTrigger value="ui_ux">{getTranslatedText('UI/UX Design', 'تصميم واجهة المستخدم')}</TabsTrigger>
-          <TabsTrigger value="speed">{getTranslatedText('Website Speed', 'سرعة الموقع')}</TabsTrigger>
-          <TabsTrigger value="seo">{getTranslatedText('SEO Performance', 'أداء تحسين محركات البحث')}</TabsTrigger>
+      
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsTrigger value="ui-ux" className="text-sm">
+            {getTranslatedText('UI/UX (30%)', 'واجهة المستخدم (30٪)')}
+          </TabsTrigger>
+          <TabsTrigger value="speed" className="text-sm">
+            {getTranslatedText('Speed (40%)', 'السرعة (40٪)')}
+          </TabsTrigger>
+          <TabsTrigger value="seo" className="text-sm">
+            {getTranslatedText('SEO (30%)', 'تحسين محركات البحث (30٪)')}
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="ui_ux" className="mt-4">
-          {renderTips('ui_ux')}
-        </TabsContent>
-        <TabsContent value="speed" className="mt-4">
-          {renderTips('speed')}
-        </TabsContent>
-        <TabsContent value="seo" className="mt-4">
-          {renderTips('seo')}
-        </TabsContent>
+        
+        {['ui-ux', 'speed', 'seo'].map((tab) => (
+          <TabsContent key={tab} value={tab} className="space-y-4 animate-in fade-in-50">
+            <div className="bg-card rounded-lg shadow-sm p-4">
+              <div className="h-80 mb-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={getCategoryMetrics(tab)}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
+                    layout={language === 'ar' ? 'vertical' : 'horizontal'}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    {language === 'ar' ? (
+                      <>
+                        <XAxis type="number" domain={[0, 100]} />
+                        <YAxis dataKey="name" type="category" width={150} />
+                      </>
+                    ) : (
+                      <>
+                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={70} />
+                        <YAxis domain={[0, 100]} />
+                      </>
+                    )}
+                    <Tooltip />
+                    <Bar dataKey="value" fill="#8884d8" radius={[4, 4, 0, 0]}>
+                      {getCategoryMetrics(tab).map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getColorForScore(entry.value)} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="mt-4">
+                <h4 className="font-semibold mb-2">
+                  {getTranslatedText('Recommendations', 'التوصيات')}
+                </h4>
+                <ul className="space-y-2 list-disc pl-6">
+                  {tab === 'ui-ux' && recommendations.uiUx.map((tip, i) => (
+                    <li key={i} className="text-gray-800">{tip}</li>
+                  ))}
+                  {tab === 'speed' && recommendations.speed.map((tip, i) => (
+                    <li key={i} className="text-gray-800">{tip}</li>
+                  ))}
+                  {tab === 'seo' && recommendations.seo.map((tip, i) => (
+                    <li key={i} className="text-gray-800">{tip}</li>
+                  ))}
+                  {((tab === 'ui-ux' && recommendations.uiUx.length === 0) ||
+                   (tab === 'speed' && recommendations.speed.length === 0) ||
+                   (tab === 'seo' && recommendations.seo.length === 0)) && (
+                    <li className="text-green-600">
+                      {getTranslatedText('Great job! No major issues found in this category.', 'عمل رائع! لم يتم العثور على مشكلات رئيسية في هذه الفئة.')}
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
+        ))}
       </Tabs>
+      
+      <div className="mt-8 bg-card rounded-lg shadow-sm p-4">
+        <h4 className="font-semibold mb-4">
+          {getTranslatedText('Performance Comparison', 'مقارنة الأداء')}
+        </h4>
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={[
+                { name: 'UI/UX', score: scores.ui_ux, avg: 68 },
+                { name: 'Speed', score: scores.speed, avg: 65 },
+                { name: 'SEO', score: scores.seo, avg: 70 }
+              ]}
+              margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis domain={[0, 100]} />
+              <Tooltip />
+              <Legend />
+              <Line 
+                type="monotone" 
+                dataKey="score" 
+                stroke="#8884d8" 
+                name={getTranslatedText('Your Score', 'نتيجتك')}
+                activeDot={{ r: 8 }} 
+                strokeWidth={2}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="avg" 
+                stroke="#82ca9d" 
+                name={getTranslatedText('Average Score', 'النتيجة المتوسطة')}
+                strokeDasharray="5 5" 
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 };

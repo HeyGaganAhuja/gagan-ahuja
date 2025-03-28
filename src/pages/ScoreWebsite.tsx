@@ -243,7 +243,7 @@ const ScoreWebsite = () => {
                         <PaginationItem>
                           <PaginationPrevious 
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                            disabled={currentPage <= 1}
+                            className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
                           />
                         </PaginationItem>
                         
@@ -261,7 +261,7 @@ const ScoreWebsite = () => {
                         <PaginationItem>
                           <PaginationNext 
                             onClick={() => setCurrentPage(prev => prev + 1)}
-                            disabled={currentPage >= Math.ceil(historicalScores.length / itemsPerPage)}
+                            className={currentPage >= Math.ceil(historicalScores.length / itemsPerPage) ? "pointer-events-none opacity-50" : ""}
                           />
                         </PaginationItem>
                       </PaginationContent>
