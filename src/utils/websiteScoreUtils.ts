@@ -12,9 +12,23 @@ export const generateScores = (url: string) => {
   };
   
   let i = 1;
-  const ui_ux = randomScore(55, 95);
-  const speed = randomScore(55, 95);
-  const seo = randomScore(55, 95);
+  
+  // Domain factors that influence scores
+  const hasDotCom = url.includes('.com');
+  const hasDotOrg = url.includes('.org');
+  const hasDotEdu = url.includes('.edu');
+  const hasHttps = url.includes('https://');
+  const domainLength = url.length;
+  
+  // Base scores with some intelligence based on domain
+  let baseUiUx = 70 + (hasDotCom ? 5 : 0) + (hasDotOrg ? 3 : 0) + (hasDotEdu ? 7 : 0);
+  let baseSpeed = 65 + (hasHttps ? 8 : 0) + (domainLength < 15 ? 5 : 0);
+  let baseSeo = 60 + (hasDotCom ? 7 : 0) + (hasDotOrg ? 5 : 0) + (hasDotEdu ? 10 : 0) + (hasHttps ? 5 : 0);
+  
+  // Add random variation while keeping scores in range
+  const ui_ux = Math.min(95, Math.max(55, baseUiUx + randomScore(-10, 10)));
+  const speed = Math.min(95, Math.max(55, baseSpeed + randomScore(-10, 10)));
+  const seo = Math.min(95, Math.max(55, baseSeo + randomScore(-10, 10)));
   const total = Math.floor((ui_ux + speed + seo) / 3);
   
   return { ui_ux, speed, seo, total };

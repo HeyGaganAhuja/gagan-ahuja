@@ -3,6 +3,9 @@ import React from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScoreSection from './ScoreSection';
+import ScoreChart from './ScoreChart';
+import PerformanceRadar from './PerformanceRadar';
+import DetailedTips from './DetailedTips';
 
 interface ScoreData {
   ui_ux: number;
@@ -66,6 +69,9 @@ const AnalysisResults = ({
           </p>
         </div>
         
+        {/* Visual chart showing score comparison */}
+        <ScoreChart scores={scores} language={language} />
+        
         <div className="space-y-4">
           <ScoreSection 
             title={getTranslatedText('UI/UX Design', 'تصميم واجهة المستخدم')} 
@@ -91,6 +97,12 @@ const AnalysisResults = ({
             language={language}
           />
         </div>
+        
+        {/* Radar chart showing detailed metrics */}
+        <PerformanceRadar scores={scores} language={language} />
+        
+        {/* Detailed recommendations */}
+        <DetailedTips scores={scores} language={language} />
         
         {scores.total < 70 && (
           <div className="mt-8 p-4 bg-primary/10 rounded-lg">
