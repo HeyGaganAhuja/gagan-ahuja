@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   BarChart,
@@ -30,7 +31,7 @@ const ScoreChart = ({ scores, language }: ScoreChartProps) => {
     return language === 'ar' ? ar : en;
   };
 
-  // Transform scores into chart data format with color coding
+  // Transform scores into chart data format
   const data = [
     { 
       name: getTranslatedText('UI/UX', 'واجهة المستخدم'), 
@@ -49,7 +50,6 @@ const ScoreChart = ({ scores, language }: ScoreChartProps) => {
     },
   ];
 
-  // Color configuration for chart
   const config = {
     uiux: { color: "#22c55e" },
     speed: { color: "#eab308" },
@@ -70,48 +70,22 @@ const ScoreChart = ({ scores, language }: ScoreChartProps) => {
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 layout={language === 'ar' ? 'vertical' : 'horizontal'}
               >
-                <CartesianGrid 
-                  strokeDasharray="3 3" 
-                  stroke="#e5e7eb" 
-                />
+                <CartesianGrid strokeDasharray="3 3" />
                 {language === 'ar' ? (
                   <>
-                    <XAxis 
-                      type="number" 
-                      domain={[0, 100]} 
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis 
-                      dataKey="name" 
-                      type="category" 
-                      tickLine={false}
-                      axisLine={false}
-                    />
+                    <XAxis type="number" domain={[0, 100]} />
+                    <YAxis dataKey="name" type="category" />
                   </>
                 ) : (
                   <>
-                    <XAxis 
-                      dataKey="name" 
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis 
-                      domain={[0, 100]} 
-                      tickLine={false}
-                      axisLine={false}
-                    />
+                    <XAxis dataKey="name" />
+                    <YAxis domain={[0, 100]} />
                   </>
                 )}
                 <ChartTooltip
                   content={<ChartTooltipContent />}
-                  cursor={{ fill: 'rgba(0,0,0,0.05)' }}
                 />
-                <Bar 
-                  dataKey="value" 
-                  radius={[4, 4, 0, 0]}
-                  barSize={language === 'ar' ? 40 : undefined}
-                >
+                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                   {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
