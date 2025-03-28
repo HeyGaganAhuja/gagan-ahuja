@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -32,10 +31,20 @@ const AnalysisResults = ({
     return language === 'ar' ? ar : en;
   };
 
+  // Determine overall performance status
+  const getPerformanceStatus = () => {
+    if (scores.total >= 80) return 'success';
+    if (scores.total >= 70) return 'warning';
+    return 'critical';
+  };
+
+  const performanceStatus = getPerformanceStatus();
+
   return (
     <div className={`transition-all duration-500 ${analysisComplete ? 'opacity-100' : 'opacity-0'}`}>
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <div className="flex justify-between items-center mb-6">
+      <div className="bg-white p-8 rounded-lg shadow-md space-y-6">
+        {/* Header Section */}
+        <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-black">
             {getTranslatedText('Website Analysis Results', 'نتائج تحليل الموقع')}
           </h2>
@@ -45,15 +54,18 @@ const AnalysisResults = ({
           </div>
         </div>
         
-        <div className="mb-8">
-          <h3 className="text-xl font-bold mb-2 text-black">
+        {/* Overall Score Section */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-bold text-black">
             {getTranslatedText('Overall Score', 'النتيجة الإجمالية')}
           </h3>
-          <div className="w-full bg-gray-200 rounded-full h-6 mb-2">
+          
+          {/* Score Progress Bar */}
+          <div className="w-full bg-gray-200 rounded-full h-8 overflow-hidden">
             <div 
-              className={`h-6 rounded-full flex items-center justify-center text-white font-medium ${
-                scores.total >= 80 ? 'bg-green-500' : 
-                scores.total >= 70 ? 'bg-yellow-500' : 'bg-red-500'
+              className={`h-full flex items-center justify-center text-white font-semibold transition-all duration-300 ${
+                performanceStatus === 'success' ? 'bg-green-500' : 
+                performanceStatus === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
               }`} 
               style={{ width: `${scores.total}%` }}
             >
@@ -61,7 +73,11 @@ const AnalysisResults = ({
             </div>
           </div>
           
-          <p className="text-black mt-4">
+          {/* Performance Status Message */}
+          <p className={`text-base font-medium ${
+            performanceStatus === 'success' ? 'text-green-700' : 
+            performanceStatus === 'warning' ? 'text-yellow-700' : 'text-red-700'
+          }`}>
             {scores.total >= 80 
               ? getTranslatedText('Excellent! Your website performs well across all key metrics.', 'ممتاز! يعمل موقعك بشكل جيد في جميع المقاييس الرئيسية.')
               : scores.total >= 70
@@ -70,9 +86,10 @@ const AnalysisResults = ({
           </p>
         </div>
         
-        {/* Visual chart showing score comparison */}
+        {/* Visual Performance Chart */}
         <ScoreChart scores={scores} language={language} />
         
+        {/* Detailed Performance Sections */}
         <div className="space-y-4">
           <ScoreSection 
             title={getTranslatedText('UI/UX Design (30%)', 'تصميم واجهة المستخدم (30٪)')} 
@@ -99,21 +116,24 @@ const AnalysisResults = ({
           />
         </div>
         
-        {/* Radar chart showing detailed metrics */}
+        {/* Performance Radar Chart */}
         <PerformanceRadar scores={scores} language={language} />
         
-        {/* Detailed recommendations */}
+        {/* Detailed Improvement Tips */}
         <DetailedTips scores={scores} language={language} />
         
+        {/* Consultation Section for Low-Performing Websites */}
         {scores.total < 70 && (
-          <div className="mt-8 p-4 bg-primary/10 rounded-lg">
-            <h3 className="font-semibold mb-2 text-black">
-              {getTranslatedText('Need Help Improving Your Website?', 'هل تحتاج إلى مساعدة في تحسين موقعك؟')}
-            </h3>
-            <p className="mb-4 text-black">
-              {getTranslatedText('Our team of experts can help you address these issues and enhance your website\'s performance.', 'يمكن لفريق الخبراء لدينا مساعدتك في معالجة هذه المشكلات وتحسين أداء موقعك.')}
-            </p>
-            <Button onClick={onRequestConsultation}>
+          <div className="p-6 bg-primary/10 rounded-lg space-y-4">
+            <div>
+              <h3 className="font-bold text-lg mb-2 text-black">
+                {getTranslatedText('Need Help Improving Your Website?', 'هل تحتاج إلى مساعدة في تحسين موقعك؟')}
+              </h3>
+              <p className="text-gray-700 mb-4">
+                {getTranslatedText('Our team of experts can help you address these issues and enhance your website\'s performance.', 'يمكن لفريق الخبراء لدينا مساعدتك في معالجة هذه المشكلات وتحسين أداء موقعك.')}
+              </p>
+            </div>
+            <Button onClick={onRequestConsultation} className="w-full">
               {getTranslatedText('Get a Free Consultation', 'احصل على استشارة مجانية')}
             </Button>
           </div>
