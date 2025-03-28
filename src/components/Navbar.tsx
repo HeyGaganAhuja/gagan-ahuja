@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { MenuIcon, X, Home } from 'lucide-react';
+import { MenuIcon, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -35,10 +35,6 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8" style={{ gap: '2rem' }}>
-            <Link to="/" className="flex items-center text-foreground/80 hover:text-primary transition-colors text-sm">
-              <Home size={16} className="mr-1" />
-              <span>{language === 'ar' ? 'الرئيسية' : 'Home'}</span>
-            </Link>
             <a href="#whatyoureceive" className="text-foreground/80 hover:text-primary transition-colors text-sm">
               {language === 'ar' ? 'الحلول' : 'Solutions'}
             </a>
@@ -47,9 +43,6 @@ const Navbar = () => {
             </a>
             <a href="#assets" className="text-foreground/80 hover:text-primary transition-colors text-sm">
               {language === 'ar' ? 'الأصول المجانية' : 'Free Assets'}
-            </a>
-            <a href="#faq" className="text-foreground/80 hover:text-primary transition-colors text-sm">
-              {language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ'}
             </a>
             <Link to="/score-website" className="text-foreground/80 hover:text-primary transition-colors text-sm">
               {language === 'ar' ? 'قيم موقعك' : 'Score Your Website'}
@@ -110,14 +103,6 @@ const Navbar = () => {
         {isOpen && (
           <div className="fixed inset-0 top-[61px] bg-black/95 backdrop-blur-sm z-[100] flex flex-col p-5 space-y-5 md:hidden">
             <div className="w-full flex flex-col space-y-5">
-              <Link 
-                to="/"
-                className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center flex items-center justify-center" 
-                onClick={() => setIsOpen(false)}
-              >
-                <Home size={18} className={language === 'ar' ? 'ml-2' : 'mr-2'} />
-                {language === 'ar' ? 'الرئيسية' : 'Home'}
-              </Link>
               <a 
                 href="#whatyoureceive" 
                 className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center" 
@@ -138,13 +123,6 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 {language === 'ar' ? 'الأصول المجانية' : 'Free Assets'}
-              </a>
-              <a 
-                href="#faq"
-                className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
-                onClick={() => setIsOpen(false)}
-              >
-                {language === 'ar' ? 'الأسئلة الشائعة' : 'FAQ'}
               </a>
               <Link 
                 to="/score-website"

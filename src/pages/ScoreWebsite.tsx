@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +12,7 @@ import { toast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactDialog from '@/components/ContactDialog';
+import { LanguageContext } from '@/components/Navbar';
 
 // Form schema for URL validation
 const formSchema = z.object({
@@ -29,7 +31,7 @@ const ScoreSection = ({ title, score, color }: { title: string; score: number; c
     </div>
     <div className="flex justify-between mt-1">
       <span className="text-sm text-gray-500">Poor</span>
-      <span className="text-sm font-medium">{score}/100</span>
+      <span className="text-sm font-medium text-black">{score}/100</span>
       <span className="text-sm text-gray-500">Excellent</span>
     </div>
   </div>
@@ -45,6 +47,7 @@ const ScoreWebsite = () => {
   }>(null);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
+  const { language } = useContext(LanguageContext);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,6 +76,10 @@ const ScoreWebsite = () => {
     const total = Math.floor((ui_ux + speed + seo) / 3);
     
     return { ui_ux, speed, seo, total };
+  };
+
+  const getTranslatedText = (en: string, ar: string) => {
+    return language === 'ar' ? ar : en;
   };
 
   // Handle form submission
@@ -127,18 +134,20 @@ const ScoreWebsite = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
       <Navbar />
       
       {/* Main content */}
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-serif font-bold text-center mb-2 cursor-highlight">
-            Score Your Website
+            {getTranslatedText('Score Your Website', 'قيم موقعك الإلكتروني')}
           </h1>
           <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-            Our AI-powered tool analyzes your website's UI/UX, speed, and SEO performance to provide 
-            a comprehensive score and recommendations.
+            {getTranslatedText(
+              'Our AI-powered tool analyzes your website\'s UI/UX, speed, and SEO performance to provide a comprehensive score and recommendations.',
+              'تقوم أداتنا المدعومة بالذكاء الاصطناعي بتحليل واجهة المستخدم وسرعة وأداء تحسين محركات البحث لموقعك لتقديم نتيجة شاملة وتوصيات.'
+            )}
           </p>
           
           {/* URL form */}
@@ -150,12 +159,12 @@ const ScoreWebsite = () => {
                   name="url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Website URL</FormLabel>
+                      <FormLabel>{getTranslatedText('Website URL', 'عنوان الموقع الإلكتروني')}</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="https://yourdomain.com" 
                           {...field} 
-                          className="bg-white"
+                          className="bg-white text-black"
                         />
                       </FormControl>
                       <FormMessage />
@@ -170,30 +179,47 @@ const ScoreWebsite = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Analyzing Website...
+                      {getTranslatedText('Analyzing Website...', 'جارٍ تحليل الموقع...')}
                     </>
                   ) : (
-                    'Analyze Website'
+                    getTranslatedText('Analyze Website', 'تحليل الموقع')
                   )}
                 </Button>
               </form>
             </Form>
           </div>
           
+          {/* Loading indicator while analysis is being performed */}
+          {isLoading && !scores && (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+              <p className="text-lg font-medium">
+                {getTranslatedText('Analyzing your website...', 'جارٍ تحليل موقعك الإلكتروني...')}
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                {getTranslatedText('This may take a moment', 'قد يستغرق هذا لحظة')}
+              </p>
+            </div>
+          )}
+          
           {/* Results section */}
           {scores && (
             <div className={`transition-all duration-500 ${analysisComplete ? 'opacity-100' : 'opacity-0'}`}>
               <div className="bg-white p-8 rounded-lg shadow-md">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold">Website Analysis Results</h2>
+                  <h2 className="text-2xl font-bold text-black">
+                    {getTranslatedText('Website Analysis Results', 'نتائج تحليل الموقع')}
+                  </h2>
                   <div className="flex items-center text-green-600">
                     <Check className="mr-1" size={18} />
-                    <span>Complete</span>
+                    <span>{getTranslatedText('Complete', 'مكتمل')}</span>
                   </div>
                 </div>
                 
                 <div className="mb-8">
-                  <h3 className="text-xl font-bold mb-2">Overall Score</h3>
+                  <h3 className="text-xl font-bold mb-2 text-black">
+                    {getTranslatedText('Overall Score', 'النتيجة الإجمالية')}
+                  </h3>
                   <div className="w-full bg-gray-200 rounded-full h-6 mb-2">
                     <div 
                       className={`h-6 rounded-full flex items-center justify-center text-white font-medium ${
@@ -206,32 +232,32 @@ const ScoreWebsite = () => {
                     </div>
                   </div>
                   
-                  <p className="text-gray-700 mt-4">
+                  <p className="text-black mt-4">
                     {scores.total >= 80 
-                      ? 'Excellent! Your website performs well across all key metrics.'
+                      ? getTranslatedText('Excellent! Your website performs well across all key metrics.', 'ممتاز! يعمل موقعك بشكل جيد في جميع المقاييس الرئيسية.')
                       : scores.total >= 70
-                      ? 'Good performance, but there\'s room for improvement in some areas.'
-                      : 'Your website needs significant improvements to meet modern standards.'}
+                      ? getTranslatedText('Good performance, but there\'s room for improvement in some areas.', 'أداء جيد، ولكن هناك مجال للتحسين في بعض المجالات.')
+                      : getTranslatedText('Your website needs significant improvements to meet modern standards.', 'يحتاج موقعك إلى تحسينات كبيرة لتلبية المعايير الحديثة.')}
                   </p>
                 </div>
                 
                 <div className="space-y-4">
                   <ScoreSection 
-                    title="UI/UX Design" 
+                    title={getTranslatedText('UI/UX Design', 'تصميم واجهة المستخدم')} 
                     score={scores.ui_ux} 
                     color={scores.ui_ux >= 80 ? 'bg-green-500' : 
                            scores.ui_ux >= 70 ? 'bg-yellow-500' : 'bg-red-500'} 
                   />
                   
                   <ScoreSection 
-                    title="Website Speed" 
+                    title={getTranslatedText('Website Speed', 'سرعة الموقع')} 
                     score={scores.speed} 
                     color={scores.speed >= 80 ? 'bg-green-500' : 
                            scores.speed >= 70 ? 'bg-yellow-500' : 'bg-red-500'} 
                   />
                   
                   <ScoreSection 
-                    title="SEO Performance" 
+                    title={getTranslatedText('SEO Performance', 'أداء تحسين محركات البحث')} 
                     score={scores.seo} 
                     color={scores.seo >= 80 ? 'bg-green-500' : 
                            scores.seo >= 70 ? 'bg-yellow-500' : 'bg-red-500'} 
@@ -240,10 +266,14 @@ const ScoreWebsite = () => {
                 
                 {scores.total < 70 && (
                   <div className="mt-8 p-4 bg-primary/10 rounded-lg">
-                    <h3 className="font-semibold mb-2">Need Help Improving Your Website?</h3>
-                    <p className="mb-4">Our team of experts can help you address these issues and enhance your website's performance.</p>
+                    <h3 className="font-semibold mb-2 text-black">
+                      {getTranslatedText('Need Help Improving Your Website?', 'هل تحتاج إلى مساعدة في تحسين موقعك؟')}
+                    </h3>
+                    <p className="mb-4 text-black">
+                      {getTranslatedText('Our team of experts can help you address these issues and enhance your website\'s performance.', 'يمكن لفريق الخبراء لدينا مساعدتك في معالجة هذه المشكلات وتحسين أداء موقعك.')}
+                    </p>
                     <Button onClick={() => setContactDialogOpen(true)}>
-                      Get a Free Consultation
+                      {getTranslatedText('Get a Free Consultation', 'احصل على استشارة مجانية')}
                     </Button>
                   </div>
                 )}
