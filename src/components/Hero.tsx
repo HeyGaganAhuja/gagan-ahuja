@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { LanguageContext } from '@/components/Navbar';
 
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
@@ -10,7 +10,6 @@ const Hero = () => {
   const [timeRemaining, setTimeRemaining] = useState(15 * 60); // 15 minutes in seconds
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null);
   const isMobile = useIsMobile();
-  const { language } = useContext(LanguageContext);
 
   useEffect(() => {
     // Only enable cursor effects on desktop
@@ -72,13 +71,8 @@ const Hero = () => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const getTranslatedText = (en: string, ar: string) => {
-    return language === 'ar' ? ar : en;
-  };
-
   return (
-    <section className={`pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern ${language === 'ar' ? 'text-right' : 'text-left'}`}
-      style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+    <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
       <div className="top-gradient-glow"></div>
       <div className="moving-gradient"></div>
       <div className="grainy-texture absolute inset-0 opacity-25"></div>
@@ -113,14 +107,14 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
             <span className="px-4 py-1 rounded-full bg-primary/20 border border-primary/20 text-white text-sm font-medium">
-              {getTranslatedText('We build tech from ❤️', 'نبني التكنولوجيا من ❤️')}
+              We build tech from ❤️
             </span>
           </div>
           <h1 className="text-5xl xs:text-6xl sm:text-6xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
-            {getTranslatedText('Accelerating Growth With Websites 🚀', 'تسريع النمو من خلال المواقع الإلكترونية 🚀')}
+            Accelerating Growth With Websites 🚀
           </h1>
           <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            {getTranslatedText('We create incredible websites for Businesses', 'نُنشئ مواقع إلكترونية مذهلة للشركات')}
+            We create incredible websites for Businesses
           </p>
           <div className="flex flex-col items-center">
             <Button 
@@ -135,12 +129,12 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2"
               >
-                <span>{getTranslatedText('Book a Free Consultation', 'احجز استشارة مجانية')}</span>
-                <ArrowRight size={18} className={`transition-transform group-hover:translate-x-1 ${language === 'ar' ? 'mr-2 rotate-180' : 'ml-2'}`} />
+                <span>Book a Free Consultation</span>
+                <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
             <p className="text-zinc-200 text-sm font-medium animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              {getTranslatedText('Worth ', 'بقيمة ')}<span className="text-primary font-bold">$1000</span> {getTranslatedText('Dollars', 'دولار')}
+              Worth <span className="text-primary font-bold">$1000</span> Dollars
             </p>
           </div>
 
@@ -150,20 +144,20 @@ const Hero = () => {
               <span className="text-white font-bold text-base sm:text-lg md:text-xl">{formatTime()}</span>
             </div>
             <p className="text-zinc-400 text-sm sm:text-base mt-2">
-              {getTranslatedText('Limited time offer - Expires soon!', 'عرض محدود - ينتهي قريباً!')}
+              Limited time offer - Expires soon!
             </p>
           </div>
 
           <div className="mt-12 max-w-3xl mx-auto">
             <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-8 hidden md:block">
-              {getTranslatedText('Steps to Work With Us', 'خطوات العمل معنا')}
+              Steps to Work With Us
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 relative">
               {[
-                { number: 1, title: getTranslatedText("Describe what you want to build.", "وصف ما تريد بناءه.") },
-                { number: 2, title: getTranslatedText("We build your first version.", "نبني النسخة الأولى.") },
-                { number: 3, title: getTranslatedText("Talk to extend your project.", "تحدث لتوسيع مشروعك.") },
-                { number: 4, title: getTranslatedText("Share or sync to GitHub.", "مشاركة أو مزامنة مع GitHub.") }
+                { number: 1, title: "Describe what you want to build." },
+                { number: 2, title: "We build your first version." },
+                { number: 3, title: "Talk to extend your project." },
+                { number: 4, title: "Share or sync to GitHub." }
               ].map((step, index) => (
                 <div key={index} className="step-container">
                   <div className="flex flex-col items-center relative">
