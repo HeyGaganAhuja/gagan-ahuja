@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScoreSection from './ScoreSection';
 import ScoreChart from './ScoreChart';
@@ -19,7 +18,6 @@ interface AnalysisResultsProps {
   scores: ScoreData;
   analysisComplete: boolean;
   onRequestConsultation: () => void;
-  language: 'en';
 }
 
 const AnalysisResults = ({ 
@@ -56,7 +54,7 @@ const AnalysisResults = ({
       </div>
       
       {/* Performance Chart */}
-      <ScoreChart scores={scores} language="en" />
+      <ScoreChart scores={scores} />
       
       {/* Individual Score Sections */}
       <div className="space-y-4">
@@ -87,7 +85,7 @@ const AnalysisResults = ({
         <h3 className="text-xl font-bold mb-6 text-center text-gray-900">
           Detailed Performance Metrics
         </h3>
-        <PerformanceRadar scores={scores} language="en" />
+        <PerformanceRadar scores={scores} />
       </div>
       
       {/* Detailed Tips */}
@@ -99,7 +97,7 @@ const AnalysisResults = ({
           <div className="h-1 w-20 bg-[#FF5733] rounded-full"></div>
         </div>
         <div className="space-y-6">
-          <DetailedTips scores={scores} language="en" />
+          <DetailedTips scores={scores} />
         </div>
       </div>
       

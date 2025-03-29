@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback, lazy, Suspense } from 'react';
+
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactDialog from '@/components/ContactDialog';
-import { LanguageContext } from '@/components/Navbar';
 import WebsiteAnalysisForm from '@/components/website-score/WebsiteAnalysisForm';
 import AnalysisLoadingIndicator from '@/components/website-score/AnalysisLoadingIndicator';
 import { generateScores } from '@/utils/websiteScoreUtils';
@@ -49,7 +49,6 @@ const ScoreWebsite = () => {
   const [scores, setScores] = useState<null | ScoreData>(null);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
-  const { language } = useContext(LanguageContext);
   const [activeTab, setActiveTab] = useState('new-analysis');
   const [historicalScores, setHistoricalScores] = useState<HistoricalScore[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
@@ -64,6 +63,12 @@ const ScoreWebsite = () => {
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Analyze your website\'s UI/UX, speed, and SEO performance with our free comprehensive website scoring tool. Get personalized recommendations to improve your site.');
+    }
+    
+    // Set canonical URL for SEO
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink) {
+      canonicalLink.setAttribute('href', 'https://www.gaganahuja.com/score-website');
     }
   }, []);
 
@@ -197,20 +202,18 @@ const ScoreWebsite = () => {
               <WebsiteAnalysisForm 
                 onSubmit={onSubmit} 
                 isLoading={isLoading}
-                language={'en'} 
               />
               
               {isLoading && !scores && (
-                <AnalysisLoadingIndicator language={'en'} />
+                <AnalysisLoadingIndicator />
               )}
               
               {scores && (
-                <Suspense fallback={<AnalysisLoadingIndicator language={'en'} />}>
+                <Suspense fallback={<AnalysisLoadingIndicator />}>
                   <AnalysisResults 
                     scores={scores}
                     analysisComplete={analysisComplete}
                     onRequestConsultation={() => setContactDialogOpen(true)}
-                    language={'en'}
                   />
                 </Suspense>
               )}
@@ -219,22 +222,20 @@ const ScoreWebsite = () => {
             <TabsContent value="history">
               {isLoadingHistory ? (
                 <div className="flex justify-center py-12">
-                  <AnalysisLoadingIndicator language={'en'} />
+                  <AnalysisLoadingIndicator />
                 </div>
               ) : selectedHistoricalScore ? (
-                <Suspense fallback={<AnalysisLoadingIndicator language={'en'} />}>
+                <Suspense fallback={<AnalysisLoadingIndicator />}>
                   <HistoricalScoreDetails 
                     score={selectedHistoricalScore}
-                    language={'en'}
                     onBack={handleBackToHistory}
                   />
                 </Suspense>
               ) : (
                 <>
-                  <Suspense fallback={<AnalysisLoadingIndicator language={'en'} />}>
+                  <Suspense fallback={<AnalysisLoadingIndicator />}>
                     <HistoricalScores 
                       scores={historicalScores} 
-                      language={'en'}
                       onViewDetails={handleViewDetails}
                       onRunNewAnalysis={handleRunNewAnalysis}
                     />

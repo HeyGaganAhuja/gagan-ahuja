@@ -28,3 +28,7 @@ Allow: /
 
 User-agent: LinkedInBot
 Allow: /
+
+# Disallow specific paths if needed
+# User-agent: *
+# Disallow: /admin/
