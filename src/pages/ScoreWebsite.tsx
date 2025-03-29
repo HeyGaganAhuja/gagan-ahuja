@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback, lazy, Suspense } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
@@ -6,10 +6,7 @@ import Footer from '@/components/Footer';
 import ContactDialog from '@/components/ContactDialog';
 import { LanguageContext } from '@/components/Navbar';
 import WebsiteAnalysisForm from '@/components/website-score/WebsiteAnalysisForm';
-import AnalysisResults from '@/components/website-score/AnalysisResults';
 import AnalysisLoadingIndicator from '@/components/website-score/AnalysisLoadingIndicator';
-import HistoricalScores from '@/components/website-score/HistoricalScores';
-import HistoricalScoreDetails from '@/components/website-score/HistoricalScoreDetails';
 import { generateScores } from '@/utils/websiteScoreUtils';
 import { 
   Pagination, 
@@ -25,6 +22,10 @@ import {
   TabsList, 
   TabsTrigger 
 } from '@/components/ui/tabs';
+
+const AnalysisResults = lazy(() => import('@/components/website-score/AnalysisResults'));
+const HistoricalScores = lazy(() => import('@/components/website-score/HistoricalScores'));
+const HistoricalScoreDetails = lazy(() => import('@/components/website-score/HistoricalScoreDetails'));
 
 interface ScoreData {
   ui_ux: number;
@@ -54,63 +55,68 @@ const ScoreWebsite = () => {
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const [selectedHistoricalScore, setSelectedHistoricalScore] = useState<HistoricalScore | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
   
-  const getTranslatedText = (en: string, ar: string) => {
-    return language === 'ar' ? ar : en;
-  };
+  useEffect(() => {
+    document.title = "Website Performance Analysis Tool - Gagan Ahuja";
+    
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Analyze your website\'s UI/UX, speed, and SEO performance with our free comprehensive website scoring tool. Get personalized recommendations to improve your site.');
+    }
+  }, []);
 
-  // Fetch historical scores
-  const fetchHistoricalScores = async () => {
+  const fetchHistoricalScores = useCallback(async () => {
     setIsLoadingHistory(true);
     try {
+      const { count, error: countError } = await supabase
+        .from('website_scores')
+        .select('*', { count: 'exact', head: true });
+      
+      if (countError) throw countError;
+      
+      if (count) {
+        setTotalPages(Math.ceil(count / itemsPerPage));
+      }
+      
       const { data, error } = await supabase
         .from('website_scores')
         .select('*')
         .order('created_at', { ascending: false })
         .range((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage - 1);
       
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       
       setHistoricalScores(data || []);
     } catch (error) {
       console.error('Error fetching historical scores:', error);
       toast({
-        title: getTranslatedText('Error', 'خطأ'),
-        description: getTranslatedText(
-          'Failed to load historical scores.',
-          'فشل في تحميل النتائج السابقة.'
-        ),
+        title: 'Error',
+        description: 'Failed to load historical scores.',
         variant: 'destructive',
       });
     } finally {
       setIsLoadingHistory(false);
     }
-  };
+  }, [currentPage, itemsPerPage]);
 
-  // Effect to fetch historical scores when tab changes or page changes
   useEffect(() => {
     if (activeTab === 'history') {
       fetchHistoricalScores();
     }
-  }, [activeTab, currentPage]);
+  }, [activeTab, currentPage, fetchHistoricalScores]);
 
-  // Handle form submission
   const onSubmit = async (url: string) => {
     setIsLoading(true);
     setAnalysisComplete(false);
     
     try {
-      // Simulate analysis
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Generate scores
       const generatedScores = generateScores(url);
       setScores(generatedScores);
       
-      // Store scores in Supabase
       const { error } = await supabase.from('website_scores').insert({
         url: url,
         ui_ux_score: generatedScores.ui_ux,
@@ -128,11 +134,10 @@ const ScoreWebsite = () => {
         });
       }
       
-      // Show consultation dialog for low scores
       if (generatedScores.total < 70) {
         setTimeout(() => {
           setContactDialogOpen(true);
-        }, 2000);
+        }, 1500);
       }
       
       setAnalysisComplete(true);
@@ -166,75 +171,74 @@ const ScoreWebsite = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Main content */}
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-serif font-bold text-center mb-2 cursor-default">
-            {getTranslatedText('Score Your Website', 'قيم موقعك الإلكتروني')}
+            Score Your Website
           </h1>
           <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-            {getTranslatedText(
-              'Our AI-powered tool analyzes your website\'s UI/UX, speed, and SEO performance to provide a comprehensive score and recommendations.',
-              'تقوم أداتنا المدعومة بالذكاء الاصطناعي بتحليل واجهة المستخدم وسرعة وأداء تحسين محركات البحث لموقعك لتقديم نتيجة شاملة وتوصيات.'
-            )}
+            Our AI-powered tool analyzes your website's UI/UX, speed, and SEO performance to provide a comprehensive score and recommendations.
           </p>
           
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
               <TabsTrigger value="new-analysis">
-                {getTranslatedText('New Analysis', 'تحليل جديد')}
+                New Analysis
               </TabsTrigger>
               <TabsTrigger value="history">
-                {getTranslatedText('Analysis History', 'سجل التحليل')}
+                Analysis History
               </TabsTrigger>
             </TabsList>
             
             <TabsContent value="new-analysis">
-              {/* URL form */}
               <WebsiteAnalysisForm 
                 onSubmit={onSubmit} 
                 isLoading={isLoading}
-                language={language as 'en' | 'ar'} 
+                language={'en'} 
               />
               
-              {/* Loading indicator while analysis is being performed */}
               {isLoading && !scores && (
-                <AnalysisLoadingIndicator language={language as 'en' | 'ar'} />
+                <AnalysisLoadingIndicator language={'en'} />
               )}
               
-              {/* Results section */}
               {scores && (
-                <AnalysisResults 
-                  scores={scores}
-                  analysisComplete={analysisComplete}
-                  onRequestConsultation={() => setContactDialogOpen(true)}
-                  language={language as 'en' | 'ar'}
-                />
+                <Suspense fallback={<AnalysisLoadingIndicator language={'en'} />}>
+                  <AnalysisResults 
+                    scores={scores}
+                    analysisComplete={analysisComplete}
+                    onRequestConsultation={() => setContactDialogOpen(true)}
+                    language={'en'}
+                  />
+                </Suspense>
               )}
             </TabsContent>
             
             <TabsContent value="history">
               {isLoadingHistory ? (
                 <div className="flex justify-center py-12">
-                  <AnalysisLoadingIndicator language={language as 'en' | 'ar'} />
+                  <AnalysisLoadingIndicator language={'en'} />
                 </div>
               ) : selectedHistoricalScore ? (
-                <HistoricalScoreDetails 
-                  score={selectedHistoricalScore}
-                  language={language as 'en' | 'ar'}
-                  onBack={handleBackToHistory}
-                />
+                <Suspense fallback={<AnalysisLoadingIndicator language={'en'} />}>
+                  <HistoricalScoreDetails 
+                    score={selectedHistoricalScore}
+                    language={'en'}
+                    onBack={handleBackToHistory}
+                  />
+                </Suspense>
               ) : (
                 <>
-                  <HistoricalScores 
-                    scores={historicalScores} 
-                    language={language as 'en' | 'ar'}
-                    onViewDetails={handleViewDetails}
-                    onRunNewAnalysis={handleRunNewAnalysis}
-                  />
+                  <Suspense fallback={<AnalysisLoadingIndicator language={'en'} />}>
+                    <HistoricalScores 
+                      scores={historicalScores} 
+                      language={'en'}
+                      onViewDetails={handleViewDetails}
+                      onRunNewAnalysis={handleRunNewAnalysis}
+                    />
+                  </Suspense>
                   
                   {historicalScores.length > 0 && (
                     <Pagination className="mt-6">
@@ -242,25 +246,40 @@ const ScoreWebsite = () => {
                         <PaginationItem>
                           <PaginationPrevious 
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                            className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                            className={currentPage <= 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
                           />
                         </PaginationItem>
                         
-                        {[...Array(Math.ceil(historicalScores.length / itemsPerPage))].map((_, index) => (
-                          <PaginationItem key={index}>
-                            <PaginationLink
-                              isActive={currentPage === index + 1}
-                              onClick={() => setCurrentPage(index + 1)}
-                            >
-                              {index + 1}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
+                        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                          let pageNumber;
+                          
+                          if (totalPages <= 5) {
+                            pageNumber = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNumber = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNumber = totalPages - 4 + i;
+                          } else {
+                            pageNumber = currentPage - 2 + i;
+                          }
+                          
+                          return (
+                            <PaginationItem key={pageNumber}>
+                              <PaginationLink
+                                isActive={currentPage === pageNumber}
+                                onClick={() => setCurrentPage(pageNumber)}
+                                className="cursor-pointer"
+                              >
+                                {pageNumber}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        })}
                         
                         <PaginationItem>
                           <PaginationNext 
-                            onClick={() => setCurrentPage(prev => prev + 1)}
-                            className={currentPage >= Math.ceil(historicalScores.length / itemsPerPage) ? "pointer-events-none opacity-50" : ""}
+                            onClick={() => setCurrentPage(prev => prev < totalPages ? prev + 1 : prev)}
+                            className={currentPage >= totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
                           />
                         </PaginationItem>
                       </PaginationContent>
@@ -275,7 +294,6 @@ const ScoreWebsite = () => {
       
       <Footer />
       
-      {/* Contact Dialog for consultation */}
       <ContactDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
     </div>
   );
