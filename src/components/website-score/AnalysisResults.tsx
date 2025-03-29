@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScoreSection from './ScoreSection';
-import ScoreChart from './ScoreChart';
 import PerformanceRadar from './PerformanceRadar';
 import DetailedTips from './DetailedTips';
 
@@ -116,9 +116,6 @@ const AnalysisResults = ({
           </div>
         </div>
       </div>
-      
-      {/* Performance Chart */}
-      <ScoreChart scores={scores} />
       
       {/* Individual Score Sections */}
       <div className="space-y-4">
