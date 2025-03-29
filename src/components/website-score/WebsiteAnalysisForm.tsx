@@ -16,14 +16,9 @@ const formSchema = z.object({
 interface WebsiteAnalysisFormProps {
   onSubmit: (url: string) => void;
   isLoading: boolean;
-  language: 'en' | 'ar';
 }
 
-const WebsiteAnalysisForm = ({ onSubmit, isLoading, language }: WebsiteAnalysisFormProps) => {
-  const getTranslatedText = (en: string, ar: string) => {
-    return language === 'ar' ? ar : en;
-  };
-
+const WebsiteAnalysisForm = ({ onSubmit, isLoading }: WebsiteAnalysisFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,7 +39,7 @@ const WebsiteAnalysisForm = ({ onSubmit, isLoading, language }: WebsiteAnalysisF
             name="url"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{getTranslatedText('Website URL', 'عنوان الموقع الإلكتروني')}</FormLabel>
+                <FormLabel>Website URL</FormLabel>
                 <FormControl>
                   <Input 
                     placeholder="https://yourdomain.com" 
@@ -64,10 +59,10 @@ const WebsiteAnalysisForm = ({ onSubmit, isLoading, language }: WebsiteAnalysisF
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {getTranslatedText('Analyzing Website...', 'جارٍ تحليل الموقع...')}
+                Analyzing Website...
               </>
             ) : (
-              getTranslatedText('Analyze Website', 'تحليل الموقع')
+              "Analyze Website"
             )}
           </Button>
         </form>
