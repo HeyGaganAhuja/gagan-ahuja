@@ -1,13 +1,15 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { MenuIcon, X } from 'lucide-react';
+import { MenuIcon, X, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const isMobile = useIsMobile();
+  const { user, signOut } = useAuth();
 
   return (
     <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
@@ -33,6 +35,22 @@ const Navbar = () => {
           <Link to="/score-website" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Score Your Website
           </Link>
+          
+          {user ? (
+            <>
+              <Link to="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center">
+                <User className="h-4 w-4 mr-1" />
+                Dashboard
+              </Link>
+              <Button variant="secondary" onClick={signOut}>
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Button asChild variant="secondary">
+              <Link to="/auth">Sign In</Link>
+            </Button>
+          )}
           
           <Button asChild className="bg-primary hover:bg-primary/90 modern-button">
             <a href="https://cal.com/gagan-ahuja/consulting" target="_blank" rel="noopener noreferrer">
@@ -92,6 +110,37 @@ const Navbar = () => {
             >
               Score Your Website
             </Link>
+            
+            {user ? (
+              <>
+                <Link 
+                  to="/dashboard"
+                  className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Button 
+                  className="w-full" 
+                  variant="secondary"
+                  onClick={() => {
+                    signOut();
+                    setIsOpen(false);
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link 
+                to="/auth"
+                className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
+                onClick={() => setIsOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
+            
             <Button className="w-full bg-primary hover:bg-primary/90" asChild>
               <a 
                 href="https://cal.com/gagan-ahuja/consulting" 

@@ -1,268 +1,128 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import ContactDialog from '@/components/ContactDialog';
+import { useQuery } from '@tanstack/react-query';
 import WebsiteAnalysisForm from '@/components/website-score/WebsiteAnalysisForm';
 import AnalysisResults from '@/components/website-score/AnalysisResults';
 import AnalysisLoadingIndicator from '@/components/website-score/AnalysisLoadingIndicator';
 import HistoricalScores from '@/components/website-score/HistoricalScores';
 import HistoricalScoreDetails from '@/components/website-score/HistoricalScoreDetails';
-import { generateScores } from '@/utils/websiteScoreUtils';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from '@/components/ui/pagination';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
-
-interface ScoreData {
-  ui_ux: number;
-  speed: number;
-  seo: number;
-  total: number;
-}
-
-interface HistoricalScore {
-  id: string;
-  url: string;
-  ui_ux_score: number;
-  speed_score: number;
-  seo_score: number;
-  total_score: number;
-  created_at: string;
-}
+import Navbar from '@/components/Navbar';
+import { analyzeWebsite } from '@/utils/websiteScoreUtils';
 
 const ScoreWebsite = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [scores, setScores] = useState<null | ScoreData>(null);
-  const [contactDialogOpen, setContactDialogOpen] = useState(false);
-  const [analysisComplete, setAnalysisComplete] = useState(false);
-  const [activeTab, setActiveTab] = useState('new-analysis');
-  const [historicalScores, setHistoricalScores] = useState<HistoricalScore[]>([]);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-  const [selectedHistoricalScore, setSelectedHistoricalScore] = useState<HistoricalScore | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  
-  // Fetch historical scores
-  const fetchHistoricalScores = async () => {
-    setIsLoadingHistory(true);
-    try {
+  const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const initialUrl = searchParams.get('url') || '';
+  const [url, setUrl] = useState(initialUrl);
+  const [showHistoricalDetails, setShowHistoricalDetails] = useState(false);
+  const [selectedHistoricalScore, setSelectedHistoricalScore] = useState(null);
+
+  useEffect(() => {
+    if (initialUrl) {
+      handleSubmit(initialUrl);
+    }
+  }, [initialUrl]);
+
+  const { data: historicalScores, refetch: refetchHistory } = useQuery({
+    queryKey: ['historicalScores'],
+    queryFn: async () => {
+      if (!user) return [];
+      
       const { data, error } = await supabase
         .from('website_scores')
         .select('*')
-        .order('created_at', { ascending: false })
-        .range((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage - 1);
+        .order('created_at', { ascending: false });
       
-      if (error) {
-        throw error;
-      }
-      
-      setHistoricalScores(data || []);
-    } catch (error) {
-      console.error('Error fetching historical scores:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load historical scores.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoadingHistory(false);
-    }
-  };
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user
+  });
 
-  // Effect to fetch historical scores when tab changes or page changes
-  React.useEffect(() => {
-    if (activeTab === 'history') {
-      fetchHistoricalScores();
-    }
-  }, [activeTab, currentPage]);
-
-  // Handle form submission
-  const onSubmit = async (url: string) => {
-    setIsLoading(true);
-    setAnalysisComplete(false);
-    
-    try {
-      // Simulate analysis
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Generate scores
-      const generatedScores = generateScores(url);
-      setScores(generatedScores);
-      
-      // Store scores in Supabase
-      const { error } = await supabase.from('website_scores').insert({
-        url: url,
-        ui_ux_score: generatedScores.ui_ux,
-        speed_score: generatedScores.speed,
-        seo_score: generatedScores.seo,
-        total_score: generatedScores.total
-      });
-      
-      if (error) {
-        console.error('Error storing scores:', error);
-        toast({
-          title: 'Error storing results',
-          description: 'There was a problem saving your results.',
-          variant: 'destructive',
+  const {
+    data: analysisResults,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['websiteAnalysis', url],
+    queryFn: async () => {
+      // Record search in history if user is logged in
+      if (user && url) {
+        await supabase.from('search_history').insert({
+          user_id: user.id,
+          query: 'website analysis',
+          url
         });
       }
-      
-      // Show consultation dialog for low scores
-      if (generatedScores.total < 70) {
-        setTimeout(() => {
-          setContactDialogOpen(true);
-        }, 2000);
-      }
-      
-      setAnalysisComplete(true);
-    } catch (error) {
-      console.error('Error analyzing website:', error);
-      toast({
-        title: 'Analysis Failed',
-        description: 'There was a problem analyzing the website.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+      return analyzeWebsite(url);
+    },
+    enabled: false,
+  });
+
+  const handleSubmit = (websiteUrl) => {
+    setUrl(websiteUrl);
+    refetch();
   };
 
-  const handleViewDetails = (id: string) => {
-    const score = historicalScores.find(s => s.id === id);
-    if (score) {
-      setSelectedHistoricalScore(score);
-    }
-  };
-
-  const handleBackToHistory = () => {
-    setSelectedHistoricalScore(null);
-  };
-
-  const handleRunNewAnalysis = () => {
-    setActiveTab('new-analysis');
-    setScores(null);
-    setAnalysisComplete(false);
+  const viewHistoricalDetails = (id) => {
+    const score = historicalScores.find(score => score.id === id);
+    setSelectedHistoricalScore(score);
+    setShowHistoricalDetails(true);
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Navbar />
-      
-      {/* Main content */}
-      <div className="flex-1 pt-24 pb-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-serif font-bold text-center mb-2 cursor-default">
-            Score Your Website
-          </h1>
-          <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-            Our AI-powered tool analyzes your website's UI/UX, speed, and SEO performance to provide a comprehensive score and recommendations.
-          </p>
-          
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
-              <TabsTrigger value="new-analysis">
-                New Analysis
-              </TabsTrigger>
-              <TabsTrigger value="history">
-                Analysis History
-              </TabsTrigger>
-            </TabsList>
+      <div className="min-h-screen bg-[#0a0a0a] text-gray-100 pt-20">
+        <div className="container mx-auto px-4 py-10">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">
+              Website Performance Analysis
+            </h1>
+            <p className="text-xl text-gray-400 mb-8">
+              Get a comprehensive analysis of your website's performance, SEO, and user experience.
+            </p>
             
-            <TabsContent value="new-analysis">
-              {/* URL form */}
-              <WebsiteAnalysisForm 
-                onSubmit={onSubmit} 
-                isLoading={isLoading}
+            {showHistoricalDetails && selectedHistoricalScore ? (
+              <HistoricalScoreDetails 
+                score={selectedHistoricalScore} 
+                onBack={() => setShowHistoricalDetails(false)} 
               />
-              
-              {/* Loading indicator while analysis is being performed */}
-              {isLoading && !scores && (
-                <AnalysisLoadingIndicator />
-              )}
-              
-              {/* Results section */}
-              {scores && (
-                <AnalysisResults 
-                  scores={scores}
-                  analysisComplete={analysisComplete}
-                  onRequestConsultation={() => setContactDialogOpen(true)}
-                />
-              )}
-            </TabsContent>
-            
-            <TabsContent value="history">
-              {isLoadingHistory ? (
-                <div className="flex justify-center py-12">
+            ) : (
+              <>
+                <WebsiteAnalysisForm onSubmit={handleSubmit} isLoading={isPending} />
+                
+                {isPending ? (
                   <AnalysisLoadingIndicator />
-                </div>
-              ) : selectedHistoricalScore ? (
-                <HistoricalScoreDetails 
-                  score={selectedHistoricalScore}
-                  onBack={handleBackToHistory}
-                />
-              ) : (
-                <>
-                  <HistoricalScores 
-                    scores={historicalScores} 
-                    onViewDetails={handleViewDetails}
-                    onRunNewAnalysis={handleRunNewAnalysis}
-                  />
-                  
-                  {historicalScores.length > 0 && (
-                    <Pagination className="mt-6">
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious 
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                            className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
-                          />
-                        </PaginationItem>
-                        
-                        {[...Array(Math.ceil(historicalScores.length / itemsPerPage))].map((_, index) => (
-                          <PaginationItem key={index}>
-                            <PaginationLink
-                              isActive={currentPage === index + 1}
-                              onClick={() => setCurrentPage(index + 1)}
-                            >
-                              {index + 1}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
-                        
-                        <PaginationItem>
-                          <PaginationNext 
-                            onClick={() => setCurrentPage(prev => prev + 1)}
-                            className={currentPage >= Math.ceil(historicalScores.length / itemsPerPage) ? "pointer-events-none opacity-50" : ""}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
-                  )}
-                </>
-              )}
-            </TabsContent>
-          </Tabs>
+                ) : analysisResults ? (
+                  <AnalysisResults results={analysisResults} />
+                ) : isError ? (
+                  <div className="bg-red-900/30 border border-red-800 text-red-200 p-4 rounded-lg">
+                    <p className="font-medium">Error analyzing website</p>
+                    <p className="text-sm mt-1">{error?.message || 'Please try again with a valid URL'}</p>
+                  </div>
+                ) : null}
+                
+                {user && historicalScores && historicalScores.length > 0 && !isPending && !analysisResults && (
+                  <div className="mt-10">
+                    <HistoricalScores 
+                      scores={historicalScores} 
+                      onViewDetails={viewHistoricalDetails}
+                      onRunNewAnalysis={() => window.scrollTo(0, 0)}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-      
-      <Footer />
-      
-      {/* Contact Dialog for consultation */}
-      <ContactDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
-    </div>
+    </>
   );
 };
 
