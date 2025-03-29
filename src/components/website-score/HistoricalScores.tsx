@@ -1,19 +1,8 @@
 
 import React from 'react';
-import { 
-  Table, 
-  TableBody, 
-  TableCaption, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, ArrowRightCircle } from 'lucide-react';
+import { ExternalLink, Loader2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { ar } from 'date-fns/locale';
 
 interface HistoricalScore {
   id: string;
@@ -27,120 +16,96 @@ interface HistoricalScore {
 
 interface HistoricalScoresProps {
   scores: HistoricalScore[];
-  language: 'en' | 'ar';
   onViewDetails: (id: string) => void;
   onRunNewAnalysis: () => void;
 }
 
-const HistoricalScores = ({ 
-  scores, 
-  language, 
-  onViewDetails,
-  onRunNewAnalysis
-}: HistoricalScoresProps) => {
-  const getTranslatedText = (en: string, ar: string) => {
-    return language === 'ar' ? ar : en;
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return formatDistanceToNow(date, { 
-      addSuffix: true,
-      locale: language === 'ar' ? ar : undefined
-    });
-  };
-
-  const getScoreColorClass = (score: number) => {
-    return score >= 80 ? 'text-green-600' : 
-           score >= 70 ? 'text-yellow-600' : 'text-red-600';
-  };
+const HistoricalScores = ({ scores, onViewDetails, onRunNewAnalysis }: HistoricalScoresProps) => {
+  if (scores.length === 0) {
+    return (
+      <div className="bg-white p-8 rounded-lg shadow-md text-center">
+        <h3 className="text-xl font-bold mb-4 text-gray-900">No Historical Data</h3>
+        <p className="text-gray-600 mb-6">
+          You haven't analyzed any websites yet. Run your first analysis to see results here.
+        </p>
+        <Button onClick={onRunNewAnalysis}>
+          Run New Analysis
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <Card className="mt-6">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-xl font-bold">
-          {getTranslatedText('Historical Analysis Results', 'نتائج التحليل السابقة')}
-        </CardTitle>
-        <Button onClick={onRunNewAnalysis}>
-          {getTranslatedText('Run New Analysis', 'تشغيل تحليل جديد')}
-        </Button>
-      </CardHeader>
-      <CardContent>
-        {scores.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            {getTranslatedText(
-              'No previous analyses found. Run your first website analysis!',
-              'لم يتم العثور على تحليلات سابقة. قم بتشغيل تحليلك الأول للموقع!'
-            )}
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableCaption>
-                {getTranslatedText(
-                  'Your website analysis history',
-                  'سجل تحليل موقعك'
-                )}
-              </TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{getTranslatedText('Website URL', 'رابط الموقع')}</TableHead>
-                  <TableHead className="text-center">{getTranslatedText('Total Score', 'النتيجة الإجمالية')}</TableHead>
-                  <TableHead className="text-center">{getTranslatedText('UI/UX', 'واجهة المستخدم')}</TableHead>
-                  <TableHead className="text-center">{getTranslatedText('Speed', 'السرعة')}</TableHead>
-                  <TableHead className="text-center">{getTranslatedText('SEO', 'تحسين محركات البحث')}</TableHead>
-                  <TableHead className="text-right">{getTranslatedText('Date', 'التاريخ')}</TableHead>
-                  <TableHead className="text-right"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {scores.map((score) => (
-                  <TableRow key={score.id}>
-                    <TableCell className="font-medium">
-                      <div className="flex items-center">
-                        <span className="truncate max-w-[180px]">
-                          {new URL(score.url).hostname}
-                        </span>
-                        <a href={score.url} target="_blank" rel="noopener noreferrer" className="ml-1">
-                          <ExternalLink size={14} className="text-gray-500" />
-                        </a>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="p-6 border-b border-gray-200">
+        <h3 className="text-xl font-bold text-gray-900">
+          Previously Analyzed Websites
+        </h3>
+        <p className="text-gray-600 mt-1">
+          Review your past website analyses
+        </p>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Website
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Total Score
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {scores.map((score) => (
+              <tr key={score.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div className="ml-4">
+                      <div className="text-sm font-medium text-gray-900 truncate max-w-xs">
+                        {score.url}
                       </div>
-                    </TableCell>
-                    <TableCell className={`text-center font-semibold ${getScoreColorClass(score.total_score)}`}>
-                      {score.total_score}
-                    </TableCell>
-                    <TableCell className={`text-center ${getScoreColorClass(score.ui_ux_score)}`}>
-                      {score.ui_ux_score}
-                    </TableCell>
-                    <TableCell className={`text-center ${getScoreColorClass(score.speed_score)}`}>
-                      {score.speed_score}
-                    </TableCell>
-                    <TableCell className={`text-center ${getScoreColorClass(score.seo_score)}`}>
-                      {score.seo_score}
-                    </TableCell>
-                    <TableCell className="text-right text-muted-foreground">
-                      {formatDate(score.created_at)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => onViewDetails(score.id)}
-                      >
-                        <span className="mr-1">
-                          {getTranslatedText('Details', 'التفاصيل')}
-                        </span>
-                        <ArrowRightCircle size={16} />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div 
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      score.total_score >= 80 ? 'bg-green-100 text-green-800' :
+                      score.total_score >= 70 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}
+                  >
+                    {score.total_score}/100
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {formatDistanceToNow(new Date(score.created_at), { addSuffix: true })}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => onViewDetails(score.id)}
+                    className="text-primary hover:text-primary/80 hover:bg-primary/10"
+                  >
+                    View Details
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 

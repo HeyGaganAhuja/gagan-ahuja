@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateRecommendations } from '@/utils/websiteScoreUtils';
@@ -20,16 +21,11 @@ import {
 
 interface DetailedTipsProps {
   scores: any;
-  language: 'en' | 'ar';
 }
 
-const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
+const DetailedTips = ({ scores }: DetailedTipsProps) => {
   const [activeTab, setActiveTab] = useState("ui-ux");
   const recommendations = generateRecommendations(scores);
-  
-  const getTranslatedText = (en: string, ar: string) => {
-    return language === 'ar' ? ar : en;
-  };
 
   const formatMetricsData = (metricsObj: Record<string, number>, category: string) => {
     return Object.entries(metricsObj || {}).map(([key, value]) => ({
@@ -81,7 +77,7 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
     <div className="mt-8">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-2xl font-bold text-gray-900">
-          {getTranslatedText('Detailed Analysis & Recommendations', 'تحليل مفصل وتوصيات')}
+          Detailed Analysis & Recommendations
         </h3>
         <div className="h-1 w-20 bg-[#FF5733] rounded-full"></div>
       </div>
@@ -92,19 +88,19 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
             value="ui-ux" 
             className="text-sm data-[state=active]:bg-white data-[state=active]:text-[#FF5733] data-[state=active]:shadow-sm rounded-md transition-all duration-200 cursor-pointer"
           >
-            {getTranslatedText('UI/UX (30%)', 'واجهة المستخدم (30٪)')}
+            UI/UX (30%)
           </TabsTrigger>
           <TabsTrigger 
             value="speed" 
             className="text-sm data-[state=active]:bg-white data-[state=active]:text-[#FF5733] data-[state=active]:shadow-sm rounded-md transition-all duration-200 cursor-pointer"
           >
-            {getTranslatedText('Speed (40%)', 'السرعة (40٪)')}
+            Speed (40%)
           </TabsTrigger>
           <TabsTrigger 
             value="seo" 
             className="text-sm data-[state=active]:bg-white data-[state=active]:text-[#FF5733] data-[state=active]:shadow-sm rounded-md transition-all duration-200 cursor-pointer"
           >
-            {getTranslatedText('SEO (30%)', 'تحسين محركات البحث (30٪)')}
+            SEO (30%)
           </TabsTrigger>
         </TabsList>
         
@@ -116,20 +112,10 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
                   <BarChart
                     data={getCategoryMetrics(tab)}
                     margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
-                    layout={language === 'ar' ? 'vertical' : 'horizontal'}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    {language === 'ar' ? (
-                      <>
-                        <XAxis type="number" domain={[0, 100]} stroke="#666" />
-                        <YAxis dataKey="name" type="category" width={150} stroke="#666" />
-                      </>
-                    ) : (
-                      <>
-                        <XAxis dataKey="name" angle={-45} textAnchor="end" height={70} stroke="#666" />
-                        <YAxis domain={[0, 100]} stroke="#666" />
-                      </>
-                    )}
+                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={70} stroke="#666" />
+                    <YAxis domain={[0, 100]} stroke="#666" />
                     <Tooltip 
                       content={({ active, payload }) => {
                         if (active && payload && payload.length) {
@@ -159,7 +145,7 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
               
               <div className="mt-6">
                 <h4 className="font-semibold text-xl mb-4 text-gray-900">
-                  {getTranslatedText('Recommendations', 'التوصيات')}
+                  Recommendations
                 </h4>
                 <ul className="space-y-3">
                   {tab === 'ui-ux' && recommendations.uiUx.map((tip, i) => (
@@ -192,7 +178,7 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
                     <li className="flex items-center space-x-3 text-green-600">
                       <Check size={16} />
                       <span>
-                        {getTranslatedText('Great job! No major issues found in this category.', 'عمل رائع! لم يتم العثور على مشكلات رئيسية في هذه الفئة.')}
+                        Great job! No major issues found in this category.
                       </span>
                     </li>
                   )}
@@ -205,7 +191,7 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
       
       <div className="mt-8 bg-white rounded-lg shadow-sm p-6 border border-gray-100">
         <h4 className="font-semibold text-xl mb-6 text-gray-900">
-          {getTranslatedText('Performance Comparison', 'مقارنة الأداء')}
+          Performance Comparison
         </h4>
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
@@ -240,7 +226,7 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
                 type="monotone" 
                 dataKey="score" 
                 stroke="#FF5733" 
-                name={getTranslatedText('Your Score', 'نتيجتك')}
+                name="Your Score"
                 activeDot={{ r: 8 }} 
                 strokeWidth={2}
               />
@@ -248,7 +234,7 @@ const DetailedTips = ({ scores, language }: DetailedTipsProps) => {
                 type="monotone" 
                 dataKey="avg" 
                 stroke="#82ca9d" 
-                name={getTranslatedText('Average Score', 'النتيجة المتوسطة')}
+                name="Average Score"
                 strokeDasharray="5 5" 
               />
             </LineChart>

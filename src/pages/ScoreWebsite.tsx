@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactDialog from '@/components/ContactDialog';
-import { LanguageContext } from '@/components/Navbar';
 import WebsiteAnalysisForm from '@/components/website-score/WebsiteAnalysisForm';
 import AnalysisResults from '@/components/website-score/AnalysisResults';
 import AnalysisLoadingIndicator from '@/components/website-score/AnalysisLoadingIndicator';
@@ -48,7 +48,6 @@ const ScoreWebsite = () => {
   const [scores, setScores] = useState<null | ScoreData>(null);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
-  const { language } = useContext(LanguageContext);
   const [activeTab, setActiveTab] = useState('new-analysis');
   const [historicalScores, setHistoricalScores] = useState<HistoricalScore[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
@@ -56,10 +55,6 @@ const ScoreWebsite = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   
-  const getTranslatedText = (en: string, ar: string) => {
-    return language === 'ar' ? ar : en;
-  };
-
   // Fetch historical scores
   const fetchHistoricalScores = async () => {
     setIsLoadingHistory(true);
@@ -78,11 +73,8 @@ const ScoreWebsite = () => {
     } catch (error) {
       console.error('Error fetching historical scores:', error);
       toast({
-        title: getTranslatedText('Error', 'خطأ'),
-        description: getTranslatedText(
-          'Failed to load historical scores.',
-          'فشل في تحميل النتائج السابقة.'
-        ),
+        title: 'Error',
+        description: 'Failed to load historical scores.',
         variant: 'destructive',
       });
     } finally {
@@ -91,7 +83,7 @@ const ScoreWebsite = () => {
   };
 
   // Effect to fetch historical scores when tab changes or page changes
-  useEffect(() => {
+  React.useEffect(() => {
     if (activeTab === 'history') {
       fetchHistoricalScores();
     }
@@ -166,29 +158,26 @@ const ScoreWebsite = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       
       {/* Main content */}
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-serif font-bold text-center mb-2 cursor-default">
-            {getTranslatedText('Score Your Website', 'قيم موقعك الإلكتروني')}
+            Score Your Website
           </h1>
           <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
-            {getTranslatedText(
-              'Our AI-powered tool analyzes your website\'s UI/UX, speed, and SEO performance to provide a comprehensive score and recommendations.',
-              'تقوم أداتنا المدعومة بالذكاء الاصطناعي بتحليل واجهة المستخدم وسرعة وأداء تحسين محركات البحث لموقعك لتقديم نتيجة شاملة وتوصيات.'
-            )}
+            Our AI-powered tool analyzes your website's UI/UX, speed, and SEO performance to provide a comprehensive score and recommendations.
           </p>
           
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
               <TabsTrigger value="new-analysis">
-                {getTranslatedText('New Analysis', 'تحليل جديد')}
+                New Analysis
               </TabsTrigger>
               <TabsTrigger value="history">
-                {getTranslatedText('Analysis History', 'سجل التحليل')}
+                Analysis History
               </TabsTrigger>
             </TabsList>
             
@@ -197,12 +186,11 @@ const ScoreWebsite = () => {
               <WebsiteAnalysisForm 
                 onSubmit={onSubmit} 
                 isLoading={isLoading}
-                language={language as 'en' | 'ar'} 
               />
               
               {/* Loading indicator while analysis is being performed */}
               {isLoading && !scores && (
-                <AnalysisLoadingIndicator language={language as 'en' | 'ar'} />
+                <AnalysisLoadingIndicator />
               )}
               
               {/* Results section */}
@@ -211,7 +199,6 @@ const ScoreWebsite = () => {
                   scores={scores}
                   analysisComplete={analysisComplete}
                   onRequestConsultation={() => setContactDialogOpen(true)}
-                  language={language as 'en' | 'ar'}
                 />
               )}
             </TabsContent>
@@ -219,19 +206,17 @@ const ScoreWebsite = () => {
             <TabsContent value="history">
               {isLoadingHistory ? (
                 <div className="flex justify-center py-12">
-                  <AnalysisLoadingIndicator language={language as 'en' | 'ar'} />
+                  <AnalysisLoadingIndicator />
                 </div>
               ) : selectedHistoricalScore ? (
                 <HistoricalScoreDetails 
                   score={selectedHistoricalScore}
-                  language={language as 'en' | 'ar'}
                   onBack={handleBackToHistory}
                 />
               ) : (
                 <>
                   <HistoricalScores 
                     scores={historicalScores} 
-                    language={language as 'en' | 'ar'}
                     onViewDetails={handleViewDetails}
                     onRunNewAnalysis={handleRunNewAnalysis}
                   />
