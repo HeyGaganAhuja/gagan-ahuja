@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ExternalLink } from 'lucide-react';
@@ -37,28 +36,28 @@ const HistoricalScoreDetails = ({ score, onBack }: HistoricalScoreDetailsProps) 
           variant="ghost" 
           size="sm" 
           onClick={onBack}
-          className="mr-2"
+          className="mr-2 text-gray-300 hover:text-white hover:bg-[#333333]"
         >
           <ChevronLeft className="mr-1 h-4 w-4" />
           Back
         </Button>
-        <h2 className="text-2xl font-bold">Historical Analysis</h2>
+        <h2 className="text-2xl font-bold text-gray-100">Historical Analysis</h2>
       </div>
       
-      <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-[#1a1a1a] p-6 rounded-lg shadow-md border border-gray-800">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
           <div>
-            <h3 className="text-xl font-bold text-gray-900">
+            <h3 className="text-xl font-bold text-gray-100">
               {score.url}
             </h3>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-gray-400 text-sm mt-1">
               Analyzed on {formatDate(new Date(score.created_at))}
             </p>
           </div>
           <Button 
             variant="outline" 
             size="sm"
-            className="mt-2 md:mt-0"
+            className="mt-2 md:mt-0 text-gray-300 hover:text-white border-gray-700 hover:bg-[#333333] hover:border-gray-600"
             onClick={() => window.open(score.url, '_blank')}
           >
             Visit Website
@@ -66,7 +65,7 @@ const HistoricalScoreDetails = ({ score, onBack }: HistoricalScoreDetailsProps) 
           </Button>
         </div>
         
-        <div className="bg-gray-50 p-4 rounded-lg mb-6">
+        <div className="bg-white p-4 rounded-lg mb-6">
           <div className="flex items-center justify-between">
             <h4 className="text-lg font-semibold text-gray-900">Overall Score</h4>
             <div 
@@ -80,7 +79,7 @@ const HistoricalScoreDetails = ({ score, onBack }: HistoricalScoreDetailsProps) 
             </div>
           </div>
           
-          <div className="w-full bg-gray-200 rounded-full h-4 mt-2">
+          <div className="w-full bg-gray-100 rounded-full h-4 mt-2">
             <div 
               className={`h-4 rounded-full ${
                 score.total_score >= 80 ? 'bg-green-500' :

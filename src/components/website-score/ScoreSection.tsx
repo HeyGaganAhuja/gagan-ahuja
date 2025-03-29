@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Progress } from '@/components/ui/progress';
 
@@ -20,10 +19,10 @@ const ScoreSection = ({ title, score, color }: ScoreSectionProps) => {
         </span>
       </div>
       <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-        <div 
+        <div
           className="h-full transition-all duration-500 ease-out" 
-          style={{ 
-            width: `${score}%`, 
+          style={{
+            width: `${score}%`,
             backgroundColor: color
           }}
         />
