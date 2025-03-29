@@ -1,23 +1,21 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateRecommendations } from '@/utils/websiteScoreUtils';
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Check, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Check } from 'lucide-react';
 import { 
+  LineChart, 
   BarChart, 
   Bar, 
+  Line, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  Cell,
-  LineChart,
-  Line,
-  Legend
+  Legend,
+  Cell
 } from 'recharts';
 
 interface DetailedTipsProps {
@@ -31,25 +29,25 @@ const DetailedTips = ({ scores }: DetailedTipsProps) => {
   // Consistent metrics data
   const baseMetrics = {
     uiUx: {
-      mobileFriendliness: scores.metrics?.uiUx?.mobileFriendly || 73,
-      visualDesign: scores.metrics?.uiUx?.visualDesign || 75,
-      userExperience: scores.metrics?.uiUx?.userExperience || 73,
-      accessibility: scores.metrics?.uiUx?.accessibility || 72,
-      interactivity: scores.metrics?.uiUx?.interactivity || 74
+      mobileFriendliness: 73,
+      visualDesign: 75,
+      userExperience: 73,
+      accessibility: 72,
+      interactivity: 74
     },
     speed: {
-      pageSpeed: scores.metrics?.speed?.pageSpeed || 74,
-      loadTime: scores.metrics?.speed?.loadTime || 73,
-      serverResponse: scores.metrics?.speed?.serverResponse || 75,
-      resourceOptimization: scores.metrics?.speed?.resourceOptimization || 74,
-      caching: scores.metrics?.speed?.caching || 74
+      pageSpeed: 74,
+      loadTime: 73,
+      serverResponse: 75,
+      resourceOptimization: 74,
+      caching: 74
     },
     seo: {
-      keywordOptimization: scores.metrics?.seo?.keywordOptimization || 77,
-      contentQuality: scores.metrics?.seo?.contentQuality || 78,
-      metaTags: scores.metrics?.seo?.metaTags || 76,
-      siteStructure: scores.metrics?.seo?.siteStructure || 77,
-      mobileSEO: scores.metrics?.seo?.mobileSEO || 77
+      keywordOptimization: 77,
+      contentQuality: 78,
+      metaTags: 76,
+      siteStructure: 77,
+      mobileSEO: 77
     }
   };
 
@@ -95,13 +93,6 @@ const DetailedTips = ({ scores }: DetailedTipsProps) => {
     if (score >= 70) return 'Good';
     if (score >= 60) return 'Fair';
     return 'Poor';
-  };
-
-  const getScoreIcon = (score: number) => {
-    if (score >= 80) return <CheckCircle className="w-5 h-5 text-green-500" />;
-    if (score >= 70) return <Check className="w-5 h-5 text-yellow-500" />;
-    if (score >= 60) return <AlertTriangle className="w-5 h-5 text-orange-500" />;
-    return <XCircle className="w-5 h-5 text-red-500" />;
   };
 
   return (
@@ -208,59 +199,42 @@ const DetailedTips = ({ scores }: DetailedTipsProps) => {
                 <h4 className="font-semibold text-xl mb-4 text-gray-900">
                   Recommendations
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ul className="space-y-4">
                   {tab === 'ui-ux' && recommendations.uiUx.map((tip, i) => (
-                    <Card key={i} className="border border-gray-200 hover:shadow-md transition-shadow">
-                      <CardHeader className="bg-gray-50 pb-2">
-                        <CardTitle className="text-sm font-medium flex items-center">
-                          <div className="mr-2">{getScoreIcon(65 + Math.random() * 20)}</div>
-                          Improvement Opportunity
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-4">
-                        <p className="text-gray-800">{tip}</p>
-                      </CardContent>
-                    </Card>
+                    <li key={i} className="flex items-start space-x-3 text-gray-800 bg-gray-50 p-4 rounded-lg">
+                      <div className="mt-1">
+                        <div className="w-2 h-2 rounded-full bg-[#FF5733]"></div>
+                      </div>
+                      <span>{tip}</span>
+                    </li>
                   ))}
                   {tab === 'speed' && recommendations.speed.map((tip, i) => (
-                    <Card key={i} className="border border-gray-200 hover:shadow-md transition-shadow">
-                      <CardHeader className="bg-gray-50 pb-2">
-                        <CardTitle className="text-sm font-medium flex items-center">
-                          <div className="mr-2">{getScoreIcon(65 + Math.random() * 20)}</div>
-                          Performance Issue
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-4">
-                        <p className="text-gray-800">{tip}</p>
-                      </CardContent>
-                    </Card>
+                    <li key={i} className="flex items-start space-x-3 text-gray-800 bg-gray-50 p-4 rounded-lg">
+                      <div className="mt-1">
+                        <div className="w-2 h-2 rounded-full bg-[#FF5733]"></div>
+                      </div>
+                      <span>{tip}</span>
+                    </li>
                   ))}
                   {tab === 'seo' && recommendations.seo.map((tip, i) => (
-                    <Card key={i} className="border border-gray-200 hover:shadow-md transition-shadow">
-                      <CardHeader className="bg-gray-50 pb-2">
-                        <CardTitle className="text-sm font-medium flex items-center">
-                          <div className="mr-2">{getScoreIcon(65 + Math.random() * 20)}</div>
-                          SEO Enhancement
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-4">
-                        <p className="text-gray-800">{tip}</p>
-                      </CardContent>
-                    </Card>
+                    <li key={i} className="flex items-start space-x-3 text-gray-800 bg-gray-50 p-4 rounded-lg">
+                      <div className="mt-1">
+                        <div className="w-2 h-2 rounded-full bg-[#FF5733]"></div>
+                      </div>
+                      <span>{tip}</span>
+                    </li>
                   ))}
                   {((tab === 'ui-ux' && recommendations.uiUx.length === 0) ||
                    (tab === 'speed' && recommendations.speed.length === 0) ||
                    (tab === 'seo' && recommendations.seo.length === 0)) && (
-                    <Card className="col-span-2 border border-green-200 bg-green-50">
-                      <CardContent className="flex items-center justify-center p-6">
-                        <CheckCircle className="text-green-500 w-5 h-5 mr-2" />
-                        <span className="text-green-600 font-medium">
-                          Great job! No major issues found in this category.
-                        </span>
-                      </CardContent>
-                    </Card>
+                    <li className="flex items-center space-x-3 text-green-600 bg-green-50 p-4 rounded-lg">
+                      <Check size={16} />
+                      <span>
+                        Great job! No major issues found in this category.
+                      </span>
+                    </li>
                   )}
-                </div>
+                </ul>
               </div>
             </div>
           </TabsContent>

@@ -1,3 +1,4 @@
+
 // Function to generate realistic-looking random scores
 export const generateScores = (url: string) => {
   // Create a seed from the URL to keep results consistent
@@ -6,7 +7,7 @@ export const generateScores = (url: string) => {
     seed += url.charCodeAt(i);
   }
   
-  // Generate scores between 50-95 to make them realistic
+  // Generate scores between 55-95 to make them realistic
   const randomScore = (min: number, max: number) => {
     return Math.floor(((seed * (i++) * 9301 + 49297) % 233280) / 233280 * (max - min) + min);
   };
@@ -25,41 +26,38 @@ export const generateScores = (url: string) => {
                         url.includes('apple.');
   
   // Base scores with some intelligence based on domain
-  // Adjusted to make good sites score 90+ and poor sites in the 50-60 range
-  let baseUiUx = 65 + (hasDotCom ? 5 : 0) + (hasDotOrg ? 3 : 0) + (hasDotEdu ? 10 : 0) + (isPopularSite ? 20 : 0);
-  let baseSpeed = 60 + (hasHttps ? 8 : 0) + (domainLength < 15 ? 5 : 0) + (isPopularSite ? 20 : 0);
-  let baseSeo = 55 + (hasDotCom ? 7 : 0) + (hasDotOrg ? 5 : 0) + (hasDotEdu ? 15 : 0) + (hasHttps ? 5 : 0) + (isPopularSite ? 20 : 0);
+  let baseUiUx = 70 + (hasDotCom ? 5 : 0) + (hasDotOrg ? 3 : 0) + (hasDotEdu ? 7 : 0) + (isPopularSite ? 12 : 0);
+  let baseSpeed = 65 + (hasHttps ? 8 : 0) + (domainLength < 15 ? 5 : 0) + (isPopularSite ? 10 : 0);
+  let baseSeo = 60 + (hasDotCom ? 7 : 0) + (hasDotOrg ? 5 : 0) + (hasDotEdu ? 10 : 0) + (hasHttps ? 5 : 0) + (isPopularSite ? 15 : 0);
   
   // Add random variation while keeping scores in range
-  const ui_ux = Math.min(98, Math.max(50, baseUiUx + randomScore(-8, 8)));
-  const speed = Math.min(98, Math.max(50, baseSpeed + randomScore(-8, 8)));
-  const seo = Math.min(98, Math.max(50, baseSeo + randomScore(-8, 8)));
-  
-  // Calculate total score with weighted formula
-  const total = Math.floor((ui_ux * 0.3 + speed * 0.4 + seo * 0.3)); 
+  const ui_ux = Math.min(95, Math.max(55, baseUiUx + randomScore(-10, 10)));
+  const speed = Math.min(95, Math.max(55, baseSpeed + randomScore(-10, 10)));
+  const seo = Math.min(95, Math.max(55, baseSeo + randomScore(-10, 10)));
+  const total = Math.floor((ui_ux * 0.3 + speed * 0.4 + seo * 0.3)); // Weighted as per requirements
   
   // Generate detailed metrics for each category
   const uiUxMetrics = {
-    mobileFriendliness: Math.min(100, Math.max(50, ui_ux + randomScore(-12, 12))),
-    colorContrast: Math.min(100, Math.max(50, ui_ux + randomScore(-12, 12))),
-    navigation: Math.min(100, Math.max(50, ui_ux + randomScore(-12, 12))),
-    imageOptimization: Math.min(100, Math.max(50, ui_ux + randomScore(-12, 12))),
-    interactiveElements: Math.min(100, Math.max(50, ui_ux + randomScore(-12, 12)))
+    mobileFriendliness: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
+    colorContrast: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
+    navigation: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
+    imageOptimization: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
+    interactiveElements: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15)))
   };
   
   const seoMetrics = {
-    metaTags: Math.min(100, Math.max(50, seo + randomScore(-12, 12))),
-    headingStructure: Math.min(100, Math.max(50, seo + randomScore(-12, 12))),
-    keywordPresence: Math.min(100, Math.max(50, seo + randomScore(-12, 12))),
-    robotsTxt: Math.min(100, Math.max(50, seo + randomScore(-12, 12))),
-    linkStructure: Math.min(100, Math.max(50, seo + randomScore(-12, 12)))
+    metaTags: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
+    headingStructure: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
+    keywordPresence: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
+    robotsTxt: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
+    linkStructure: Math.min(100, Math.max(50, seo + randomScore(-15, 15)))
   };
   
   const speedMetrics = {
-    pageLoadTime: Math.min(100, Math.max(50, speed + randomScore(-12, 12))),
-    imageCompression: Math.min(100, Math.max(50, speed + randomScore(-12, 12))),
-    codeMinification: Math.min(100, Math.max(50, speed + randomScore(-12, 12))),
-    serverResponseTime: Math.min(100, Math.max(50, speed + randomScore(-12, 12)))
+    pageLoadTime: Math.min(100, Math.max(50, speed + randomScore(-15, 15))),
+    imageCompression: Math.min(100, Math.max(50, speed + randomScore(-15, 15))),
+    codeMinification: Math.min(100, Math.max(50, speed + randomScore(-15, 15))),
+    serverResponseTime: Math.min(100, Math.max(50, speed + randomScore(-15, 15)))
   };
   
   return { 
@@ -84,51 +82,51 @@ export const generateRecommendations = (scores: any) => {
   };
   
   // UI/UX recommendations
-  if ((scores.metrics?.uiUx?.mobileFriendliness || 0) < 80) {
-    recommendations.uiUx.push("Improve mobile responsiveness by using responsive design principles and ensuring all elements adapt to different screen sizes.");
+  if (scores.metrics.uiUx.mobileFriendliness < 70) {
+    recommendations.uiUx.push("Improve mobile responsiveness by using responsive design principles");
   }
-  if ((scores.metrics?.uiUx?.colorContrast || 0) < 80) {
-    recommendations.uiUx.push("Enhance color contrast for better readability and accessibility, especially for text elements against background colors.");
+  if (scores.metrics.uiUx.colorContrast < 70) {
+    recommendations.uiUx.push("Enhance color contrast for better readability and accessibility");
   }
-  if ((scores.metrics?.uiUx?.navigation || 0) < 80) {
-    recommendations.uiUx.push("Simplify navigation structure for better user experience and make important pages accessible within 3 clicks.");
+  if (scores.metrics.uiUx.navigation < 70) {
+    recommendations.uiUx.push("Simplify navigation structure for better user experience");
   }
-  if ((scores.metrics?.uiUx?.imageOptimization || 0) < 80) {
-    recommendations.uiUx.push("Optimize images for better display on various devices and resolutions without losing quality.");
+  if (scores.metrics.uiUx.imageOptimization < 70) {
+    recommendations.uiUx.push("Optimize images for better display on various devices");
   }
-  if ((scores.metrics?.uiUx?.interactiveElements || 0) < 80) {
-    recommendations.uiUx.push("Improve interactive elements with better hover states, focus indicators, and feedback mechanisms.");
+  if (scores.metrics.uiUx.interactiveElements < 70) {
+    recommendations.uiUx.push("Improve interactive elements for better engagement");
   }
   
   // SEO recommendations
-  if ((scores.metrics?.seo?.metaTags || 0) < 80) {
-    recommendations.seo.push("Add proper meta tags including title, description, and keywords that accurately describe your content.");
+  if (scores.metrics.seo.metaTags < 70) {
+    recommendations.seo.push("Add proper meta tags including title, description, and keywords");
   }
-  if ((scores.metrics?.seo?.headingStructure || 0) < 80) {
-    recommendations.seo.push("Implement proper heading structure (H1, H2, H3) to organize content and help search engines understand page hierarchy.");
+  if (scores.metrics.seo.headingStructure < 70) {
+    recommendations.seo.push("Implement proper heading structure (H1, H2, H3)");
   }
-  if ((scores.metrics?.seo?.keywordPresence || 0) < 80) {
-    recommendations.seo.push("Enhance keyword usage in content strategically without resorting to keyword stuffing.");
+  if (scores.metrics.seo.keywordPresence < 70) {
+    recommendations.seo.push("Enhance keyword usage in content without keyword stuffing");
   }
-  if ((scores.metrics?.seo?.robotsTxt || 0) < 80) {
-    recommendations.seo.push("Create or optimize robots.txt file for search engine crawling and consider implementing a sitemap.");
+  if (scores.metrics.seo.robotsTxt < 70) {
+    recommendations.seo.push("Create or optimize robots.txt file for search engine crawling");
   }
-  if ((scores.metrics?.seo?.linkStructure || 0) < 80) {
-    recommendations.seo.push("Improve internal linking structure and add relevant external links to increase authority and relevance.");
+  if (scores.metrics.seo.linkStructure < 70) {
+    recommendations.seo.push("Improve internal linking structure and add relevant external links");
   }
   
   // Speed recommendations
-  if ((scores.metrics?.speed?.pageLoadTime || 0) < 80) {
-    recommendations.speed.push("Optimize page load time by reducing unnecessary resources and leveraging browser caching.");
+  if (scores.metrics.speed.pageLoadTime < 70) {
+    recommendations.speed.push("Optimize page load time by reducing unnecessary resources");
   }
-  if ((scores.metrics?.speed?.imageCompression || 0) < 80) {
-    recommendations.speed.push("Compress images further to reduce load time while maintaining visual quality.");
+  if (scores.metrics.speed.imageCompression < 70) {
+    recommendations.speed.push("Compress images further to reduce load time");
   }
-  if ((scores.metrics?.speed?.codeMinification || 0) < 80) {
-    recommendations.speed.push("Minify CSS, JavaScript, and HTML code to reduce file sizes and speed up loading times.");
+  if (scores.metrics.speed.codeMinification < 70) {
+    recommendations.speed.push("Minify CSS, JavaScript, and HTML code");
   }
-  if ((scores.metrics?.speed?.serverResponseTime || 0) < 80) {
-    recommendations.speed.push("Improve server response time through caching, using a CDN, or upgrading hosting infrastructure.");
+  if (scores.metrics.speed.serverResponseTime < 70) {
+    recommendations.speed.push("Improve server response time through caching or CDN");
   }
   
   return recommendations;
