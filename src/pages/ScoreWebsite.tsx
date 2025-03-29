@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -173,7 +172,7 @@ const ScoreWebsite = () => {
       {/* Main content */}
       <div className="flex-1 pt-24 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-serif font-bold text-center mb-2 cursor-highlight">
+          <h1 className="text-3xl font-serif font-bold text-center mb-2 cursor-default">
             {getTranslatedText('Score Your Website', 'قيم موقعك الإلكتروني')}
           </h1>
           <p className="text-muted-foreground text-center mb-8 max-w-2xl mx-auto">

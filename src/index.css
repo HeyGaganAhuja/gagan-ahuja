@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
@@ -8,34 +7,41 @@
 
 @layer base {
   :root {
+    /* Main theme colors */
+    --color-primary: #FF5733;
+    --color-primary-light: #FF8C69;
+    --color-primary-dark: #E64A2E;
+    
+    /* Gradient colors */
+    --color-gradient-blue-start: #4284DB;
+    --color-gradient-blue-end: #29EAC4;
+    --color-gradient-orange-start: #FF9C41;
+    --color-gradient-orange-end: var(--color-primary);
+    --color-gradient-purple-start: #B36FFB;
+    --color-gradient-purple-end: #5E79FF;
+    --color-gradient-pink-start: #FF5E8F;
+    --color-gradient-pink-end: #FF9777;
+
+    /* Background colors */
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-
     --card: 0 0% 5%;
     --card-foreground: 0 0% 100%;
-
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 100%;
-
     --primary: 12 100% 60%;
     --primary-foreground: 0 0% 100%;
-
     --secondary: 0 0% 7%;
     --secondary-foreground: 0 0% 100%;
-
     --muted: 0 0% 12%;
     --muted-foreground: 0 0% 70%;
-
     --accent: 12 100% 60%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 0 0% 12%;
     --input: 0 0% 12%;
     --ring: 12 100% 60%;
-
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
@@ -52,25 +58,14 @@
     scroll-behavior: smooth;
   }
   
-  /* Only hide cursor on large screens */
-  @media (min-width: 768px) {
-    html {
-      cursor: none; /* Hide default cursor */
-    }
-    
-    a, button {
-      cursor: none; /* Hide default cursor on interactive elements */
-    }
-  }
-  
   body {
     @apply bg-background text-foreground font-sans;
-    letter-spacing: -0.02em; /* Tighter kerning */
+    letter-spacing: -0.02em;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif font-extrabold;
-    letter-spacing: -0.03em; /* Even tighter kerning for headings */
+    letter-spacing: -0.03em;
   }
   
   /* Add RTL support */
@@ -80,38 +75,135 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply cursor-highlight;
-  }
-}
-
-/* Animation classes */
 @layer components {
+  /* Reusable color utility classes */
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
+  .bg-primary-light {
+    background-color: var(--color-primary-light);
+  }
+
+  .bg-primary-dark {
+    background-color: var(--color-primary-dark);
+  }
+
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  }
+
+  .gradient-blue {
+    background: linear-gradient(135deg, var(--color-gradient-blue-start), var(--color-gradient-blue-end));
+  }
+
+  .gradient-orange {
+    background: linear-gradient(135deg, var(--color-gradient-orange-start), var(--color-gradient-orange-end));
+  }
+
+  .gradient-purple {
+    background: linear-gradient(135deg, var(--color-gradient-purple-start), var(--color-gradient-purple-end));
+  }
+
+  .gradient-pink {
+    background: linear-gradient(135deg, var(--color-gradient-pink-start), var(--color-gradient-pink-end));
+  }
+
+  /* Step styles */
+  .step-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-container::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: calc(-50% + 20px);
+    width: calc(100% - 40px);
+    height: 2px;
+    background: linear-gradient(90deg, rgba(var(--color-primary), 0.4), rgba(var(--color-primary), 0.8));
+    z-index: 0;
+  }
+
+  .step-container:first-child::before {
+    display: none;
+  }
+
+  .step-number {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--gradient-primary);
+    color: white;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 10px rgba(var(--color-primary), 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Button styles */
+  .button-glow {
+    position: relative;
+  }
+
+  .button-glow::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: linear-gradient(90deg, rgba(var(--color-primary), 0.6), rgba(var(--color-primary), 0.2));
+    filter: blur(15px);
+    border-radius: inherit;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+  }
+
+  .button-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* Card styles */
+  .card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(var(--color-primary), 0.3);
+  }
+
+  /* Gradient overlays */
+  .gradient-overlay-top {
+    background: linear-gradient(180deg, rgba(var(--color-primary), 0.2) 0%, transparent 100%);
+    filter: blur(100px);
+  }
+
+  .gradient-overlay-radial {
+    background: radial-gradient(circle, rgba(var(--color-primary), 0.15), transparent 70%);
+  }
+
+  /* Animation classes */
   .animate-fade-in {
-    @apply opacity-0;
     animation: fadeIn 0.8s ease-out forwards;
   }
-  
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-[1.02];
-  }
-  
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
-  }
-  
-  .pulse-element {
-    @apply animate-pulse;
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 
   .dotted-pattern {
@@ -142,7 +234,7 @@
     pointer-events: none;
   }
 
-  /* Only apply custom cursor on desktop */
+  /* Custom cursor styles */
   @media (min-width: 768px) {
     .custom-cursor {
       position: fixed;
@@ -159,15 +251,7 @@
                   height 0.2s ease-out,
                   left 0.1s cubic-bezier(0.23, 1, 0.32, 1), 
                   top 0.1s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    .cursor-highlight {
-      position: relative;
-      transition: transform 0.3s ease;
-    }
-
-    .cursor-highlight:hover {
-      transform: scale(1.05);
+      mix-blend-mode: difference;
     }
 
     .cursor-glow {
@@ -183,28 +267,44 @@
       transform: translate(-50%, -50%);
       transition: opacity 0.5s ease, left 0.1s cubic-bezier(0.23, 1, 0.32, 1), top 0.1s cubic-bezier(0.23, 1, 0.32, 1);
     }
+
+    /* Show custom cursor on hover for interactive elements */
+    a:hover ~ .custom-cursor,
+    button:hover ~ .custom-cursor,
+    [role="button"]:hover ~ .custom-cursor,
+    [tabindex="0"]:hover ~ .custom-cursor {
+      transform: translate(-50%, -50%) scale(1.5);
+      background-color: white;
+    }
+
+    /* Show glow effect on hover for interactive elements */
+    a:hover ~ .cursor-glow,
+    button:hover ~ .cursor-glow,
+    [role="button"]:hover ~ .cursor-glow,
+    [tabindex="0"]:hover ~ .cursor-glow {
+      opacity: 1;
+    }
+
+    /* Text inversion effect for headings and text */
+    h1:hover ~ .custom-cursor,
+    h2:hover ~ .custom-cursor,
+    h3:hover ~ .custom-cursor,
+    h4:hover ~ .custom-cursor,
+    h5:hover ~ .custom-cursor,
+    h6:hover ~ .custom-cursor,
+    p:hover ~ .custom-cursor {
+      transform: translate(-50%, -50%) scale(1.2);
+      background-color: white;
+      mix-blend-mode: difference;
+    }
+
+    /* Ensure text remains visible within cursor area */
+    h1, h2, h3, h4, h5, h6, p {
+      position: relative;
+      z-index: 1;
+    }
   }
 
-  .button-glow {
-    position: relative;
-  }
-
-  .button-glow::after {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    background: linear-gradient(90deg, rgba(255, 87, 51, 0.6), rgba(255, 87, 51, 0.2));
-    filter: blur(15px);
-    border-radius: inherit;
-    opacity: 0;
-    z-index: -1;
-    transition: opacity 0.3s ease;
-  }
-
-  .button-glow:hover::after {
-    opacity: 1;
-  }
-  
   .top-gradient-glow {
     position: absolute;
     top: 0;
@@ -239,6 +339,66 @@
     background-size: 30px 30px;
     background-position: center center;
   }
+
+  /* Zapier-inspired card styling */
+  .zapier-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .zapier-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 87, 51, 0.3);
+    transform: translateY(-4px);
+  }
+
+  /* Step gradient boxes */
+  .step-gradient {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(30, 30, 30, 0.8) 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 87, 51, 0.1);
+  }
+}
+
+/* Cursor Styles */
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+.cursor-text {
+  cursor: text !important;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+
+/* Interactive Elements */
+button, 
+a, 
+[role="button"],
+[tabindex="0"] {
+  cursor: pointer !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+textarea {
+  cursor: text !important;
+}
+
+/* Disabled Elements */
+button:disabled,
+input:disabled,
+textarea:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed !important;
 }
 
 @keyframes fadeIn {
@@ -273,34 +433,14 @@
   }
 }
 
-/* Zapier-inspired card styling */
-.zapier-card {
-  @apply bg-zinc-800/60 rounded-lg border border-zinc-700/40 overflow-hidden transition-all duration-300;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.zapier-card:hover {
-  @apply border-[#FF5733]/60;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 87, 51, 0.3);
-  transform: translateY(-4px);
-}
-
-/* Modern button style */
-.modern-button {
-  @apply relative overflow-hidden transition-all rounded-lg;
-}
-
-.modern-button::before {
-  content: '';
-  @apply absolute inset-0 bg-white/10 opacity-0 transition-opacity duration-300;
-}
-
-.modern-button:hover::before {
-  @apply opacity-100;
-}
-
-/* Step gradient boxes */
-.step-gradient {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(30, 30, 30, 0.8) 100%);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 87, 51, 0.1);
+/* Media query for mobile step connectors */
+@media (max-width: 768px) {
+  .step-container::before {
+    width: 2px;
+    height: 40px;
+    left: 50%;
+    top: -20px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(var(--color-primary), 0.4), rgba(var(--color-primary), 0.8));
+  }
 }

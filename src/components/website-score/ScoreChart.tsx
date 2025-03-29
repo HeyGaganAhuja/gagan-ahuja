@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   BarChart,
@@ -50,50 +49,63 @@ const ScoreChart = ({ scores, language }: ScoreChartProps) => {
     },
   ];
 
-  const config = {
-    uiux: { color: "#22c55e" },
-    speed: { color: "#eab308" },
-    seo: { color: "#ef4444" },
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+          <p className="font-semibold text-gray-900">{payload[0].name}</p>
+          <p className="text-lg font-bold" style={{ color: payload[0].color }}>
+            {payload[0].value}/100
+          </p>
+          <p className="text-sm text-gray-500 mt-1">
+            {payload[0].value >= 80 
+              ? getTranslatedText('Excellent', 'ممتاز')
+              : payload[0].value >= 70
+              ? getTranslatedText('Good', 'جيد')
+              : getTranslatedText('Needs Improvement', 'يحتاج إلى تحسين')}
+          </p>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
-    <div className="mt-6 mb-8 text-black">
-      <h3 className="text-xl font-bold mb-4">
-        {getTranslatedText('Performance Analysis', 'تحليل الأداء')}
+    <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+      <h3 className="text-xl font-bold mb-6 text-center text-gray-900">
+        {getTranslatedText('Performance Breakdown', 'تحليل الأداء')}
       </h3>
-      <div className="bg-white p-4 rounded-lg shadow-sm">
-        <div style={{ width: '100%', height: 300 }}>
-          <ChartContainer config={config}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={data}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                layout={language === 'ar' ? 'vertical' : 'horizontal'}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                {language === 'ar' ? (
-                  <>
-                    <XAxis type="number" domain={[0, 100]} />
-                    <YAxis dataKey="name" type="category" />
-                  </>
-                ) : (
-                  <>
-                    <XAxis dataKey="name" />
-                    <YAxis domain={[0, 100]} />
-                  </>
-                )}
-                <ChartTooltip
-                  content={<ChartTooltipContent />}
-                />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        </div>
+      <div className="h-[300px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={data}
+            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis 
+              dataKey="name" 
+              tick={{ fill: '#4b5563', fontSize: 14 }}
+              axisLine={{ stroke: '#e5e7eb' }}
+              tickLine={{ stroke: '#e5e7eb' }}
+            />
+            <YAxis 
+              domain={[0, 100]}
+              tick={{ fill: '#4b5563', fontSize: 14 }}
+              axisLine={{ stroke: '#e5e7eb' }}
+              tickLine={{ stroke: '#e5e7eb' }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar 
+              dataKey="value" 
+              radius={[4, 4, 0, 0]}
+              barSize={40}
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

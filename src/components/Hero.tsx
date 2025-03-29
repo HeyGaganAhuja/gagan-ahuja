@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
@@ -38,8 +37,7 @@ const Hero = () => {
         target.tagName === 'H5' || 
         target.tagName === 'H6' || 
         target.tagName === 'P' || 
-        target.tagName === 'SPAN' || 
-        target.classList.contains('cursor-highlight')
+        target.tagName === 'SPAN'
       ) {
         setHoveredElement(target);
       } else {
@@ -114,20 +112,20 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <span className="px-4 py-1 rounded-full bg-[#FF5733]/20 border border-[#FF5733]/20 text-white text-sm font-medium cursor-highlight">
+            <span className="px-4 py-1 rounded-full bg-primary/20 border border-primary/20 text-white text-sm font-medium">
               {getTranslatedText('We build tech from ❤️', 'نبني التكنولوجيا من ❤️')}
             </span>
           </div>
-          <h1 className="text-5xl xs:text-6xl sm:text-6xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale cursor-highlight">
+          <h1 className="text-5xl xs:text-6xl sm:text-6xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             {getTranslatedText('Accelerating Growth With Websites 🚀', 'تسريع النمو من خلال المواقع الإلكترونية 🚀')}
           </h1>
-          <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-6 animate-fade-in cursor-highlight" style={{ animationDelay: '0.2s' }}>
+          <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             {getTranslatedText('We create incredible websites for Businesses', 'نُنشئ مواقع إلكترونية مذهلة للشركات')}
           </p>
           <div className="flex flex-col items-center">
             <Button 
               size="lg" 
-              className="px-8 py-6 text-base sm:text-lg md:text-lg bg-[#FF5733] hover:bg-[#FF5733]/90 hover-scale animate-fade-in modern-button button-glow mb-2" 
+              className="px-8 py-6 text-base sm:text-lg md:text-lg bg-primary hover:bg-primary/90 hover-scale animate-fade-in modern-button button-glow mb-2" 
               style={{ animationDelay: '0.4s' }}
               asChild
             >
@@ -141,42 +139,39 @@ const Hero = () => {
                 <ArrowRight size={18} className={`transition-transform group-hover:translate-x-1 ${language === 'ar' ? 'mr-2 rotate-180' : 'ml-2'}`} />
               </a>
             </Button>
-            <p className="text-zinc-200 text-sm font-medium animate-fade-in cursor-highlight" style={{ animationDelay: '0.5s' }}>
-              {getTranslatedText('Worth ', 'بقيمة ')}<span className="text-[#FF5733] font-bold">$1000</span> {getTranslatedText('Dollars', 'دولار')}
+            <p className="text-zinc-200 text-sm font-medium animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              {getTranslatedText('Worth ', 'بقيمة ')}<span className="text-primary font-bold">$1000</span> {getTranslatedText('Dollars', 'دولار')}
             </p>
           </div>
 
           <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
             <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
-              <Timer size={20} className="text-[#FF5733] animate-pulse" />
-              <span className="text-white font-bold text-base sm:text-lg md:text-xl cursor-highlight">{formatTime()}</span>
+              <Timer size={20} className="text-primary animate-pulse" />
+              <span className="text-white font-bold text-base sm:text-lg md:text-xl">{formatTime()}</span>
             </div>
-            <p className="text-zinc-400 text-sm sm:text-base mt-2 cursor-highlight">
+            <p className="text-zinc-400 text-sm sm:text-base mt-2">
               {getTranslatedText('Limited time offer - Expires soon!', 'عرض محدود - ينتهي قريباً!')}
             </p>
           </div>
 
           <div className="mt-12 max-w-3xl mx-auto">
-            <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-6 hidden md:block cursor-highlight">
+            <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-8 hidden md:block">
               {getTranslatedText('Steps to Work With Us', 'خطوات العمل معنا')}
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 relative">
               {[
                 { number: 1, title: getTranslatedText("Describe what you want to build.", "وصف ما تريد بناءه.") },
                 { number: 2, title: getTranslatedText("We build your first version.", "نبني النسخة الأولى.") },
                 { number: 3, title: getTranslatedText("Talk to extend your project.", "تحدث لتوسيع مشروعك.") },
                 { number: 4, title: getTranslatedText("Share or sync to GitHub.", "مشاركة أو مزامنة مع GitHub.") }
               ].map((step, index) => (
-                <div key={index} className="flex flex-col items-center relative">
-                  <div className="step-gradient relative mb-2">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center border border-zinc-700/50 shadow-lg">
-                      <span className="text-lg sm:text-xl font-bold text-white cursor-highlight">{step.number}</span>
+                <div key={index} className="step-container">
+                  <div className="flex flex-col items-center relative">
+                    <div className="step-number gradient-primary">
+                      <span className="text-lg font-bold">{step.number}</span>
                     </div>
-                    {index < 3 && (
-                      <div className="hidden md:block absolute top-6 left-full w-full h-0.5 bg-zinc-700/50" style={{ width: 'calc(100% + 4rem)' }}></div>
-                    )}
+                    <p className="text-zinc-300 text-center text-sm mt-4 max-w-[200px]">{step.title}</p>
                   </div>
-                  <p className="text-zinc-300 text-center text-xs sm:text-sm px-1 cursor-highlight">{step.title}</p>
                 </div>
               ))}
             </div>
