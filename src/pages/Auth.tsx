@@ -1,23 +1,77 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from '@/components/ui/dialog';
+import { useAuth } from '@/contexts/AuthContext';
+import Navbar from '@/components/Navbar';
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+});
+
+const signupSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  confirmPassword: z.string().min(6, { message: "Password must be at least 6 characters" }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+const resetSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+});
 
 const Auth = () => {
-  const { user, signIn, signUp, resetPassword, loading } = useAuth();
+  const { user, signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'reset'>('signin');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [resetSent, setResetSent] = useState(false);
+  const [openResetDialog, setOpenResetDialog] = useState(false);
+
+  const loginForm = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const signupForm = useForm({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const resetForm = useForm({
+    resolver: zodResolver(resetSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
   useEffect(() => {
     if (user) {
@@ -25,238 +79,248 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setIsSubmitting(true);
-
-    if (authMode === 'signup' && password !== confirmPassword) {
-      setError('Passwords do not match');
-      setIsSubmitting(false);
-      return;
+  const onLoginSubmit = async (values) => {
+    setIsLoading(true);
+    setAuthError(null);
+    const { error } = await signIn(values.email, values.password);
+    if (error) {
+      setAuthError(error.message);
     }
-
-    try {
-      let result;
-      if (authMode === 'signin') {
-        result = await signIn(email, password);
-      } else if (authMode === 'signup') {
-        result = await signUp(email, password);
-      } else {
-        result = await resetPassword(email);
-        if (!result.error) {
-          setAuthMode('signin');
-        }
-      }
-
-      if (result.error) {
-        setError(result.error.message);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+    setIsLoading(false);
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+  const onSignupSubmit = async (values) => {
+    setIsLoading(true);
+    setAuthError(null);
+    const { error } = await signUp(values.email, values.password);
+    if (error) {
+      setAuthError(error.message);
+    }
+    setIsLoading(false);
+  };
+
+  const onResetSubmit = async (values) => {
+    setIsLoading(true);
+    setAuthError(null);
+    const { error } = await resetPassword(values.email);
+    if (error) {
+      setAuthError(error.message);
+    } else {
+      setResetSent(true);
+    }
+    setIsLoading(false);
+  };
+
+  if (user) {
+    return null; // Will redirect via useEffect
   }
 
   return (
-    <div className="container flex flex-col items-center justify-center min-h-screen py-20">
-      <div className="w-full max-w-md mx-auto">
-        <Tabs 
-          value={authMode} 
-          onValueChange={(v: string) => setAuthMode(v as 'signin' | 'signup' | 'reset')}
-          className="w-full"
-        >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-background pt-20 flex items-center justify-center px-4">
+        <div className="w-full max-w-md space-y-6">
+          <Tabs defaultValue="login" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="login">Sign In</TabsTrigger>
+              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="login">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Sign In</CardTitle>
+                  <CardDescription>
+                    Enter your credentials to access your account
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Form {...loginForm}>
+                    <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
+                      <FormField
+                        control={loginForm.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input placeholder="email@example.com" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-          <TabsContent value="signin">
-            <Card>
-              <CardHeader>
-                <CardTitle>Sign In</CardTitle>
-                <CardDescription>
-                  Enter your email and password to access your account
-                </CardDescription>
-              </CardHeader>
-              <form onSubmit={handleAuth}>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password">Password</Label>
-                      <Button 
-                        type="button" 
-                        variant="link" 
-                        className="px-0" 
-                        onClick={() => setAuthMode('reset')}
-                      >
-                        Forgot password?
+                      <FormField
+                        control={loginForm.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                              <PasswordInput placeholder="••••••••" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      {authError && (
+                        <div className="bg-destructive/15 text-destructive text-sm p-2 rounded-md">
+                          {authError}
+                        </div>
+                      )}
+
+                      <div className="text-sm text-right">
+                        <Dialog open={openResetDialog} onOpenChange={setOpenResetDialog}>
+                          <DialogTrigger asChild>
+                            <Button variant="link" className="p-0 h-auto font-normal">
+                              Forgot password?
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Reset your password</DialogTitle>
+                              <DialogDescription>
+                                Enter your email address and we'll send you a link to reset your password.
+                              </DialogDescription>
+                            </DialogHeader>
+                            {resetSent ? (
+                              <div className="space-y-4">
+                                <div className="bg-green-500/20 text-green-600 p-3 rounded-md">
+                                  Check your email for a password reset link.
+                                </div>
+                                <DialogFooter>
+                                  <DialogClose asChild>
+                                    <Button variant="secondary">Close</Button>
+                                  </DialogClose>
+                                </DialogFooter>
+                              </div>
+                            ) : (
+                              <Form {...resetForm}>
+                                <form onSubmit={resetForm.handleSubmit(onResetSubmit)} className="space-y-4">
+                                  <FormField
+                                    control={resetForm.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                          <Input placeholder="email@example.com" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                      </FormItem>
+                                    )}
+                                  />
+                                  
+                                  {authError && (
+                                    <div className="bg-destructive/15 text-destructive text-sm p-2 rounded-md">
+                                      {authError}
+                                    </div>
+                                  )}
+                                  
+                                  <DialogFooter>
+                                    <Button type="submit" disabled={isLoading}>
+                                      {isLoading ? "Sending..." : "Send Reset Link"}
+                                    </Button>
+                                  </DialogFooter>
+                                </form>
+                              </Form>
+                            )}
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? "Signing in..." : "Sign In"}
                       </Button>
-                    </div>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  {error && <p className="text-destructive text-sm">{error}</p>}
+                    </form>
+                  </Form>
                 </CardContent>
-                <CardFooter>
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Signing In...
-                      </>
-                    ) : (
-                      'Sign In'
-                    )}
-                  </Button>
-                </CardFooter>
-              </form>
-            </Card>
-          </TabsContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="signup">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Create an Account</CardTitle>
+                  <CardDescription>
+                    Enter your information to create a new account
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Form {...signupForm}>
+                    <form onSubmit={signupForm.handleSubmit(onSignupSubmit)} className="space-y-4">
+                      <FormField
+                        control={signupForm.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input placeholder="email@example.com" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-          <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create an Account</CardTitle>
-                <CardDescription>
-                  Enter your details to create a new account
-                </CardDescription>
-              </CardHeader>
-              <form onSubmit={handleAuth}>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
-                      id="confirm-password"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  {error && <p className="text-destructive text-sm">{error}</p>}
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Creating Account...
-                      </>
-                    ) : (
-                      'Create Account'
-                    )}
-                  </Button>
-                </CardFooter>
-              </form>
-            </Card>
-          </TabsContent>
+                      <FormField
+                        control={signupForm.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                              <PasswordInput placeholder="••••••••" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-          <TabsContent value="reset">
-            <Card>
-              <CardHeader>
-                <CardTitle>Reset Password</CardTitle>
-                <CardDescription>
-                  Enter your email to receive a password reset link
-                </CardDescription>
-              </CardHeader>
-              <form onSubmit={handleAuth}>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="reset-email">Email</Label>
-                    <Input
-                      id="reset-email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  {error && <p className="text-destructive text-sm">{error}</p>}
+                      <FormField
+                        control={signupForm.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Confirm Password</FormLabel>
+                            <FormControl>
+                              <PasswordInput placeholder="••••••••" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      {authError && (
+                        <div className="bg-destructive/15 text-destructive text-sm p-2 rounded-md">
+                          {authError}
+                        </div>
+                      )}
+
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? "Creating account..." : "Create Account"}
+                      </Button>
+                    </form>
+                  </Form>
                 </CardContent>
-                <CardFooter className="flex flex-col space-y-2">
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Sending Reset Link...
-                      </>
-                    ) : (
-                      'Send Reset Link'
-                    )}
+                <CardFooter className="justify-center text-sm text-muted-foreground">
+                  By creating an account, you agree to our 
+                  <Button variant="link" className="p-0 h-auto font-normal mx-1">
+                    Terms of Service
                   </Button>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    className="w-full" 
-                    onClick={() => setAuthMode('signin')}
-                  >
-                    Back to Sign In
+                  and
+                  <Button variant="link" className="p-0 h-auto font-normal ml-1">
+                    Privacy Policy
                   </Button>
                 </CardFooter>
-              </form>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
