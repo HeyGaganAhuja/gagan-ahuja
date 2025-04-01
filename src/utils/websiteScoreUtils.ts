@@ -131,14 +131,13 @@ export const generateRecommendations = (scores: any) => {
   return recommendations;
 };
 
-// New function to analyze website and return scores
-export const analyzeWebsite = async (url: string) => {
+// Function to analyze website and return scores
+export const analyzeWebsite = (url: string) => {
   if (!url) {
     throw new Error('Please provide a URL to analyze');
   }
   
-  // For now, we're using the mock data generator
-  // In a real implementation, this would call an API or service
+  // Generate the scores using our mock data generator
   const scores = generateScores(url);
   const recommendations = generateRecommendations(scores);
   

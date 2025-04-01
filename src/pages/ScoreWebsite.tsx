@@ -11,6 +11,7 @@ import HistoricalScores from '@/components/website-score/HistoricalScores';
 import HistoricalScoreDetails from '@/components/website-score/HistoricalScoreDetails';
 import Navbar from '@/components/Navbar';
 import { analyzeWebsite } from '@/utils/websiteScoreUtils';
+import { toast } from 'sonner';
 
 const ScoreWebsite = () => {
   const { user } = useAuth();
@@ -27,7 +28,7 @@ const ScoreWebsite = () => {
   }, [initialUrl]);
 
   const { data: historicalScores, refetch: refetchHistory } = useQuery({
-    queryKey: ['historicalScores'],
+    queryKey: ['historicalScores', user?.id],
     queryFn: async () => {
       if (!user) return [];
       
@@ -51,20 +52,61 @@ const ScoreWebsite = () => {
   } = useQuery({
     queryKey: ['websiteAnalysis', url],
     queryFn: async () => {
+      if (!url) {
+        throw new Error('Please enter a website URL');
+      }
+      
       // Record search in history if user is logged in
       if (user && url) {
-        await supabase.from('search_history').insert({
-          user_id: user.id,
-          query: 'website analysis',
-          url
-        });
+        try {
+          await supabase.from('search_history').insert({
+            user_id: user.id,
+            query: 'website analysis',
+            url
+          });
+        } catch (error) {
+          console.error('Error recording search history:', error);
+        }
       }
-      return analyzeWebsite(url);
+      
+      try {
+        const results = analyzeWebsite(url);
+        
+        // Save results to website_scores table if user is logged in
+        if (user) {
+          try {
+            await supabase.from('website_scores').insert({
+              user_id: user.id,
+              url: url,
+              ui_ux_score: results.ui_ux,
+              speed_score: results.speed,
+              seo_score: results.seo,
+              total_score: results.total
+            });
+            
+            // Refresh historical scores after adding a new one
+            refetchHistory();
+          } catch (error) {
+            console.error('Error saving analysis results:', error);
+          }
+        }
+        
+        return results;
+      } catch (error) {
+        console.error('Error analyzing website:', error);
+        throw error;
+      }
     },
     enabled: false,
+    retry: 1,
   });
 
   const handleSubmit = (websiteUrl) => {
+    if (!websiteUrl) {
+      toast.error('Please enter a website URL');
+      return;
+    }
+    
     setUrl(websiteUrl);
     refetch();
   };
@@ -103,7 +145,7 @@ const ScoreWebsite = () => {
                   <AnalysisResults 
                     scores={analysisResults} 
                     analysisComplete={true}
-                    onRequestConsultation={() => alert('Consultation requested!')}
+                    onRequestConsultation={() => toast.success('Consultation requested! We\'ll be in touch soon.')}
                   />
                 ) : isError ? (
                   <div className="bg-red-900/30 border border-red-800 text-red-200 p-4 rounded-lg">
