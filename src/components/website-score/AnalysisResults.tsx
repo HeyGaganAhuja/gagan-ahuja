@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ interface ScoreData {
   seo: number;
   total: number;
   metrics?: any;
+  recommendations?: any;
 }
 
 interface AnalysisResultsProps {

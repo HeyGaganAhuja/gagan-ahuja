@@ -1,4 +1,3 @@
-
 // Function to generate realistic-looking random scores
 export const generateScores = (url: string) => {
   // Create a seed from the URL to keep results consistent
@@ -130,4 +129,21 @@ export const generateRecommendations = (scores: any) => {
   }
   
   return recommendations;
+};
+
+// New function to analyze website and return scores
+export const analyzeWebsite = async (url: string) => {
+  if (!url) {
+    throw new Error('Please provide a URL to analyze');
+  }
+  
+  // For now, we're using the mock data generator
+  // In a real implementation, this would call an API or service
+  const scores = generateScores(url);
+  const recommendations = generateRecommendations(scores);
+  
+  return {
+    ...scores,
+    recommendations
+  };
 };

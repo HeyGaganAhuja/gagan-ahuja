@@ -100,7 +100,11 @@ const ScoreWebsite = () => {
                 {isPending ? (
                   <AnalysisLoadingIndicator />
                 ) : analysisResults ? (
-                  <AnalysisResults results={analysisResults} />
+                  <AnalysisResults 
+                    scores={analysisResults} 
+                    analysisComplete={true}
+                    onRequestConsultation={() => alert('Consultation requested!')}
+                  />
                 ) : isError ? (
                   <div className="bg-red-900/30 border border-red-800 text-red-200 p-4 rounded-lg">
                     <p className="font-medium">Error analyzing website</p>
