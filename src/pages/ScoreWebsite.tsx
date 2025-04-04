@@ -21,12 +21,6 @@ const ScoreWebsite = () => {
   const [showHistoricalDetails, setShowHistoricalDetails] = useState(false);
   const [selectedHistoricalScore, setSelectedHistoricalScore] = useState(null);
 
-  useEffect(() => {
-    if (initialUrl) {
-      handleSubmit(initialUrl);
-    }
-  }, [initialUrl]);
-
   const { data: historicalScores, refetch: refetchHistory } = useQuery({
     queryKey: ['historicalScores', user?.id],
     queryFn: async () => {
@@ -35,6 +29,7 @@ const ScoreWebsite = () => {
       const { data, error } = await supabase
         .from('website_scores')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
@@ -100,6 +95,12 @@ const ScoreWebsite = () => {
     enabled: false,
     retry: 1,
   });
+
+  useEffect(() => {
+    if (initialUrl) {
+      handleSubmit(initialUrl);
+    }
+  }, [initialUrl]);
 
   const handleSubmit = (websiteUrl) => {
     if (!websiteUrl) {
