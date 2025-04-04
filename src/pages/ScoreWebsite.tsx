@@ -21,15 +21,15 @@ const ScoreWebsite = () => {
   const [showHistoricalDetails, setShowHistoricalDetails] = useState(false);
   const [selectedHistoricalScore, setSelectedHistoricalScore] = useState(null);
 
-  // Use a typed userId variable to avoid deep type instantiation
-  const userId = user ? user.id : null;
+  // Create a typed userId string variable to prevent type recursion issues
+  // By explicitly specifying the type as string | null, we avoid deep type instantiation
+  const userId: string | null = user?.id || null;
   
   const { data: historicalScores, refetch: refetchHistory } = useQuery({
     queryKey: ['historicalScores', userId],
     queryFn: async () => {
-      if (!user || !userId) return [];
+      if (!userId) return [];
       
-      // Use the explicitly created userId variable which is already properly typed
       const { data, error } = await supabase
         .from('website_scores')
         .select('*')
@@ -56,7 +56,7 @@ const ScoreWebsite = () => {
       }
       
       // Record search in history if user is logged in
-      if (user && userId && url) {
+      if (userId && url) {
         try {
           await supabase.from('search_history').insert({
             user_id: userId,
@@ -72,7 +72,7 @@ const ScoreWebsite = () => {
         const results = analyzeWebsite(url);
         
         // Save results to website_scores table if user is logged in
-        if (user && userId) {
+        if (userId) {
           try {
             await supabase.from('website_scores').insert({
               user_id: userId,
