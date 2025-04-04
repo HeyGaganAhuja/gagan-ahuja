@@ -26,10 +26,13 @@ const ScoreWebsite = () => {
     queryFn: async () => {
       if (!user) return [];
       
+      // Explicitly cast user.id as string to avoid type recursion issues
+      const userId = user.id as string;
+      
       const { data, error } = await supabase
         .from('website_scores')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
@@ -54,8 +57,11 @@ const ScoreWebsite = () => {
       // Record search in history if user is logged in
       if (user && url) {
         try {
+          // Explicitly cast user.id as string
+          const userId = user.id as string;
+          
           await supabase.from('search_history').insert({
-            user_id: user.id,
+            user_id: userId,
             query: 'website analysis',
             url
           });
@@ -70,8 +76,11 @@ const ScoreWebsite = () => {
         // Save results to website_scores table if user is logged in
         if (user) {
           try {
+            // Explicitly cast user.id as string
+            const userId = user.id as string;
+            
             await supabase.from('website_scores').insert({
-              user_id: user.id,
+              user_id: userId,
               url: url,
               ui_ux_score: results.ui_ux,
               speed_score: results.speed,
