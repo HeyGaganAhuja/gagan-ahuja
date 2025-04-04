@@ -26,8 +26,8 @@ const ScoreWebsite = () => {
     queryFn: async () => {
       if (!user) return [];
       
-      // Explicitly cast user.id as string to avoid type recursion issues
-      const userId = user.id as string;
+      // Create a string variable to hold user.id to avoid type recursion
+      const userId = String(user.id);
       
       const { data, error } = await supabase
         .from('website_scores')
@@ -57,8 +57,8 @@ const ScoreWebsite = () => {
       // Record search in history if user is logged in
       if (user && url) {
         try {
-          // Explicitly cast user.id as string
-          const userId = user.id as string;
+          // Create a string variable to hold user.id
+          const userId = String(user.id);
           
           await supabase.from('search_history').insert({
             user_id: userId,
@@ -76,8 +76,8 @@ const ScoreWebsite = () => {
         // Save results to website_scores table if user is logged in
         if (user) {
           try {
-            // Explicitly cast user.id as string
-            const userId = user.id as string;
+            // Create a string variable to hold user.id
+            const userId = String(user.id);
             
             await supabase.from('website_scores').insert({
               user_id: userId,
