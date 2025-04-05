@@ -86,7 +86,7 @@ const ScoreWebsite = () => {
             user_id: userId,
           };
           
-          await supabase.from("search_history").insert(searchHistoryData);
+          await supabase.from("search_history").insert([searchHistoryData]);
         } catch (error) {
           console.error("Error recording search history:", error);
         }
@@ -106,7 +106,7 @@ const ScoreWebsite = () => {
           user_id: userId || null,
         };
         
-        const { error } = await supabase.from("website_scores").insert(websiteScoreData);
+        const { error } = await supabase.from("website_scores").insert([websiteScoreData]);
 
         if (error) throw error;
       } catch (error) {

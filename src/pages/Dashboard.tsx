@@ -1,21 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { ExternalLink, Loader2, Search, User } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import { formatDate } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface SearchHistoryItem {
   id: string;
@@ -25,138 +11,60 @@ interface SearchHistoryItem {
 }
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
   const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-
     const fetchSearchHistory = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('search_history')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        if (error) throw error;
-        setSearchHistory(data as SearchHistoryItem[] || []);
-      } catch (error) {
-        console.error('Error fetching search history:', error);
-      } finally {
-        setLoading(false);
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from('search_history')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(10);
+          
+          if (error) throw error;
+          
+          // Use type assertion to convert Supabase result to SearchHistoryItem[]
+          if (data) setSearchHistory(data as unknown as SearchHistoryItem[]);
+        } catch (error) {
+          console.error('Error fetching search history:', error);
+        }
       }
     };
 
     fetchSearchHistory();
-  }, [user, navigate]);
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
+  }, [user]);
 
   return (
-    <>
-      <Navbar />
-      <div className="container py-20 px-4 md:px-6">
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold">Dashboard</h1>
-              <p className="text-muted-foreground mt-1">
-                Welcome back, {user?.email}
-              </p>
-            </div>
-            
-            <div className="flex gap-4">
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-2"
-                onClick={() => navigate('/score-website')}
-              >
-                <Search className="h-4 w-4" />
-                New Website Analysis
-              </Button>
-              <Button onClick={handleSignOut} variant="secondary">Sign Out</Button>
-            </div>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Search History</CardTitle>
-              <CardDescription>
-                View all your previous website analyses
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex justify-center items-center py-10">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                </div>
-              ) : searchHistory.length === 0 ? (
-                <div className="text-center py-10">
-                  <Search className="h-10 w-10 mx-auto text-muted-foreground" />
-                  <h3 className="mt-4 text-lg font-medium">No search history found</h3>
-                  <p className="mt-1 text-muted-foreground">
-                    You haven't analyzed any websites yet
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Your Dashboard</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+          {searchHistory.length > 0 ? (
+            <ul className="space-y-4">
+              {searchHistory.map((item) => (
+                <li key={item.id} className="border-b pb-2">
+                  <p className="font-medium">{item.query}</p>
+                  <p className="text-sm text-gray-500">
+                    URL: {item.url}
                   </p>
-                  <Button
-                    className="mt-4"
-                    onClick={() => navigate('/score-website')}
-                  >
-                    Analyze a Website
-                  </Button>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Website URL</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {searchHistory.map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-medium">{item.url}</TableCell>
-                          <TableCell>{formatDate(new Date(item.created_at))}</TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => window.open(item.url, '_blank')}
-                              >
-                                <ExternalLink className="h-4 w-4" />
-                                <span className="sr-only">Visit Site</span>
-                              </Button>
-                              <Button
-                                size="sm"
-                                onClick={() => navigate(`/score-website?url=${encodeURIComponent(item.url)}`)}
-                              >
-                                <Search className="h-4 w-4 mr-1" />
-                                Analyze Again
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                  <p className="text-xs text-gray-400">
+                    {new Date(item.created_at).toLocaleString()}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No recent activity</p>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
