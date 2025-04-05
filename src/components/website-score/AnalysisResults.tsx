@@ -17,21 +17,19 @@ interface ScoreData {
 }
 
 interface AnalysisResultsProps {
-  scores: ScoreData;
-  analysisComplete: boolean;
-  onRequestConsultation: () => void;
+  results: ScoreData;
+  onAnalyzeAnother: () => void;
 }
 
 const AnalysisResults = ({ 
-  scores, 
-  analysisComplete, 
-  onRequestConsultation
+  results, 
+  onAnalyzeAnother
 }: AnalysisResultsProps) => {
   // Calculate total score based on weighted averages
   const totalScore = Math.round(
-    (scores.ui_ux * 0.3) + // UI/UX is 30%
-    (scores.speed * 0.4) + // Speed is 40%
-    (scores.seo * 0.3)     // SEO is 30%
+    (results.ui_ux * 0.3) + // UI/UX is 30%
+    (results.speed * 0.4) + // Speed is 40%
+    (results.seo * 0.3)     // SEO is 30%
   );
 
   const getScoreCategory = (score: number) => {
@@ -43,6 +41,12 @@ const AnalysisResults = ({
   };
 
   const scoreCategory = getScoreCategory(totalScore);
+
+  const onRequestConsultation = () => {
+    // Handle consultation request
+    console.log("Consultation requested");
+    // You could implement this further
+  };
 
   return (
     <div className="space-y-8">
@@ -95,21 +99,21 @@ const AnalysisResults = ({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              <div className={`w-2 h-2 rounded-full ${scores.ui_ux >= 70 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${results.ui_ux >= 70 ? 'bg-green-500' : 'bg-red-500'}`}></div>
               <div>
                 <p className="text-sm font-medium text-gray-700">UI/UX Design</p>
                 <p className="text-xs text-gray-500">30% weight</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              <div className={`w-2 h-2 rounded-full ${scores.speed >= 70 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${results.speed >= 70 ? 'bg-green-500' : 'bg-red-500'}`}></div>
               <div>
                 <p className="text-sm font-medium text-gray-700">Website Speed</p>
                 <p className="text-xs text-gray-500">40% weight</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg">
-              <div className={`w-2 h-2 rounded-full ${scores.seo >= 70 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${results.seo >= 70 ? 'bg-green-500' : 'bg-red-500'}`}></div>
               <div>
                 <p className="text-sm font-medium text-gray-700">SEO Performance</p>
                 <p className="text-xs text-gray-500">30% weight</p>
@@ -120,29 +124,29 @@ const AnalysisResults = ({
       </div>
       
       {/* Performance Chart */}
-      <ScoreChart scores={scores} />
+      <ScoreChart scores={results} />
       
       {/* Individual Score Sections */}
       <div className="space-y-4">
         <ScoreSection 
           title="UI/UX Design (30%)" 
-          score={scores.ui_ux} 
-          color={scores.ui_ux >= 80 ? '#22c55e' : 
-                 scores.ui_ux >= 70 ? '#eab308' : '#ef4444'} 
+          score={results.ui_ux} 
+          color={results.ui_ux >= 80 ? '#22c55e' : 
+                 results.ui_ux >= 70 ? '#eab308' : '#ef4444'} 
         />
         
         <ScoreSection 
           title="Website Speed (40%)" 
-          score={scores.speed} 
-          color={scores.speed >= 80 ? '#22c55e' : 
-                 scores.speed >= 70 ? '#eab308' : '#ef4444'} 
+          score={results.speed} 
+          color={results.speed >= 80 ? '#22c55e' : 
+                 results.speed >= 70 ? '#eab308' : '#ef4444'} 
         />
         
         <ScoreSection 
           title="SEO Performance (30%)" 
-          score={scores.seo} 
-          color={scores.seo >= 80 ? '#22c55e' : 
-                 scores.seo >= 70 ? '#eab308' : '#ef4444'} 
+          score={results.seo} 
+          color={results.seo >= 80 ? '#22c55e' : 
+                 results.seo >= 70 ? '#eab308' : '#ef4444'} 
         />
       </div>
       
@@ -152,7 +156,7 @@ const AnalysisResults = ({
           Detailed Performance Metrics
         </h3>
         <PerformanceRadar scores={{
-          ...scores,
+          ...results,
           metrics: {
             uiUx: {
               mobileFriendly: 73,
@@ -180,7 +184,7 @@ const AnalysisResults = ({
       </div>
       
       {/* Detailed Tips */}
-      <DetailedTips scores={scores} />
+      <DetailedTips scores={results} />
       
       {/* Consultation CTA */}
       {totalScore < 80 && (
@@ -203,6 +207,17 @@ const AnalysisResults = ({
           </div>
         </div>
       )}
+
+      {/* Analyze Another Website Button */}
+      <div className="flex justify-center mt-8">
+        <Button 
+          onClick={onAnalyzeAnother}
+          variant="outline" 
+          className="px-8 py-2"
+        >
+          Analyze Another Website
+        </Button>
+      </div>
 
       {/* Disclaimer Text */}
       <div className="mt-8 text-center">

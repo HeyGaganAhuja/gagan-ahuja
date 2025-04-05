@@ -1,3 +1,4 @@
+
 // Function to generate realistic-looking random scores
 export const generateScores = (url: string) => {
   // Create a seed from the URL to keep results consistent
@@ -174,4 +175,9 @@ export const analyzeWebsite = async (url: string) => {
     ...scores,
     recommendations
   };
+};
+
+// Add the missing generateWebsiteScore function
+export const generateWebsiteScore = async (url: string) => {
+  return analyzeWebsite(url);
 };

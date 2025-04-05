@@ -1,6 +1,6 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Loader2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface HistoricalScore {
@@ -11,15 +11,17 @@ interface HistoricalScore {
   seo_score: number;
   total_score: number;
   created_at: string;
+  name?: string;
+  email?: string;
+  phone?: string;
 }
 
 interface HistoricalScoresProps {
   scores: HistoricalScore[];
-  onViewDetails: (id: string) => void;
-  onRunNewAnalysis: () => void;
+  onSelect: (score: HistoricalScore) => void;
 }
 
-const HistoricalScores = ({ scores, onViewDetails, onRunNewAnalysis }: HistoricalScoresProps) => {
+const HistoricalScores = ({ scores, onSelect }: HistoricalScoresProps) => {
   if (scores.length === 0) {
     return (
       <div className="bg-[#1a1a1a] p-8 rounded-lg shadow-md text-center border border-gray-800">
@@ -27,9 +29,6 @@ const HistoricalScores = ({ scores, onViewDetails, onRunNewAnalysis }: Historica
         <p className="text-gray-400 mb-6">
           You haven't analyzed any websites yet. Run your first analysis to see results here.
         </p>
-        <Button onClick={onRunNewAnalysis}>
-          Run New Analysis
-        </Button>
       </div>
     );
   }
@@ -89,7 +88,7 @@ const HistoricalScores = ({ scores, onViewDetails, onRunNewAnalysis }: Historica
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <Button
                     variant="ghost"
-                    onClick={() => onViewDetails(score.id)}
+                    onClick={() => onSelect(score)}
                     className="text-gray-300 hover:text-white hover:bg-[#333333]"
                   >
                     View Details

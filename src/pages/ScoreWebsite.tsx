@@ -6,10 +6,23 @@ import { useToast } from "@/hooks/use-toast";
 import WebsiteAnalysisForm from "@/components/website-score/WebsiteAnalysisForm";
 import AnalysisResults from "@/components/website-score/AnalysisResults";
 import AnalysisLoadingIndicator from "@/components/website-score/AnalysisLoadingIndicator";
-import { generateWebsiteScore } from "@/utils/websiteScoreUtils";
+import { analyzeWebsite } from "@/utils/websiteScoreUtils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import HistoricalScores from "@/components/website-score/HistoricalScores";
+
+interface WebsiteScore {
+  id: string;
+  url: string;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  ui_ux_score: number;
+  speed_score: number;
+  seo_score: number;
+  total_score: number;
+  created_at: string;
+}
 
 const ScoreWebsite = () => {
   const [url, setUrl] = useState<string>("");
@@ -18,13 +31,13 @@ const ScoreWebsite = () => {
   const [phone, setPhone] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [results, setResults] = useState<any>(null);
-  const [historicalScores, setHistoricalScores] = useState<any[]>([]);
+  const [historicalScores, setHistoricalScores] = useState<WebsiteScore[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
   
   // Fix: Define userId as string | null explicitly to prevent type recursion
-  const userId = user ? String(user.id) : null;
+  const userId: string | null = user ? user.id : null;
 
   useEffect(() => {
     const fetchHistoricalScores = async () => {
@@ -38,7 +51,7 @@ const ScoreWebsite = () => {
             .limit(5);
 
           if (error) throw error;
-          if (data) setHistoricalScores(data);
+          if (data) setHistoricalScores(data as WebsiteScore[]);
         } catch (error) {
           console.error("Error fetching historical scores:", error);
         }
@@ -60,19 +73,17 @@ const ScoreWebsite = () => {
 
     try {
       setIsAnalyzing(true);
-      const scoreData = await generateWebsiteScore(url);
+      const scoreData = await analyzeWebsite(url);
       setResults(scoreData);
 
       // Record search in history
       if (userId) {
         try {
-          await supabase.from("search_history").insert([
-            {
-              query: "website_score",
-              url,
-              user_id: userId,
-            },
-          ]);
+          await supabase.from("search_history").insert({
+            query: "website_score",
+            url,
+            user_id: userId,
+          });
         } catch (error) {
           console.error("Error recording search history:", error);
         }
@@ -80,19 +91,17 @@ const ScoreWebsite = () => {
 
       // Save the website score
       try {
-        const { error } = await supabase.from("website_scores").insert([
-          {
-            url,
-            name: name || null,
-            email: email || null,
-            phone: phone || null,
-            ui_ux_score: scoreData.uiUxScore,
-            speed_score: scoreData.speedScore,
-            seo_score: scoreData.seoScore,
-            total_score: scoreData.totalScore,
-            user_id: userId || null,
-          },
-        ]);
+        const { error } = await supabase.from("website_scores").insert({
+          url,
+          name: name || null,
+          email: email || null,
+          phone: phone || null,
+          ui_ux_score: scoreData.ui_ux,
+          speed_score: scoreData.speed,
+          seo_score: scoreData.seo,
+          total_score: scoreData.total,
+          user_id: userId || null,
+        });
 
         if (error) throw error;
       } catch (error) {

@@ -5,12 +5,28 @@ import { Input } from '@/components/ui/input';
 import { MoveRight } from 'lucide-react';
 
 interface WebsiteAnalysisFormProps {
-  onSubmit: (url: string) => void;
-  isLoading: boolean;
+  url: string;
+  setUrl: React.Dispatch<React.SetStateAction<string>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  phone: string;
+  setPhone: React.Dispatch<React.SetStateAction<string>>;
+  onAnalyze: () => void;
 }
 
-const WebsiteAnalysisForm = ({ onSubmit, isLoading }: WebsiteAnalysisFormProps) => {
-  const [url, setUrl] = useState('');
+const WebsiteAnalysisForm = ({ 
+  url, 
+  setUrl, 
+  name, 
+  setName, 
+  email, 
+  setEmail, 
+  phone, 
+  setPhone, 
+  onAnalyze 
+}: WebsiteAnalysisFormProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const validateUrl = (input: string) => {
@@ -33,14 +49,7 @@ const WebsiteAnalysisForm = ({ onSubmit, isLoading }: WebsiteAnalysisFormProps) 
     }
     
     setError(null);
-    let formattedUrl = url;
-    
-    // Add https:// if not present
-    if (!/^https?:\/\//i.test(formattedUrl)) {
-      formattedUrl = 'https://' + formattedUrl;
-    }
-    
-    onSubmit(formattedUrl);
+    onAnalyze();
   };
 
   return (
@@ -57,18 +66,42 @@ const WebsiteAnalysisForm = ({ onSubmit, isLoading }: WebsiteAnalysisFormProps) 
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="h-12 pr-4 text-base bg-[#242424] border-gray-700 text-gray-100 placeholder:text-gray-500 focus:border-gray-600 focus:ring-gray-600"
-            disabled={isLoading}
           />
           
           {error && (
             <p className="text-red-400 mt-2 text-sm">{error}</p>
           )}
         </div>
+
+        <div className="space-y-4">
+          <Input
+            type="text"
+            placeholder="Your Name (Optional)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="h-12 pr-4 text-base bg-[#242424] border-gray-700 text-gray-100 placeholder:text-gray-500 focus:border-gray-600 focus:ring-gray-600"
+          />
+          
+          <Input
+            type="email"
+            placeholder="Your Email (Optional)"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-12 pr-4 text-base bg-[#242424] border-gray-700 text-gray-100 placeholder:text-gray-500 focus:border-gray-600 focus:ring-gray-600"
+          />
+          
+          <Input
+            type="tel"
+            placeholder="Your Phone (Optional)"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="h-12 pr-4 text-base bg-[#242424] border-gray-700 text-gray-100 placeholder:text-gray-500 focus:border-gray-600 focus:ring-gray-600"
+          />
+        </div>
         
         <Button 
           type="submit" 
           className="w-full h-12 bg-primary hover:bg-primary/90 text-lg transition-all duration-300"
-          disabled={isLoading}
         >
           <span>Analyze Website</span>
           <MoveRight className="ml-2 h-5 w-5" />

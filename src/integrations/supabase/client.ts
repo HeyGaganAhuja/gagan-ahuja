@@ -18,8 +18,6 @@ export const supabase = createClient<Database>(
       persistSession: true,
       detectSessionInUrl: true,
       flowType: 'pkce',
-      // Set the site URL to gaganahuja.com
-      site: 'https://www.gaganahuja.com',
       // Set the redirect URL to gaganahuja.com
       redirectTo: 'https://www.gaganahuja.com',
     }
