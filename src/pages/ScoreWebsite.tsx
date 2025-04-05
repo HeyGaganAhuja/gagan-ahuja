@@ -1,179 +1,171 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
-import WebsiteAnalysisForm from '@/components/website-score/WebsiteAnalysisForm';
-import AnalysisResults from '@/components/website-score/AnalysisResults';
-import AnalysisLoadingIndicator from '@/components/website-score/AnalysisLoadingIndicator';
-import HistoricalScores from '@/components/website-score/HistoricalScores';
-import HistoricalScoreDetails from '@/components/website-score/HistoricalScoreDetails';
-import Navbar from '@/components/Navbar';
-import { analyzeWebsite } from '@/utils/websiteScoreUtils';
-import { toast } from 'sonner';
+
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import WebsiteAnalysisForm from "@/components/website-score/WebsiteAnalysisForm";
+import AnalysisResults from "@/components/website-score/AnalysisResults";
+import AnalysisLoadingIndicator from "@/components/website-score/AnalysisLoadingIndicator";
+import { generateWebsiteScore } from "@/utils/websiteScoreUtils";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import HistoricalScores from "@/components/website-score/HistoricalScores";
 
 const ScoreWebsite = () => {
+  const [url, setUrl] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [results, setResults] = useState<any>(null);
+  const [historicalScores, setHistoricalScores] = useState<any[]>([]);
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const { user } = useAuth();
-  const [searchParams] = useSearchParams();
-  const initialUrl = searchParams.get('url') || '';
-  const [url, setUrl] = useState(initialUrl);
-  const [showHistoricalDetails, setShowHistoricalDetails] = useState(false);
-  const [selectedHistoricalScore, setSelectedHistoricalScore] = useState(null);
-  const [shouldAnalyze, setShouldAnalyze] = useState(false);
-
-  const userId = user?.id || null;
   
-  const { data: historicalScores, refetch: refetchHistory } = useQuery({
-    queryKey: ['historicalScores', userId],
-    queryFn: async () => {
-      if (!userId) return [];
-      
-      const { data, error } = await supabase
-        .from('website_scores')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data || [];
-    },
-    enabled: !!userId
-  });
-
-  const {
-    data: analysisResults,
-    isPending,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: ['websiteAnalysis', url],
-    queryFn: async () => {
-      if (!url) {
-        throw new Error('Please enter a website URL');
-      }
-      
-      // Record search in history if user is logged in
-      if (userId && url) {
-        try {
-          await supabase.from('search_history').insert({
-            user_id: userId,
-            query: 'website analysis',
-            url
-          });
-        } catch (error) {
-          console.error('Error recording search history:', error);
-        }
-      }
-      
-      try {
-        const results = await analyzeWebsite(url);
-        
-        // Save results to website_scores table if user is logged in
-        if (userId) {
-          try {
-            await supabase.from('website_scores').insert({
-              user_id: userId,
-              url: url,
-              ui_ux_score: results.ui_ux,
-              speed_score: results.speed,
-              seo_score: results.seo,
-              total_score: results.total
-            });
-            
-            // Refresh historical scores after adding a new one
-            refetchHistory();
-          } catch (error) {
-            console.error('Error saving analysis results:', error);
-          }
-        }
-        
-        return results;
-      } catch (error) {
-        console.error('Error analyzing website:', error);
-        throw error;
-      }
-    },
-    enabled: shouldAnalyze && !!url,
-    retry: 1,
-  });
+  // Fix: Define userId as string | null explicitly to prevent type recursion
+  const userId = user ? String(user.id) : null;
 
   useEffect(() => {
-    if (initialUrl) {
-      setShouldAnalyze(true);
-    }
-  }, [initialUrl]);
+    const fetchHistoricalScores = async () => {
+      if (userId) {
+        try {
+          const { data, error } = await supabase
+            .from("website_scores")
+            .select("*")
+            .eq("user_id", userId)
+            .order("created_at", { ascending: false })
+            .limit(5);
 
-  const handleSubmit = (websiteUrl: string) => {
-    if (!websiteUrl) {
-      toast.error('Please enter a website URL');
+          if (error) throw error;
+          if (data) setHistoricalScores(data);
+        } catch (error) {
+          console.error("Error fetching historical scores:", error);
+        }
+      }
+    };
+
+    fetchHistoricalScores();
+  }, [userId]);
+
+  const handleAnalyze = async () => {
+    if (!url) {
+      toast({
+        title: "URL Required",
+        description: "Please enter a website URL to analyze.",
+        variant: "destructive",
+      });
       return;
     }
-    
-    setUrl(websiteUrl);
-    setShouldAnalyze(true);
+
+    try {
+      setIsAnalyzing(true);
+      const scoreData = await generateWebsiteScore(url);
+      setResults(scoreData);
+
+      // Record search in history
+      if (userId) {
+        try {
+          await supabase.from("search_history").insert([
+            {
+              query: "website_score",
+              url,
+              user_id: userId,
+            },
+          ]);
+        } catch (error) {
+          console.error("Error recording search history:", error);
+        }
+      }
+
+      // Save the website score
+      try {
+        const { error } = await supabase.from("website_scores").insert([
+          {
+            url,
+            name: name || null,
+            email: email || null,
+            phone: phone || null,
+            ui_ux_score: scoreData.uiUxScore,
+            speed_score: scoreData.speedScore,
+            seo_score: scoreData.seoScore,
+            total_score: scoreData.totalScore,
+            user_id: userId || null,
+          },
+        ]);
+
+        if (error) throw error;
+      } catch (error) {
+        console.error("Error saving website score:", error);
+      }
+    } catch (error) {
+      console.error("Error analyzing website:", error);
+      toast({
+        title: "Analysis Error",
+        description: "There was an error analyzing the website. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
-  const viewHistoricalDetails = (id: string) => {
-    const score = historicalScores?.find(score => score.id === id);
-    if (score) {
-      setSelectedHistoricalScore(score);
-      setShowHistoricalDetails(true);
-    }
+  const handleBackToHome = () => {
+    navigate("/");
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="min-h-screen bg-[#0a0a0a] text-gray-100 pt-20">
-        <div className="container mx-auto px-4 py-10">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">
-              Website Performance Analysis
-            </h1>
-            <p className="text-xl text-gray-400 mb-8">
-              Get a comprehensive analysis of your website's performance, SEO, and user experience.
-            </p>
-            
-            {showHistoricalDetails && selectedHistoricalScore ? (
-              <HistoricalScoreDetails 
-                score={selectedHistoricalScore} 
-                onBack={() => setShowHistoricalDetails(false)} 
-              />
-            ) : (
-              <>
-                <WebsiteAnalysisForm onSubmit={handleSubmit} isLoading={false} />
-                
-                {isPending ? (
-                  <AnalysisLoadingIndicator />
-                ) : analysisResults ? (
-                  <AnalysisResults 
-                    scores={analysisResults} 
-                    analysisComplete={true}
-                    onRequestConsultation={() => toast.success('Consultation requested! We\'ll be in touch soon.')}
-                  />
-                ) : isError ? (
-                  <div className="bg-red-900/30 border border-red-800 text-red-200 p-4 rounded-lg">
-                    <p className="font-medium">Error analyzing website</p>
-                    <p className="text-sm mt-1">{error?.message || 'Please try again with a valid URL'}</p>
-                  </div>
-                ) : null}
-                
-                {user && historicalScores && historicalScores.length > 0 && !isPending && !analysisResults && (
-                  <div className="mt-10">
-                    <HistoricalScores 
-                      scores={historicalScores} 
-                      onViewDetails={viewHistoricalDetails}
-                      onRunNewAnalysis={() => window.scrollTo(0, 0)}
-                    />
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="container py-8 max-w-4xl mx-auto">
+      <Button
+        variant="outline"
+        className="mb-4"
+        onClick={handleBackToHome}
+      >
+        ← Back to Home
+      </Button>
+      
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        Website Performance Analysis
+      </h1>
+
+      {!results && !isAnalyzing && (
+        <WebsiteAnalysisForm
+          url={url}
+          setUrl={setUrl}
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+          phone={phone}
+          setPhone={setPhone}
+          onAnalyze={handleAnalyze}
+        />
+      )}
+
+      {isAnalyzing && <AnalysisLoadingIndicator />}
+
+      {results && !isAnalyzing && (
+        <AnalysisResults
+          results={results}
+          onAnalyzeAnother={() => {
+            setResults(null);
+            setUrl("");
+          }}
+        />
+      )}
+
+      {historicalScores.length > 0 && !results && !isAnalyzing && (
+        <HistoricalScores 
+          scores={historicalScores}
+          onSelect={(score) => {
+            setUrl(score.url);
+            setName(score.name || "");
+            setEmail(score.email || "");
+            setPhone(score.phone || "");
+          }}
+        />
+      )}
+    </div>
   );
 };
 
