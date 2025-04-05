@@ -18,8 +18,8 @@ export const supabase = createClient<Database>(
       persistSession: true,
       detectSessionInUrl: true,
       flowType: 'pkce',
-      // Set the redirect URL to gaganahuja.com
-      redirectTo: 'https://www.gaganahuja.com',
+      // Set site URL option correctly
+      site: 'https://www.gaganahuja.com'
     }
   }
 );

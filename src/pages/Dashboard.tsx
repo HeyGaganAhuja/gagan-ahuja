@@ -44,7 +44,7 @@ const Dashboard = () => {
           .order('created_at', { ascending: false });
         
         if (error) throw error;
-        setSearchHistory(data || []);
+        setSearchHistory(data as SearchHistoryItem[] || []);
       } catch (error) {
         console.error('Error fetching search history:', error);
       } finally {

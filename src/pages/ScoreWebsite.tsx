@@ -22,6 +22,7 @@ interface WebsiteScore {
   seo_score: number;
   total_score: number;
   created_at: string;
+  user_id?: string | null;
 }
 
 const ScoreWebsite = () => {
@@ -79,11 +80,13 @@ const ScoreWebsite = () => {
       // Record search in history
       if (userId) {
         try {
-          await supabase.from("search_history").insert({
+          const searchHistoryData = {
             query: "website_score",
             url,
             user_id: userId,
-          });
+          };
+          
+          await supabase.from("search_history").insert(searchHistoryData);
         } catch (error) {
           console.error("Error recording search history:", error);
         }
@@ -91,7 +94,7 @@ const ScoreWebsite = () => {
 
       // Save the website score
       try {
-        const { error } = await supabase.from("website_scores").insert({
+        const websiteScoreData = {
           url,
           name: name || null,
           email: email || null,
@@ -101,7 +104,9 @@ const ScoreWebsite = () => {
           seo_score: scoreData.seo,
           total_score: scoreData.total,
           user_id: userId || null,
-        });
+        };
+        
+        const { error } = await supabase.from("website_scores").insert(websiteScoreData);
 
         if (error) throw error;
       } catch (error) {
