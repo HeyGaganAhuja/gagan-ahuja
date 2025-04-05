@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Facebook, Twitter, Instagram, Linkedin, Send, ArrowRight } from 'lucide-react';
+import { Youtube, Twitter, Instagram, Linkedin, Send, ArrowRight } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import ContactDialog from './ContactDialog';
 
@@ -61,16 +60,16 @@ const Footer = () => {
                 Helping businesses accelerate growth through strategic web design and development solutions.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-zinc-400 hover:text-primary transition-colors">
-                  <Facebook size={20} />
+                <a href="https://www.youtube.com/@Megaganahuja" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-primary transition-colors">
+                  <Youtube size={20} />
                 </a>
-                <a href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <a href="https://x.com/ahuja_13" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-primary transition-colors">
                   <Twitter size={20} />
                 </a>
-                <a href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <a href="https://www.instagram.com/megaganahuja/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-primary transition-colors">
                   <Instagram size={20} />
                 </a>
-                <a href="#" className="text-zinc-400 hover:text-primary transition-colors">
+                <a href="https://www.linkedin.com/in/gagan-ahuja-102165176/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-primary transition-colors">
                   <Linkedin size={20} />
                 </a>
               </div>
