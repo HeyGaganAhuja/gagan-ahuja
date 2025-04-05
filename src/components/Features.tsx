@@ -6,28 +6,28 @@ import FeatureIcon from './FeatureIcon';
 const featuresData = [
   {
     icon: <MessageSquare className="w-8 h-8 text-[#FF5733]" />,
-    title: "Instant & intuitive",
-    description: "Live rendering, handles image input, has instant undo and lets you collaborate with branching. The AI fixes your bugs. One-click deploy when ready."
+    title: "Instant & Intuitive Builds",
+    description: "Real-time updates with live previews. Share feedback, iterate instantly, and even input images for dynamic rendering. We fix bugs fast and deploy with just one click."
   },
   {
     icon: <Eye className="w-8 h-8 text-[#FF5733]" />,
-    title: "Beautiful design",
-    description: "We believe your product should look good. Lovable follows best practice UI & UX principles to make sure every idea you bring to life is beautifully designed."
+    title: "Conversion-Focused Design",
+    description: "Your product won’t just work—it’ll wow. Every site or app we build follows proven UI/UX principles, designed to increase engagement, build trust, and drive results."
   },
   {
     icon: <Globe className="w-8 h-8 text-[#FF5733]" />,
-    title: "Support any backend",
-    description: "Lovable has support for databases, API integrations and back-end functionality. Connect your own or use our Supabase connector."
+    title: "Backend-Ready & Scalable",
+    description: "From e-commerce platforms to SaaS tools—we connect your front-end with powerful backends, APIs, and databases. You’re covered.."
   },
   {
     icon: <Sparkles className="w-8 h-8 text-[#FF5733]" />,
-    title: "Select & edit",
-    description: "The accuracy you need to make fine grained changes. With Select & Edit you click an element and describe what you want updated."
+    title: "Pixel-Perfect Edits",
+    description: "Want a section changed? Just point and describe. We offer precise control and smart suggestions to ensure your product reflects your exact vision."
   },
   {
     icon: <Github className="w-8 h-8 text-[#FF5733]" />,
     title: "Github integration",
-    description: "Connect Lovable to your GitHub account to automatically sync the code to your repository. Perfect for project hand offs and more advanced workflows."
+    description: "We sync your codebase directly to GitHub, making handoffs smooth and managing updates effortless—ideal for scaling teams or collaborative projects."
   }
 ];
 

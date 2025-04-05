@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,10 +19,9 @@ const ScoreWebsite = () => {
   const [url, setUrl] = useState(initialUrl);
   const [showHistoricalDetails, setShowHistoricalDetails] = useState(false);
   const [selectedHistoricalScore, setSelectedHistoricalScore] = useState(null);
+  const [shouldAnalyze, setShouldAnalyze] = useState(false);
 
-  // Create a typed userId string variable to prevent type recursion issues
-  // By explicitly specifying the type as string | null, we avoid deep type instantiation
-  const userId: string | null = user?.id || null;
+  const userId = user?.id || null;
   
   const { data: historicalScores, refetch: refetchHistory } = useQuery({
     queryKey: ['historicalScores', userId],
@@ -69,7 +67,7 @@ const ScoreWebsite = () => {
       }
       
       try {
-        const results = analyzeWebsite(url);
+        const results = await analyzeWebsite(url);
         
         // Save results to website_scores table if user is logged in
         if (userId) {
@@ -96,30 +94,32 @@ const ScoreWebsite = () => {
         throw error;
       }
     },
-    enabled: false,
+    enabled: shouldAnalyze && !!url,
     retry: 1,
   });
 
   useEffect(() => {
     if (initialUrl) {
-      handleSubmit(initialUrl);
+      setShouldAnalyze(true);
     }
   }, [initialUrl]);
 
-  const handleSubmit = (websiteUrl) => {
+  const handleSubmit = (websiteUrl: string) => {
     if (!websiteUrl) {
       toast.error('Please enter a website URL');
       return;
     }
     
     setUrl(websiteUrl);
-    refetch();
+    setShouldAnalyze(true);
   };
 
-  const viewHistoricalDetails = (id) => {
-    const score = historicalScores.find(score => score.id === id);
-    setSelectedHistoricalScore(score);
-    setShowHistoricalDetails(true);
+  const viewHistoricalDetails = (id: string) => {
+    const score = historicalScores?.find(score => score.id === id);
+    if (score) {
+      setSelectedHistoricalScore(score);
+      setShowHistoricalDetails(true);
+    }
   };
 
   return (
@@ -142,7 +142,7 @@ const ScoreWebsite = () => {
               />
             ) : (
               <>
-                <WebsiteAnalysisForm onSubmit={handleSubmit} isLoading={isPending} />
+                <WebsiteAnalysisForm onSubmit={handleSubmit} isLoading={false} />
                 
                 {isPending ? (
                   <AnalysisLoadingIndicator />

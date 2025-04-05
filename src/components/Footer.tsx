@@ -60,7 +60,7 @@ const Footer = () => {
                 Helping businesses accelerate growth through strategic web design and development solutions.
               </p>
               <div className="flex space-x-4">
-                <a href="https://www.youtube.com/@Megaganahuja" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-primary transition-colors">
+                <a href="#" className="text-zinc-400 hover:text-primary transition-colors">
                   <Youtube size={20} />
                 </a>
                 <a href="https://x.com/ahuja_13" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-primary transition-colors">

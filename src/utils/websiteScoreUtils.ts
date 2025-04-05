@@ -7,11 +7,9 @@ export const generateScores = (url: string) => {
   }
   
   // Generate scores between 55-95 to make them realistic
-  const randomScore = (min: number, max: number) => {
-    return Math.floor(((seed * (i++) * 9301 + 49297) % 233280) / 233280 * (max - min) + min);
+  const randomScore = (min: number, max: number, index: number) => {
+    return Math.floor(((seed * index * 9301 + 49297) % 233280) / 233280 * (max - min) + min);
   };
-  
-  let i = 1;
   
   // Domain factors that influence scores
   const hasDotCom = url.includes('.com');
@@ -30,33 +28,33 @@ export const generateScores = (url: string) => {
   let baseSeo = 60 + (hasDotCom ? 7 : 0) + (hasDotOrg ? 5 : 0) + (hasDotEdu ? 10 : 0) + (hasHttps ? 5 : 0) + (isPopularSite ? 15 : 0);
   
   // Add random variation while keeping scores in range
-  const ui_ux = Math.min(95, Math.max(55, baseUiUx + randomScore(-10, 10)));
-  const speed = Math.min(95, Math.max(55, baseSpeed + randomScore(-10, 10)));
-  const seo = Math.min(95, Math.max(55, baseSeo + randomScore(-10, 10)));
+  const ui_ux = Math.min(95, Math.max(55, baseUiUx + randomScore(-10, 10, 1)));
+  const speed = Math.min(95, Math.max(55, baseSpeed + randomScore(-10, 10, 2)));
+  const seo = Math.min(95, Math.max(55, baseSeo + randomScore(-10, 10, 3)));
   const total = Math.floor((ui_ux * 0.3 + speed * 0.4 + seo * 0.3)); // Weighted as per requirements
   
   // Generate detailed metrics for each category
   const uiUxMetrics = {
-    mobileFriendliness: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
-    colorContrast: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
-    navigation: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
-    imageOptimization: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15))),
-    interactiveElements: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15)))
+    mobileFriendliness: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15, 4))),
+    colorContrast: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15, 5))),
+    navigation: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15, 6))),
+    imageOptimization: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15, 7))),
+    interactiveElements: Math.min(100, Math.max(50, ui_ux + randomScore(-15, 15, 8)))
   };
   
   const seoMetrics = {
-    metaTags: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
-    headingStructure: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
-    keywordPresence: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
-    robotsTxt: Math.min(100, Math.max(50, seo + randomScore(-15, 15))),
-    linkStructure: Math.min(100, Math.max(50, seo + randomScore(-15, 15)))
+    metaTags: Math.min(100, Math.max(50, seo + randomScore(-15, 15, 9))),
+    headingStructure: Math.min(100, Math.max(50, seo + randomScore(-15, 15, 10))),
+    keywordPresence: Math.min(100, Math.max(50, seo + randomScore(-15, 15, 11))),
+    robotsTxt: Math.min(100, Math.max(50, seo + randomScore(-15, 15, 12))),
+    linkStructure: Math.min(100, Math.max(50, seo + randomScore(-15, 15, 13)))
   };
   
   const speedMetrics = {
-    pageLoadTime: Math.min(100, Math.max(50, speed + randomScore(-15, 15))),
-    imageCompression: Math.min(100, Math.max(50, speed + randomScore(-15, 15))),
-    codeMinification: Math.min(100, Math.max(50, speed + randomScore(-15, 15))),
-    serverResponseTime: Math.min(100, Math.max(50, speed + randomScore(-15, 15)))
+    pageLoadTime: Math.min(100, Math.max(50, speed + randomScore(-15, 15, 14))),
+    imageCompression: Math.min(100, Math.max(50, speed + randomScore(-15, 15, 15))),
+    codeMinification: Math.min(100, Math.max(50, speed + randomScore(-15, 15, 16))),
+    serverResponseTime: Math.min(100, Math.max(50, speed + randomScore(-15, 15, 17)))
   };
   
   return { 
@@ -72,8 +70,39 @@ export const generateScores = (url: string) => {
   };
 };
 
+interface ScoreMetrics {
+  uiUx: {
+    mobileFriendliness: number;
+    colorContrast: number;
+    navigation: number;
+    imageOptimization: number;
+    interactiveElements: number;
+  };
+  seo: {
+    metaTags: number;
+    headingStructure: number;
+    keywordPresence: number;
+    robotsTxt: number;
+    linkStructure: number;
+  };
+  speed: {
+    pageLoadTime: number;
+    imageCompression: number;
+    codeMinification: number;
+    serverResponseTime: number;
+  };
+}
+
+interface Scores {
+  ui_ux: number;
+  speed: number;
+  seo: number;
+  total: number;
+  metrics: ScoreMetrics;
+}
+
 // Generate improvement recommendations based on scores
-export const generateRecommendations = (scores: any) => {
+export const generateRecommendations = (scores: Scores) => {
   const recommendations = {
     uiUx: [] as string[],
     seo: [] as string[],
@@ -132,7 +161,7 @@ export const generateRecommendations = (scores: any) => {
 };
 
 // Function to analyze website and return scores
-export const analyzeWebsite = (url: string) => {
+export const analyzeWebsite = async (url: string) => {
   if (!url) {
     throw new Error('Please provide a URL to analyze');
   }
