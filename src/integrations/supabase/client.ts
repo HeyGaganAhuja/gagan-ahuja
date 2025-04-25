@@ -17,9 +17,7 @@ export const supabase = createClient<Database>(
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      flowType: 'pkce',
-      // Set site URL option correctly
-      site: 'https://www.gaganahuja.com'
+      flowType: 'pkce'
     }
   }
 );
