@@ -8,7 +8,6 @@ import React from 'react';
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ScoreWebsite from "./pages/ScoreWebsite";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 
@@ -25,7 +24,6 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/score-website" element={<ScoreWebsite />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

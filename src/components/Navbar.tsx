@@ -32,9 +32,6 @@ const Navbar = () => {
           <a href="#assets" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Free Assets
           </a>
-          <Link to="/score-website" className="text-foreground/80 hover:text-primary transition-colors text-sm">
-            Score Your Website
-          </Link>
           
           {user ? (
             <>
@@ -103,13 +100,6 @@ const Navbar = () => {
             >
               Free Assets
             </a>
-            <Link 
-              to="/score-website"
-              className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
-              onClick={() => setIsOpen(false)}
-            >
-              Score Your Website
-            </Link>
             
             {user ? (
               <>
