@@ -1,67 +1,79 @@
-
 import React from 'react';
-import { Search, FileText, BarChart } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { Puzzle, Layout, BarChart3, Layers, Users } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const steps = [
+const solutionsData = [
   {
-    icon: <Search className="h-8 w-8 text-primary" />,
-    title: "Identify Your Problems in Lead Generation and Sales System",
-    description: "Our dedicated account executive will analyse the current issues in your system.",
-    step: "Step 1"
+    icon: <Puzzle className="h-8 w-8 text-[#FF5733]" />,
+    title: "Affordable Solution",
+    description: "Receive top-quality design services without the high price tag.",
+    className: "col-span-1"
   },
   {
-    icon: <FileText className="h-8 w-8 text-primary" />,
-    title: "ICP and Offer Creation",
-    description: "We create your ICP list with a compelling offer that your prospects can't say \"NO TO\". If needed, we will revamp your current ICP and offer to ensure we have accurate data.",
-    step: "Step 2"
+    icon: <Layout className="h-8 w-8 text-[#FF5733]" />,
+    title: "Custom Design Solutions",
+    description: "Our expertise ensures your vision becomes a reality.",
+    className: "col-span-1"
   },
   {
-    icon: <BarChart className="h-8 w-8 text-primary" />,
-    title: "Campaign Setup and Optimization",
-    description: "We set up and optimize your campaign for maximum performance and results.",
-    step: "Step 3"
+    icon: <BarChart3 className="h-8 w-8 text-[#FF5733]" />,
+    title: "Scalable as You Grow",
+    description: "We're prepared to adapt to your changing needs.",
+    className: "col-span-1"
+  },
+  {
+    icon: <Layers className="h-8 w-8 text-[#FF5733]" />,
+    title: "Integrated Workflow",
+    description: "Effortlessly connect all your existing applications.",
+    className: "col-span-1"
+  },
+  {
+    icon: <Users className="h-8 w-8 text-[#FF5733]" />,
+    title: "Real-Time Collaboration",
+    description: "Work together efficiently while staying connected to all your working apps.",
+    className: "col-span-1"
   }
 ];
 
 const WhatYouReceive = () => {
   return (
-    <section className="py-20 bg-black" id="whatyoureceive">
+    <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-medium mb-6 text-white">
-            How We Help You?
+        <div className="text-center mb-12">
+          <p className="text-[#FF5733] uppercase text-sm font-medium tracking-wider mb-3">WHAT YOU'LL RECEIVE</p>
+          <h2 className="text-2xl md:text-3xl font-serif font-extrabold mb-6 text-white max-w-3xl mx-auto">
+            We solve the challenges that come with creative processes.
           </h2>
         </div>
         
-        <div className="relative max-w-6xl mx-auto">
-          {/* Timeline Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-primary/20" />
-          
-          {/* Steps */}
-          <div className="space-y-20">
-            {steps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className={`flex items-start ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'} gap-8`}>
-                  {/* Timeline Dot */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full" />
-                  
-                  {/* Content */}
-                  <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12' : 'pl-12'}`}>
-                    <Card className="p-8 bg-zinc-900/90 border-zinc-800">
-                      <div className="mb-4">
-                        {step.icon}
-                      </div>
-                      <div className="text-sm text-primary mb-3">{step.step}</div>
-                      <h3 className="text-2xl mb-4 text-white">{step.title}</h3>
-                      <p className="text-zinc-400">{step.description}</p>
-                    </Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {solutionsData.map((solution, index) => (
+            <div 
+              key={index} 
+              className={`${solution.className}`}
+            >
+              <Card className={`
+                ${index < 3 ? 'md:col-span-1' : 'md:col-span-1'}
+                bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift rounded-[20px]
+              `}>
+                <CardHeader className="pb-2">
+                  <div className={`
+                    w-12 h-12 
+                    bg-[#FF5733]/10
+                    flex items-center justify-center mb-4 rounded-full
+                  `}>
+                    {solution.icon}
                   </div>
-                  <div className="w-1/2" /> {/* Spacer */}
-                </div>
-              </div>
-            ))}
-          </div>
+                  <CardTitle className="text-xl font-bold text-white">{solution.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-zinc-400">
+                    {solution.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
         </div>
       </div>
     </section>
