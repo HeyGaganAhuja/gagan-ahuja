@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MenuIcon, X, User } from 'lucide-react';
@@ -14,12 +13,12 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
+        <Link to="/" className="text-xl md:text-2xl font-medium text-foreground">
           Gagan Consults
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8" style={{ gap: '2rem' }}>
+        <div className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Home
           </Link>
@@ -39,19 +38,19 @@ const Navbar = () => {
                 <User className="h-4 w-4 mr-1" />
                 Dashboard
               </Link>
-              <Button variant="secondary" onClick={signOut}>
+              <Button variant="secondary" onClick={signOut} className="button-3d">
                 Sign Out
               </Button>
             </>
           ) : (
-            <Button asChild variant="secondary">
+            <Button asChild variant="secondary" className="button-3d">
               <Link to="/auth">Sign In</Link>
             </Button>
           )}
           
-          <Button asChild className="bg-primary hover:bg-primary/90 modern-button">
+          <Button asChild className="bg-primary hover:bg-primary/90 button-3d">
             <a href="https://cal.com/gagan-ahuja/consulting" target="_blank" rel="noopener noreferrer">
-              Book a Call
+              Get in Touch
             </a>
           </Button>
         </div>
@@ -138,7 +137,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
               >
-                Book a Call
+                Get in Touch
               </a>
             </Button>
           </div>
