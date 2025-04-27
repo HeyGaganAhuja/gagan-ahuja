@@ -1,37 +1,22 @@
-import React from 'react';
-import { Puzzle, Layout, BarChart3, Layers, Users } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const solutionsData = [
+import React from 'react';
+import { Search, FileText, LayoutGrid } from 'lucide-react';
+
+const steps = [
   {
-    icon: <Puzzle className="h-8 w-8 text-[#FF5733]" />,
-    title: "Affordable Solution",
-    description: "Receive top-quality design services without the high price tag.",
-    className: "col-span-1"
+    icon: <Search className="w-12 h-12 text-primary" />,
+    title: "Identify Your Problems in Lead Generation and Sales System",
+    description: "Our dedicated account executive will analyse the current issues in your system."
   },
   {
-    icon: <Layout className="h-8 w-8 text-[#FF5733]" />,
-    title: "Custom Design Solutions",
-    description: "Our expertise ensures your vision becomes a reality.",
-    className: "col-span-1"
+    icon: <FileText className="w-12 h-12 text-primary" />,
+    title: "ICP and Offer Creation",
+    description: "We create your ICP list with a compelling offer that your prospects can't say \"NO TO\". If needed, we will revamp your current ICP and offer to ensure we have accurate data."
   },
   {
-    icon: <BarChart3 className="h-8 w-8 text-[#FF5733]" />,
+    icon: <LayoutGrid className="w-12 h-12 text-primary" />,
     title: "Scalable as You Grow",
-    description: "We're prepared to adapt to your changing needs.",
-    className: "col-span-1"
-  },
-  {
-    icon: <Layers className="h-8 w-8 text-[#FF5733]" />,
-    title: "Integrated Workflow",
-    description: "Effortlessly connect all your existing applications.",
-    className: "col-span-1"
-  },
-  {
-    icon: <Users className="h-8 w-8 text-[#FF5733]" />,
-    title: "Real-Time Collaboration",
-    description: "Work together efficiently while staying connected to all your working apps.",
-    className: "col-span-1"
+    description: "We're prepared to adapt to your changing needs."
   }
 ];
 
@@ -39,39 +24,35 @@ const WhatYouReceive = () => {
   return (
     <section className="py-20 bg-black">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <p className="text-[#FF5733] uppercase text-sm font-medium tracking-wider mb-3">WHAT YOU'LL RECEIVE</p>
-          <h2 className="text-2xl md:text-3xl font-serif font-extrabold mb-6 text-white max-w-3xl mx-auto">
-            We solve the challenges that come with creative processes.
-          </h2>
-        </div>
+        <h2 className="text-4xl font-bold text-center mb-16 text-white">
+          How We Help You?
+        </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {solutionsData.map((solution, index) => (
+        <div className="max-w-6xl mx-auto relative">
+          {/* Vertical line */}
+          <div className="absolute left-1/2 top-0 h-full w-[2px] bg-gradient-to-b from-primary/20 via-primary to-primary/20" />
+          
+          {steps.map((step, index) => (
             <div 
-              key={index} 
-              className={`${solution.className}`}
+              key={index}
+              className={`relative flex items-start gap-8 mb-24 last:mb-0 ${
+                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+              } animate-fade-in`}
+              style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <Card className={`
-                ${index < 3 ? 'md:col-span-1' : 'md:col-span-1'}
-                bg-zinc-900/90 border-zinc-800 h-full shadow-lg hover-lift rounded-[20px]
-              `}>
-                <CardHeader className="pb-2">
-                  <div className={`
-                    w-12 h-12 
-                    bg-[#FF5733]/10
-                    flex items-center justify-center mb-4 rounded-full
-                  `}>
-                    {solution.icon}
-                  </div>
-                  <CardTitle className="text-xl font-bold text-white">{solution.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-zinc-400">
-                    {solution.description}
-                  </p>
-                </CardContent>
-              </Card>
+              {/* Content */}
+              <div className={`w-1/2 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}>
+                <div className="bg-zinc-900/90 p-8 rounded-2xl border border-zinc-800">
+                  <div className="mb-4">{step.icon}</div>
+                  <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
+                  <p className="text-zinc-400">{step.description}</p>
+                </div>
+              </div>
+              
+              {/* Timeline dot */}
+              <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full">
+                <div className="absolute w-8 h-8 bg-primary/20 rounded-full -left-2 -top-2 animate-pulse" />
+              </div>
             </div>
           ))}
         </div>

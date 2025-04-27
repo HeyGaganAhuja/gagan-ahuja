@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Timer } from 'lucide-react';
@@ -119,7 +118,7 @@ const Hero = () => {
           <div className="flex flex-col items-center">
             <Button 
               size="lg" 
-              className="px-8 py-6 text-base sm:text-lg md:text-lg bg-primary hover:bg-primary/90 hover-scale animate-fade-in modern-button button-glow mb-2" 
+              className="px-8 py-6 text-base sm:text-lg md:text-lg bg-primary hover:bg-primary/90 button-3d animate-fade-in" 
               style={{ animationDelay: '0.4s' }}
               asChild
             >
@@ -129,46 +128,10 @@ const Hero = () => {
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2"
               >
-                <span>Book a Free Consultation</span>
+                <span>Apply to Work With Us</span>
                 <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
-            <p className="text-zinc-200 text-sm font-medium animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              Worth <span className="text-primary font-bold">$1000</span> Dollars
-            </p>
-          </div>
-
-          <div className="mt-8 flex flex-col items-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
-            <div className="flex items-center space-x-2 bg-zinc-800/70 rounded-full px-6 py-2 border border-zinc-700/50 shadow-lg">
-              <Timer size={20} className="text-primary animate-pulse" />
-              <span className="text-white font-bold text-base sm:text-lg md:text-xl">{formatTime()}</span>
-            </div>
-            <p className="text-zinc-400 text-sm sm:text-base mt-2">
-              Limited time offer - Expires soon!
-            </p>
-          </div>
-
-          <div className="mt-12 max-w-3xl mx-auto">
-            <h3 className="text-center text-xl sm:text-2xl text-zinc-300 mb-8 hidden md:block">
-              Steps to Work With Us
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 relative">
-              {[
-                { number: 1, title: "Describe what you want to build." },
-                { number: 2, title: "We build your first version." },
-                { number: 3, title: "Talk to extend your project." },
-                { number: 4, title: "Share or sync to GitHub." }
-              ].map((step, index) => (
-                <div key={index} className="step-container">
-                  <div className="flex flex-col items-center relative">
-                    <div className="step-number gradient-primary">
-                      <span className="text-lg font-bold">{step.number}</span>
-                    </div>
-                    <p className="text-zinc-300 text-center text-sm mt-4 max-w-[200px]">{step.title}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

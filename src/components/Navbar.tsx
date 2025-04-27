@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MenuIcon, X, User } from 'lucide-react';
@@ -49,9 +48,9 @@ const Navbar = () => {
             </Button>
           )}
           
-          <Button asChild className="bg-primary hover:bg-primary/90 modern-button">
+          <Button asChild className="bg-primary hover:bg-primary/90 button-3d">
             <a href="https://cal.com/gagan-ahuja/consulting" target="_blank" rel="noopener noreferrer">
-              Book a Call
+              Get in Touch
             </a>
           </Button>
         </div>
@@ -138,7 +137,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
               >
-                Book a Call
+                Get in Touch
               </a>
             </Button>
           </div>

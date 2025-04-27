@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap');
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
 @tailwind base;
@@ -59,7 +59,8 @@
   }
   
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: 'Satoshi', sans-serif;
     letter-spacing: -0.02em;
   }
   
@@ -443,4 +444,9 @@ textarea:disabled,
     transform: translateX(-50%);
     background: linear-gradient(180deg, rgba(var(--color-primary), 0.4), rgba(var(--color-primary), 0.8));
   }
+}
+
+/* 3D Button Styles */
+.button-3d {
+  @apply transform transition-all duration-200 shadow-[0_4px_0_0_rgba(0,0,0,0.2)] active:translate-y-[4px] active:shadow-none hover:brightness-110;
 }
