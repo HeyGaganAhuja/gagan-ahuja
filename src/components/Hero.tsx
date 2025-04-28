@@ -1,12 +1,12 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Timer } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [isVisible, setIsVisible] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(15 * 60); // 15 minutes in seconds
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null);
   const isMobile = useIsMobile();
 
@@ -54,22 +54,6 @@ const Hero = () => {
     };
   }, [isVisible, isMobile]);
 
-  // Timer countdown
-  useEffect(() => {
-    const timerInterval = setInterval(() => {
-      setTimeRemaining(prev => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(timerInterval);
-  }, []);
-
-  // Format time remaining
-  const formatTime = () => {
-    const minutes = Math.floor(timeRemaining / 60);
-    const seconds = timeRemaining % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
   return (
     <section className="pt-32 pb-20 md:pt-40 md:pb-28 relative overflow-hidden dotted-pattern grid-pattern">
       <div className="top-gradient-glow"></div>
@@ -109,10 +93,10 @@ const Hero = () => {
               We build tech from ❤️
             </span>
           </div>
-          <h1 className="text-5xl xs:text-6xl sm:text-6xl md:text-6xl lg:text-7xl font-serif font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
+          <h1 className="text-4xl xs:text-5xl sm:text-5xl md:text-5xl lg:text-6xl font-sans font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
-          <p className="text-md sm:text-md md:text-xl text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-md sm:text-md md:text-lg text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We create incredible websites for Businesses
           </p>
           <div className="flex flex-col items-center">

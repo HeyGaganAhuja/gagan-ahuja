@@ -20,8 +20,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				serif: ['ui-sans-serif', 'sans-serif'],
-				sans: ['ui-sans-serif', 'sans-serif'],
+				serif: ['Satoshi', 'sans-serif'],
+				sans: ['Satoshi', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
