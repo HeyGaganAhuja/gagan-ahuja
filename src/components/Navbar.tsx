@@ -4,9 +4,17 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MenuIcon, X, User } from 'lucide-react';
-import Link from 'next/link';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
+
+// Create a simple Link component that falls back to <a> when Next.js is not available
+const Link = ({ href, className, children, onClick }) => {
+  return (
+    <a href={href} className={className} onClick={onClick}>
+      {children}
+    </a>
+  );
+};
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);

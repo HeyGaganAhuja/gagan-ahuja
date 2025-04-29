@@ -1,13 +1,7 @@
 
-import { Metadata } from "next";
 import "../index.css";
 import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/sonner";
-
-export const metadata: Metadata = {
-  title: "Gagan Consults",
-  description: "Accelerating Growth With Websites",
-};
 
 export default function RootLayout({
   children,
@@ -16,6 +10,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <title>Gagan Consults</title>
+        <meta name="description" content="Accelerating Growth With Websites" />
+      </head>
       <body>
         <Providers>
           {children}

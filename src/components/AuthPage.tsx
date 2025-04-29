@@ -1,7 +1,7 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,15 @@ import {
   DialogDescription
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+
+// Create a simple useRouter fallback to handle navigation
+const useRouter = () => {
+  return {
+    push: (path) => {
+      window.location.href = path;
+    }
+  };
+};
 
 const AuthPage = () => {
   const { signIn, signUp, resetPassword, user } = useAuth();
