@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -18,15 +17,7 @@ import {
   DialogDescription
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
-
-// Create a simple useRouter fallback to handle navigation
-const useRouter = () => {
-  return {
-    push: (path) => {
-      window.location.href = path;
-    }
-  };
-};
+import { useRouter } from 'next/navigation';
 
 const AuthPage = () => {
   const { signIn, signUp, resetPassword, user } = useAuth();

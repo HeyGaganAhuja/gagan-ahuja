@@ -6,15 +6,7 @@ import { Button } from '@/components/ui/button';
 import { MenuIcon, X, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
-
-// Create a simple Link component that falls back to <a> when Next.js is not available
-const Link = ({ href, className, children, onClick }) => {
-  return (
-    <a href={href} className={className} onClick={onClick}>
-      {children}
-    </a>
-  );
-};
+import Link from 'next/link';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -24,13 +16,13 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground" onClick={() => {}}>
+        <Link href="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
           Gagan Consults
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8" style={{ gap: '2rem' }}>
-          <Link href="/" className="text-foreground/80 hover:text-primary transition-colors text-sm" onClick={() => {}}>
+          <Link href="/" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Home
           </Link>
           <a href="#whatyoureceive" className="text-foreground/80 hover:text-primary transition-colors text-sm">
@@ -45,7 +37,7 @@ const Navbar = () => {
           
           {user ? (
             <>
-              <Link href="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center" onClick={() => {}}>
+              <Link href="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center">
                 <User className="h-4 w-4 mr-1" />
                 Dashboard
               </Link>
@@ -55,9 +47,7 @@ const Navbar = () => {
             </>
           ) : (
             <Button asChild variant="secondary">
-              <Link href="/auth" className="" onClick={() => {}}>
-                Sign In
-              </Link>
+              <Link href="/auth">Sign In</Link>
             </Button>
           )}
           

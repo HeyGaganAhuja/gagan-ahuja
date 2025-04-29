@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from './Navbar';
+import { useRouter } from 'next/navigation';
 
 interface SearchHistoryItem {
   id: string;
@@ -16,30 +17,35 @@ interface SearchHistoryItem {
 const DashboardPage = () => {
   const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
   const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
+    // If no user is authenticated, redirect to auth page
+    if (!user) {
+      router.push('/auth');
+      return;
+    }
+    
     const fetchSearchHistory = async () => {
-      if (user) {
-        try {
-          const { data, error } = await supabase
-            .from('search_history')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(10);
-          
-          if (error) throw error;
-          
-          // Use type assertion to convert Supabase result to SearchHistoryItem[]
-          if (data) setSearchHistory(data as unknown as SearchHistoryItem[]);
-        } catch (error) {
-          console.error('Error fetching search history:', error);
-        }
+      try {
+        const { data, error } = await supabase
+          .from('search_history')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(10);
+        
+        if (error) throw error;
+        
+        // Use type assertion to convert Supabase result to SearchHistoryItem[]
+        if (data) setSearchHistory(data as unknown as SearchHistoryItem[]);
+      } catch (error) {
+        console.error('Error fetching search history:', error);
       }
     };
 
     fetchSearchHistory();
-  }, [user]);
+  }, [user, router]);
 
   return (
     <>
