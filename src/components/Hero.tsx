@@ -93,7 +93,7 @@ const Hero = () => {
               We build tech from ❤️
             </span>
           </div>
-          <h1 className="text-4xl xs:text-5xl sm:text-5xl md:text-5xl lg:text-6xl font-sans font-extrabold tracking-tight mb-6 animate-fade-in hover-scale">
+          <h1 className="text-4xl xs:text-5xl sm:text-5xl md:text-5xl lg:text-6xl font-sans font-medium tracking-tight mb-6 animate-fade-in hover-scale">
             Accelerating Growth With Websites 🚀
           </h1>
           <p className="text-md sm:text-md md:text-lg text-muted-foreground mb-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
