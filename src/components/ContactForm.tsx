@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,9 +18,9 @@ import { createClient } from '@supabase/supabase-js';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 // Create Supabase client
-// Note: Replace these with your actual Supabase project URL and anon key
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-project-url.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
+// Use environment variables with proper fallbacks for Vite
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://your-project-url.supabase.co';
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Define form schema
