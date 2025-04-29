@@ -24,13 +24,13 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
+        <Link href="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground" onClick={() => {}}>
           Gagan Consults
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8" style={{ gap: '2rem' }}>
-          <Link href="/" className="text-foreground/80 hover:text-primary transition-colors text-sm">
+          <Link href="/" className="text-foreground/80 hover:text-primary transition-colors text-sm" onClick={() => {}}>
             Home
           </Link>
           <a href="#whatyoureceive" className="text-foreground/80 hover:text-primary transition-colors text-sm">
@@ -45,7 +45,7 @@ const Navbar = () => {
           
           {user ? (
             <>
-              <Link href="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center">
+              <Link href="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center" onClick={() => {}}>
                 <User className="h-4 w-4 mr-1" />
                 Dashboard
               </Link>
@@ -55,7 +55,9 @@ const Navbar = () => {
             </>
           ) : (
             <Button asChild variant="secondary">
-              <Link href="/auth">Sign In</Link>
+              <Link href="/auth" className="" onClick={() => {}}>
+                Sign In
+              </Link>
             </Button>
           )}
           
