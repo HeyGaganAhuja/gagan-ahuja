@@ -1,7 +1,8 @@
+
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import { Download, FileText, BarChart, Palette, Gift } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 
 const assetsData = [
   {

@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '../components/ui/input';
+import { Button } from '../components/ui/button';
 import { Youtube, Twitter, Instagram, Linkedin, Send, ArrowRight } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '../hooks/use-toast';
 import ContactDialog from './ContactDialog';
 
 const Footer = () => {

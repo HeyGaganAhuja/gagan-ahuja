@@ -2,11 +2,11 @@
 "use client";
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import { MenuIcon, X, User } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/contexts/AuthContext';
-import Link from 'next/link';
+import { useIsMobile } from '../hooks/use-mobile';
+import { useAuth } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -16,13 +16,13 @@ const Navbar = () => {
   return (
     <nav className="w-full py-4 bg-background/95 backdrop-blur-sm fixed top-0 z-50 border-b border-border/40">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
+        <Link to="/" className="text-xl md:text-2xl font-serif font-semibold text-foreground">
           Gagan Consults
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8" style={{ gap: '2rem' }}>
-          <Link href="/" className="text-foreground/80 hover:text-primary transition-colors text-sm">
+          <Link to="/" className="text-foreground/80 hover:text-primary transition-colors text-sm">
             Home
           </Link>
           <a href="#whatyoureceive" className="text-foreground/80 hover:text-primary transition-colors text-sm">
@@ -37,7 +37,7 @@ const Navbar = () => {
           
           {user ? (
             <>
-              <Link href="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center">
+              <Link to="/dashboard" className="text-foreground/80 hover:text-primary transition-colors text-sm flex items-center">
                 <User className="h-4 w-4 mr-1" />
                 Dashboard
               </Link>
@@ -47,7 +47,7 @@ const Navbar = () => {
             </>
           ) : (
             <Button asChild variant="secondary">
-              <Link href="/auth">Sign In</Link>
+              <Link to="/auth">Sign In</Link>
             </Button>
           )}
           
@@ -75,7 +75,7 @@ const Navbar = () => {
         <div className="fixed inset-0 top-[61px] bg-black/95 backdrop-blur-sm z-[100] flex flex-col p-5 space-y-5 md:hidden">
           <div className="w-full flex flex-col space-y-5">
             <Link 
-              href="/" 
+              to="/" 
               className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center" 
               onClick={() => setIsOpen(false)}
             >
@@ -106,7 +106,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <Link 
-                  href="/dashboard"
+                  to="/dashboard"
                   className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
                   onClick={() => setIsOpen(false)}
                 >
@@ -125,7 +125,7 @@ const Navbar = () => {
               </>
             ) : (
               <Link 
-                href="/auth"
+                to="/auth"
                 className="text-lg p-2 font-medium bg-secondary/70 rounded-md text-center"
                 onClick={() => setIsOpen(false)}
               >

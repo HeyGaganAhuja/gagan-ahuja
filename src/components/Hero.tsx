@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });

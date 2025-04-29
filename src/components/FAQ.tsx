@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "../components/ui/accordion";
 import { HelpCircle } from 'lucide-react';
 
 const faqData = [

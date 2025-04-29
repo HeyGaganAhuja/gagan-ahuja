@@ -6,10 +6,10 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
+} from "../components/ui/carousel";
+import { Card, CardContent } from "../components/ui/card";
 import { Star, MessageSquare } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 
 const reviewsData = [
   {
